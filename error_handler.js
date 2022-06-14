@@ -1,5 +1,4 @@
 const handleError = (err, req, res, next) => {
-    req.sentry.captureException(err)
       if (err.status != undefined) {
         res.status(err.status).json({
             status: err.status,
