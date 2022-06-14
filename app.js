@@ -1,6 +1,10 @@
 const express = require("express");
 const app = express();
 const errorHandler = require('./error_handler')
+const userRoutes = require("./routes/user.route");
+
+app.use(express.urlencoded({ extended: false }));
+app.use(express.json());
 
 app.use(errorHandler);
 app.listen(3000, () => {
