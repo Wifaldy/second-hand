@@ -1,11 +1,19 @@
 const { user } = require("../models");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
+const { validationResult } = require("express-validator");
 require("dotenv").config();
 class UserController {
     static async postLogin(req, res, next) {
         try {
             const { email, password } = req.body;
+            const errors = validationResult(req);
+            if (!errors.isEmpty()) {
+                throw {
+                    status: 400,
+                    message: errors.array()[0].msg,
+                };
+            }
             const findUser = await user.findOne({
                 where: {
                     email: email,
