@@ -8,4 +8,6 @@ productRouter.post("/offering/:id", isAuth, ProductController.offeringProduct);
 
 productRouter.get("/is-offering/:id", isAuth, ProductController.isOffering);
 
+productRouter.get("/product-by-user", isAuth, ProductController.productByUser);
+
 module.exports = productRouter;

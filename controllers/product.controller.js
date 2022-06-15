@@ -70,6 +70,22 @@ class ProductController {
             next(err);
         }
     }
+
+    static async productByUser(req, res, next) {
+        try {
+            const productByUser = await product.findAll({
+                where: {
+                    user_id: req.user.id,
+                },
+            });
+            res.status(200).json({
+                message: "Product by user",
+                data: productByUser,
+            });
+        } catch (err) {
+            next(err);
+        }
+    }
 }
 
 module.exports = ProductController;
