@@ -10,6 +10,12 @@ module.exports = (req, res, next) => {
             };
         }
         const decoded = jwt.verify(token, process.env.JWT_SECRET);
+        if (!decoded.id) {
+            throw {
+                status: 401,
+                message: "Unauthorized",
+            };
+        }
         req.user = decoded;
         next();
     } catch (err) {
