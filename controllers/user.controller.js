@@ -71,6 +71,36 @@ class UserController {
         }
     }
 
+    static async detail(req, res, next) {
+        try {
+            const dataUser = await user.findOne({
+                where: {
+                    id: req.user.id
+                }
+            })
+
+            if (!dataUser) {
+                throw {
+                    status: 401,
+                    message: 'Unauthorized request'
+                }
+            } else {
+                // res.status(200).jsonn(dataUser)
+                res.status(200).json({
+                    id: dataUser.id,
+                    name: dataUser.name,
+                    email: dataUser.email,
+                    city: dataUser.city,
+                    address: dataUser.address,
+                    no_hp: dataUser.no_hp,
+                    profile_pict: dataUser.profile_pict
+                })
+            }
+        } catch (error) {
+            next(err)
+        }
+    }
+
     static async update(req, res, next) {
         try {
             const dataUser = await user.findOne({

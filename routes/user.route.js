@@ -28,6 +28,9 @@ userRouter.post(
     UserController.postLogin
 );
 
+// detail user
+userRouter.get('/detail-user', isAuth, UserController.detail);
+
 // update data user
 userRouter.put(
     '/update-user', isAuth,
