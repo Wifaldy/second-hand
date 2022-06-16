@@ -84,7 +84,7 @@ class UserController {
     }
   }
 
-    static async detail(req, res, next) {
+    static async detailUser(req, res, next) {
         try {
             const dataUser = await user.findOne({
                 where: {
@@ -114,7 +114,7 @@ class UserController {
         }
     }
 
-    static async update(req, res, next) {
+    static async updateUser(req, res, next) {
         try {
             const dataUser = await user.findOne({
                 where: {

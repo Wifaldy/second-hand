@@ -29,7 +29,7 @@ userRouter.post(
 );
 
 // detail user
-userRouter.get('/detail-user', isAuth, UserController.detail);
+userRouter.get('/detail-user', isAuth, UserController.detailUser);
 
 // update data user
 userRouter.put(
@@ -41,7 +41,7 @@ userRouter.put(
         body("address").notEmpty().withMessage("address is required"),
         body("no_hp").notEmpty().withMessage("No Handphone is required"),
     ], 
-    UserController.update
+    UserController.updateUser
 );
 
 module.exports = userRouter;
