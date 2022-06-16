@@ -46,7 +46,7 @@ productRouter.post(
       .withMessage("Product pictures are required")
       .custom((_value) => {
         if (req.files.length > 4) {
-          throw new Error("Exceede maximum pictures allowed");
+          throw new Error("Exceeded maximum pictures allowed");
         }
         return true;
       }),
