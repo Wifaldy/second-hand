@@ -29,7 +29,7 @@ productRouter.get("/is-offering/:id", isAuth, ProductController.isOffering);
 productRouter.get("/product-by-user", isAuth, ProductController.productByUser);
 
 productRouter.post(
-  "/product/:id",
+  "/product",
   upload.array("product_pict"),
   isAuth,
   [

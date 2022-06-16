@@ -114,7 +114,6 @@ class ProductController {
 
   static async createProduct(req, res, next) {
     try {
-      const { id } = req.params;
       const errors = validationResult(req);
       if (!errors.isEmpty()) {
         throw {
@@ -128,11 +127,6 @@ class ProductController {
           ...req.body,
           product_pict: filePaths,
         },
-        {
-          where: {
-            id,
-          },
-        }
       );
       res.status(201).json({
         message: "Success add new product",
