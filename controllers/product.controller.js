@@ -1,4 +1,5 @@
-const { product, offer } = require("../models");
+const { product, offer, user } = require("../models");
+const ProductSingleton = require("../services/temp_product_data.service");
 
 class ProductController {
     static async detailProduct(req, res, next) {
@@ -68,6 +69,67 @@ class ProductController {
             });
         } catch (err) {
             next(err);
+        }
+    }
+
+    static async previewProduct(req, res, next) {
+        try {
+            //   const { name, price, category, description } = req.body;
+            const filePaths = req.files.map((file) => file.path);
+            console.log(filePaths);
+
+            const dataTemp = ProductSingleton.getInstance();
+            dataTemp.setData = {
+                ...req.body,
+                product_pict: filePaths,
+            };
+
+            res.status(200).json({
+                preview_data: dataTemp.getData,
+            });
+        } catch (error) {
+            next(error);
+        }
+    }
+
+    static async reEditProduct(req, res, next) {
+        try {
+            const dataTemp = ProductSingleton.getInstance();
+            if (!dataTemp.getData) {
+                throw {
+                    status: 404,
+                    message: "Isi update dulu bos",
+                };
+            }
+            res.status(200).json({
+                preview_data: dataTemp.getData,
+            });
+            dataTemp.resetData();
+        } catch (error) {
+            console.log(error);
+            next(error);
+        }
+    }
+
+    static async updateProduct(req, res, next) {
+        try {
+            const { id } = req.params;
+            //   const { name, price, category, description } = req.body;
+            const filePaths = req.files.map((file) => file.path);
+            await product.update({
+                ...req.body,
+                product_pict: filePaths,
+            }, {
+                where: {
+                    id,
+                },
+            });
+            res.status(200).json({
+                message: "Success update product",
+            });
+        } catch (error) {
+            console.log(error);
+            next(error);
         }
     }
 
