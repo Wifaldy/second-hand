@@ -51,10 +51,11 @@ class UserController {
     static async registerUser(req, res, next) {
         try {
             const { name, email, password } = req.body;
-            if (!name || !email || !password) {
+            const errors = validationResult(req);
+            if (!errors.isEmpty()) {
                 throw {
                     status: 400,
-                    message: "Name, Email, or Password should not be empty",
+                    message: errors.array()[0].msg,
                 };
             }
             const findUser = await user.findOne({
@@ -65,7 +66,7 @@ class UserController {
             if (findUser) {
                 throw {
                     status: 400,
-                    message: "Invalid Email",
+                    message: "Email already exist",
                 };
             }
             await user.create({
@@ -90,7 +91,6 @@ class UserController {
                     id: req.user.id,
                 },
             });
-
             if (!dataUser) {
                 throw {
                     status: 401,
@@ -120,10 +120,15 @@ class UserController {
                     id: req.user.id,
                 },
             });
+            if (!dataUser) {
+                throw {
+                    status: 401,
+                    message: "Unauthorized request",
+                };
+            }
             if (req.file) {
                 req.body.profile_pict = `${req.file.filename}`;
             }
-
             const { name, city, address, no_hp } = req.body;
             const errors = validationResult(req);
             if (!errors.isEmpty()) {
@@ -132,7 +137,6 @@ class UserController {
                     message: errors.array()[0].msg,
                 };
             }
-
             await user.update({
                 name,
                 city,
@@ -152,14 +156,12 @@ class UserController {
             if (fs.existsSync(DIR)) {
                 fs.unlinkSync(DIR);
             }
-
             res.status(200).json({
                 message: "Successfully update Users",
             });
         } catch (err) {
             next(err);
         }
-        ``;
     }
 }
 

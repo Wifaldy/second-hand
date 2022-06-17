@@ -22,7 +22,11 @@ const upload = multer({
 
 productRouter.get("/product/:id", ProductController.detailProduct);
 
-productRouter.post("/offering/:id", isAuth, ProductController.offeringProduct);
+productRouter.post(
+    "/offering/:id", [body("price_offer").notEmpty().withMessage("Price is required")],
+    isAuth,
+    ProductController.offeringProduct
+);
 
 productRouter.get("/is-offering/:id", isAuth, ProductController.isOffering);
 
@@ -33,15 +37,14 @@ productRouter.post(
     upload.array("product_pict"),
     isAuth, [
         body("name").notEmpty().withMessage("Product name is required"),
-        body("categories").notEmpty().withMessage("Please fill a valid categories"),
         body("price").notEmpty().withMessage("Price is required"),
         body("description").notEmpty().withMessage("Description is required"),
-        body("product_pict")
-        .notEmpty()
-        .withMessage("Product pictures are required")
-        .custom((value, { req }) => {
+        body("categories").notEmpty().withMessage("Please fill a valid categories"),
+        body("product_pict").custom((value, { req }) => {
             if (req.files.length > 4) {
                 throw new Error("Exceeded maximum pictures allowed");
+            } else if (!req.files) {
+                throw new Error("Please upload a picture");
             }
             return true;
         }),

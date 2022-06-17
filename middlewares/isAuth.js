@@ -5,7 +5,7 @@ module.exports = (req, res, next) => {
         if (!req.headers.authorization) {
             throw {
                 status: 400,
-                message: "No token provided",
+                message: "Token not provided",
             };
         }
         const token = req.headers.authorization.split(" ")[1];

@@ -26,6 +26,13 @@ class ProductController {
         try {
             const { price_offer } = req.body;
             const { id } = req.params;
+            const errors = validationResult(req);
+            if (!errors.isEmpty()) {
+                throw {
+                    status: 400,
+                    message: errors.array()[0].msg,
+                };
+            }
             const offeringProduct = await product.findByPk(id);
             if (!offeringProduct) {
                 throw {
@@ -141,13 +148,6 @@ class ProductController {
                     updatedAt: new Date(),
                 });
             });
-            if (!category.instanceof(Array)) {
-                throw {
-                    status: 400,
-                    message: "Category must be an array",
-                };
-            }
-
             res.status(201).json({
                 message: "Success add new product",
             });
