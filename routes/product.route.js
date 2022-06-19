@@ -32,6 +32,8 @@ productRouter.get("/is-offering/:id", isAuth, ProductController.isOffering);
 
 productRouter.get("/product-by-user", isAuth, ProductController.productByUser);
 
+productRouter.get("/product-histories", isAuth, ProductController.getSoldProducts);
+
 productRouter.post(
     "/product",
     upload.array("product_pict"),
