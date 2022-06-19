@@ -58,12 +58,12 @@ class UserController {
           message: "Name, Email, or Password should not be empty",
         };
       }
-      const user = await user.findOne({
+      const findUser = await user.findOne({
         where: {
           email,
         },
       });
-      if (user) {
+      if (findUser) {
         throw {
           status: 400,
           message: "Invalid Email",
@@ -80,6 +80,7 @@ class UserController {
         message: "Success add new user",
       });
     } catch (error) {
+      console.log(error);
       next(error);
     }
   }
