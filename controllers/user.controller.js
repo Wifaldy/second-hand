@@ -21,7 +21,6 @@ class UserController {
                     email: email,
                 },
             });
-            console.log(findUser);
             if (!findUser) {
                 throw {
                     status: 404,
