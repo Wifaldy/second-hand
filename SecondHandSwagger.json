@@ -1877,7 +1877,7 @@
                 "parameters": [],
                 "requestBody": {
                     "content": {
-                        "application/x-www-form-urlencoded": {
+                        "multipart/form-data": {
                             "encoding": {},
                             "schema": {
                                 "required": [
@@ -2176,10 +2176,11 @@
                 "parameters": [],
                 "requestBody": {
                     "content": {
-                        "application/x-www-form-urlencoded": {
+                        "multipart/form-data": {
                             "encoding": {},
                             "schema": {
                                 "required": [
+                                    "name",
                                     "price",
                                     "description",
                                     "categories",
@@ -2187,6 +2188,10 @@
                                 ],
                                 "type": "object",
                                 "properties": {
+                                    "name": {
+                                        "type": "string",
+                                        "example": "Product 1"
+                                    },
                                     "price": {
                                         "type": "integer",
                                         "format": "int32",
@@ -2197,13 +2202,24 @@
                                         "example": "Ini adalah product 3"
                                     },
                                     "categories": {
-                                        "type": "integer",
-                                        "format": "int32",
-                                        "example": 1
+                                        "type": "array",
+                                        "items": {
+                                            "type": "integer",
+                                            "format": "int32"
+                                        },
+                                        "minItems": 1,
+                                        "maxItems": 5,
+                                        "example": [1, 2]
                                     },
                                     "product_pict": {
-                                        "type": "string",
-                                        "format": "binary"
+                                        "type": "array",
+                                        "items": {
+                                            "type": "string",
+                                            "example": "https://www.w3schools.com/w3css/img_avatar3.png",
+                                            "format": "binary"
+                                        },
+                                        "minItems": 1,
+                                        "maxItems": 4
                                     }
                                 }
                             }
