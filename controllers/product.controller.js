@@ -140,10 +140,10 @@ class ProductController {
                 createdAt: new Date(),
                 updatedAt: new Date(),
             });
-            categories.forEach((category) => {
+            categories.split(",").forEach((category) => {
                 product_tag.create({
                     product_id: productCreate.id,
-                    category_id: category,
+                    category_id: +category,
                     createdAt: new Date(),
                     updatedAt: new Date(),
                 });
