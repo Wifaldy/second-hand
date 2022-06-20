@@ -34,8 +34,7 @@
                                         "example": "anam@gmail.com"
                                     },
                                     "password": {
-                                        "type": "integer",
-                                        "format": "int32",
+                                        "type": "string",
                                         "example": 12345
                                     }
                                 }
@@ -318,8 +317,7 @@
                                         "example": "anam@gmail.com"
                                     },
                                     "password": {
-                                        "type": "integer",
-                                        "format": "int32",
+                                        "type": "string",
                                         "example": 1234
                                     }
                                 }
