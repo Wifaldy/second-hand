@@ -171,6 +171,26 @@ class ProductController {
             next(err);
         }
     }
+
+    static async getSoldProducts(req, res, next){
+        try {
+            const soldProducts = await product.findAll({
+                where: {
+                    status: 'sold',
+                    id: req.user.id,
+                }
+            });
+            if(!soldProducts) {
+                throw {
+                    status: 404,
+                    message: 'Product not found'
+                }
+            }
+            res.status(200).json(soldProducts);
+        } catch (error) {
+            next(error);
+        }
+    }
 }
 
 module.exports = ProductController;

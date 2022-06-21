@@ -45,6 +45,7 @@ class UserController {
                 token: token,
             });
         } catch (err) {
+            console.log(err);
             next(err);
         }
     }
@@ -160,6 +161,7 @@ class UserController {
                 message: "Successfully update Users",
             });
         } catch (err) {
+            console.log(err);
             next(err);
         }
     }
