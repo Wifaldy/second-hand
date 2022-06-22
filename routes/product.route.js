@@ -11,7 +11,7 @@ const upload = multer({
         if (
             file.mimetype === "image/jpeg" ||
             file.mimetype === "image/jpg" ||
-            file.mimetype === "image/png" 
+            file.mimetype === "image/png"
         ) {
             cb(null, true);
         } else {
@@ -22,17 +22,13 @@ const upload = multer({
 
 productRouter.get("/product/:id", ProductController.detailProduct);
 
-productRouter.post(
-    "/offering/:id", [body("price_offer").notEmpty().withMessage("Price is required")],
-    isAuth,
-    ProductController.offeringProduct
-);
-
-productRouter.get("/is-offering/:id", isAuth, ProductController.isOffering);
-
 productRouter.get("/product-by-user", isAuth, ProductController.productByUser);
 
-productRouter.get("/product-histories", isAuth, ProductController.getSoldProducts);
+productRouter.get(
+    "/product-histories",
+    isAuth,
+    ProductController.getSoldProducts
+);
 
 productRouter.post(
     "/product",
