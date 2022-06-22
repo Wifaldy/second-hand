@@ -50,11 +50,11 @@ productRouter.post(
     ProductController.createProduct
 ); // update terbitkan
 
-productRouter.get(
-    "/offered-product-by-user",
-    isAuth,
-    ProductController.getOfferedProducts
-);
+// productRouter.get(
+//     "/offered-product-by-user",
+//     isAuth,
+//     ProductController.getOfferedProducts
+// );
 productRouter.put(
     "/product/:id",
     upload.array("product_pict"),

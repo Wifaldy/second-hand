@@ -1,6 +1,7 @@
-const { product, offer, product_tag } = require("../models");
+const { product, offer, product_tag, category } = require("../models");
 // const ProductSingleton = require("../services/temp_product_data.service");
 const { validationResult } = require("express-validator");
+const sequelize = require("sequelize");
 
 class ProductController {
   static async detailProduct(req, res, next) {
@@ -168,18 +169,18 @@ class ProductController {
       const { name, price, description, categories } = req.body;
       const { id } = req.params;
       const filePaths = req.files.map((file) => file.path);
-      
+
       const getProduct = await product.findOne({
         where: {
-            user_id: req.user.id,
-            id,
-        }
+          user_id: req.user.id,
+          id,
+        },
       });
-      if(!getProduct){
+      if (!getProduct) {
         throw {
-            status: 401,
-            message: "The product is not yours"
-        }
+          status: 401,
+          message: "The product is not yours",
+        };
       }
 
       const productUpdate = await product.update(
@@ -246,13 +247,19 @@ class ProductController {
     try {
       const soldProducts = await product.findAll({
         where: {
-          status: "sold",
-          id: req.user.id,
+          user_id: req.user.id,
         },
         include: {
           model: product_tag,
-          as: 'categories',
-          attributes: ['name']
+          nested: true,
+          include: [{
+            model: category,
+          }]
+          // attributes: [
+          //   "product_id",
+          //   "category_id",
+          //   // [sequelize.literal('"category"."name"'), "categories"],
+          // ],
         },
       });
       if (!soldProducts) {
@@ -263,6 +270,7 @@ class ProductController {
       }
       res.status(200).json(soldProducts);
     } catch (error) {
+      console.log(error);
       next(error);
     }
   }
