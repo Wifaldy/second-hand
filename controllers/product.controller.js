@@ -140,17 +140,14 @@ class ProductController {
         createdAt: new Date(),
         updatedAt: new Date(),
       });
-      for (const category of categories) {
+      categories.split(",").forEach((category) => {
         product_tag.create({
           product_id: productCreate.id,
           category_id: +category,
           createdAt: new Date(),
           updatedAt: new Date(),
         });
-      }
-      // categories.split(",").forEach((category) => {
-        
-      // });
+      });
       res.status(201).json({
         message: "Success add new product",
       });
@@ -171,7 +168,7 @@ class ProductController {
       const { name, price, description, categories } = req.body;
       const { id } = req.params;
       const filePaths = req.files.map((file) => file.path);
-      console.log(req.user);
+      
       const getProduct = await product.findOne({
         where: {
             user_id: req.user.id,
