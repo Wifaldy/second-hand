@@ -1,4 +1,4 @@
-const { product, offer, product_tag } = require("../models");
+const { product, offer, product_tag, user } = require("../models");
 // const ProductSingleton = require("../services/temp_product_data.service");
 const { validationResult } = require("express-validator");
 
@@ -6,7 +6,12 @@ class ProductController {
     static async detailProduct(req, res, next) {
         try {
             const { id } = req.params;
-            const detailProduct = await product.findByPk(id);
+            const detailProduct = await product.findByPk(id, {
+                include: {
+                    model: product,
+                    attributes: ["name", "price"],
+                },
+            });
             if (!detailProduct) {
                 throw {
                     status: 404,
@@ -172,23 +177,53 @@ class ProductController {
         }
     }
 
-    static async getSoldProducts(req, res, next){
+    static async getSoldProducts(req, res, next) {
         try {
             const soldProducts = await product.findAll({
                 where: {
-                    status: 'sold',
+                    status: "sold",
                     id: req.user.id,
-                }
+                },
             });
-            if(!soldProducts) {
+            if (!soldProducts) {
                 throw {
                     status: 404,
-                    message: 'Product not found'
-                }
+                    message: "Product not found",
+                };
             }
             res.status(200).json(soldProducts);
         } catch (error) {
             next(error);
+        }
+    }
+
+    static async detailOffering(req, res, next) {
+        try {
+            const { id } = req.params;
+            const detailOffering = await offer.findAll({
+                include: [{
+                        model: user,
+                    },
+                    {
+                        model: product,
+                    },
+                ],
+                where: {
+                    id: id,
+                },
+            });
+            if (!detailOffering) {
+                throw {
+                    status: 404,
+                    message: "Offer not found",
+                };
+            }
+            res.status(200).json({
+                message: "Detail Offer",
+                data: detailOffering,
+            });
+        } catch (err) {
+            next(err);
         }
     }
 }
