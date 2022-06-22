@@ -138,6 +138,25 @@ class ProductController {
             next(error);
         }
     }
+
+    static async getOfferedProducts(req, res, next) {
+        try {
+            const offeredProducts = await offer.findAll({
+                include: {
+                    model: product,
+                    where: {
+                        user_id: req.user.id,
+                    },
+                },
+                where: {
+                    status: "pending",
+                },
+            });
+            res.status(200).json(offeredProducts);
+        } catch (err) {
+            next(err);
+        }
+    }
 }
 
 module.exports = ProductController;

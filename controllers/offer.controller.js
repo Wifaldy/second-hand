@@ -20,6 +20,12 @@ class OfferController {
                     message: "Product not found",
                 };
             }
+            if (offeringProduct.dataValues.id === req.user.id) {
+                throw {
+                    status: 400,
+                    message: "You can't offer your own product",
+                };
+            }
             await offer.create({
                 buyer_id: req.user.id,
                 product_id: id,
