@@ -140,14 +140,17 @@ class ProductController {
         createdAt: new Date(),
         updatedAt: new Date(),
       });
-      categories.split(",").forEach((category) => {
+      for (const category of categories) {
         product_tag.create({
           product_id: productCreate.id,
           category_id: +category,
           createdAt: new Date(),
           updatedAt: new Date(),
         });
-      });
+      }
+      // categories.split(",").forEach((category) => {
+        
+      // });
       res.status(201).json({
         message: "Success add new product",
       });
@@ -168,13 +171,14 @@ class ProductController {
       const { name, price, description, categories } = req.body;
       const { id } = req.params;
       const filePaths = req.files.map((file) => file.path);
-      
-      const product = await product.findOne({
+      console.log(req.user);
+      const getProduct = await product.findOne({
         where: {
             user_id: req.user.id,
+            id,
         }
       });
-      if(!product){
+      if(!getProduct){
         throw {
             status: 401,
             message: "The product is not yours"
@@ -183,9 +187,9 @@ class ProductController {
 
       const productUpdate = await product.update(
         {
-          name: name,
-          price: price,
-          description: description,
+          name,
+          price,
+          description,
           product_pict: filePaths,
           createdAt: new Date(),
           updatedAt: new Date(),
@@ -247,6 +251,11 @@ class ProductController {
         where: {
           status: "sold",
           id: req.user.id,
+        },
+        include: {
+          model: product_tag,
+          as: 'categories',
+          attributes: ['name']
         },
       });
       if (!soldProducts) {
