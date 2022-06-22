@@ -27,64 +27,6 @@ class ProductController {
         }
     }
 
-    static async offeringProduct(req, res, next) {
-        try {
-            const { price_offer } = req.body;
-            const { id } = req.params;
-            const errors = validationResult(req);
-            if (!errors.isEmpty()) {
-                throw {
-                    status: 400,
-                    message: errors.array()[0].msg,
-                };
-            }
-            const offeringProduct = await product.findByPk(id);
-            if (!offeringProduct) {
-                throw {
-                    status: 404,
-                    message: "Product not found",
-                };
-            }
-            await offer.create({
-                buyer_id: req.user.id,
-                product_id: id,
-                price_offer: price_offer,
-                status: "pending",
-                createdAt: new Date(),
-                updatedAt: new Date(),
-            });
-            res.status(201).json({
-                message: "Offering Success",
-            });
-        } catch (err) {
-            next(err);
-        }
-    }
-
-    static async isOffering(req, res, next) {
-        try {
-            const { id } = req.params;
-            const isOffering = await offer.findOne({
-                where: {
-                    buyer_id: req.user.id,
-                    product_id: id,
-                    status: "pending",
-                },
-            });
-            if (isOffering) {
-                throw {
-                    status: 400,
-                    message: "Offering is not valid",
-                };
-            }
-            res.status(200).json({
-                message: "Offering is valid",
-            });
-        } catch (err) {
-            next(err);
-        }
-    }
-
     // static async previewProduct(req, res, next) {
     //     try {
     //         //   const { name, price, category, description } = req.body;
@@ -194,36 +136,6 @@ class ProductController {
             res.status(200).json(soldProducts);
         } catch (error) {
             next(error);
-        }
-    }
-
-    static async detailOffering(req, res, next) {
-        try {
-            const { id } = req.params;
-            const detailOffering = await offer.findAll({
-                include: [{
-                        model: user,
-                    },
-                    {
-                        model: product,
-                    },
-                ],
-                where: {
-                    id: id,
-                },
-            });
-            if (!detailOffering) {
-                throw {
-                    status: 404,
-                    message: "Offer not found",
-                };
-            }
-            res.status(200).json({
-                message: "Detail Offer",
-                data: detailOffering,
-            });
-        } catch (err) {
-            next(err);
         }
     }
 }

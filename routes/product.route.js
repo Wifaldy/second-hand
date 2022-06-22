@@ -22,26 +22,12 @@ const upload = multer({
 
 productRouter.get("/product/:id", ProductController.detailProduct);
 
-productRouter.post(
-    "/offering/:id", [body("price_offer").notEmpty().withMessage("Price is required")],
-    isAuth,
-    ProductController.offeringProduct
-);
-
-productRouter.get("/is-offering/:id", isAuth, ProductController.isOffering);
-
 productRouter.get("/product-by-user", isAuth, ProductController.productByUser);
 
 productRouter.get(
     "/product-histories",
     isAuth,
     ProductController.getSoldProducts
-);
-
-productRouter.get(
-    "/detail-offering/:id",
-    isAuth,
-    ProductController.detailOffering
 );
 
 productRouter.post(
