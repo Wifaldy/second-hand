@@ -50,6 +50,27 @@ productRouter.post(
     ProductController.createProduct
 ); // update terbitkan
 
+productRouter.put(
+    "/product/:id",
+    upload.array("product_pict"),
+    isAuth, [
+        body("name").notEmpty().withMessage("Product name is required"),
+        body("price").notEmpty().withMessage("Price is required"),
+        body("description").notEmpty().withMessage("Description is required"),
+        body("categories").notEmpty().withMessage("Please fill a valid categories"),
+        body("product_pict").custom((value, { req }) => {
+            console.log(req.files);
+            if (req.files.length > 4) {
+                throw new Error("Exceeded maximum pictures allowed");
+            } else if (!req.files) {
+                throw new Error("Please upload a picture");
+            }
+            return true;
+        }),
+    ],
+    ProductController.updateProduct
+);
+
 // productRouter.post(
 //   "/product-preview",
 //   upload.array("product_pict"),
