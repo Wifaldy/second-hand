@@ -27,6 +27,64 @@ class ProductController {
         }
     }
 
+    static async offeringProduct(req, res, next) {
+        try {
+            const { price_offer } = req.body;
+            const { id } = req.params;
+            const errors = validationResult(req);
+            if (!errors.isEmpty()) {
+                throw {
+                    status: 400,
+                    message: errors.array()[0].msg,
+                };
+            }
+            const offeringProduct = await product.findByPk(id);
+            if (!offeringProduct) {
+                throw {
+                    status: 404,
+                    message: "Product not found",
+                };
+            }
+            await offer.create({
+                buyer_id: req.user.id,
+                product_id: id,
+                price_offer: price_offer,
+                status: "pending",
+                createdAt: new Date(),
+                updatedAt: new Date(),
+            });
+            res.status(201).json({
+                message: "Offering Success",
+            });
+        } catch (err) {
+            next(err);
+        }
+    }
+
+    static async isOffering(req, res, next) {
+        try {
+            const { id } = req.params;
+            const isOffering = await offer.findOne({
+                where: {
+                    buyer_id: req.user.id,
+                    product_id: id,
+                    status: "pending",
+                },
+            });
+            if (isOffering) {
+                throw {
+                    status: 400,
+                    message: "Offering is not valid",
+                };
+            }
+            res.status(200).json({
+                message: "Offering is valid",
+            });
+        } catch (err) {
+            next(err);
+        }
+    }
+
     // static async previewProduct(req, res, next) {
     //     try {
     //         //   const { name, price, category, description } = req.body;
@@ -103,6 +161,72 @@ class ProductController {
         }
     }
 
+    static async updateProduct(req, res, next) {
+        try {
+            const errors = validationResult(req);
+            if (!errors.isEmpty()) {
+                throw {
+                    status: 400,
+                    message: errors.array()[0].msg,
+                };
+            }
+            const { name, price, description, categories } = req.body;
+            const { id } = req.params;
+            const filePaths = req.files.map((file) => file.path);
+
+            const product = await product.findOne({
+                where: {
+                    user_id: req.user.id,
+                },
+            });
+            if (!product) {
+                throw {
+                    status: 401,
+                    message: "The product is not yours",
+                };
+            }
+
+            const productUpdate = await product.update({
+                name: name,
+                price: price,
+                description: description,
+                product_pict: filePaths,
+                createdAt: new Date(),
+                updatedAt: new Date(),
+            }, {
+                where: {
+                    id,
+                },
+            });
+            console.log(productUpdate);
+            const oldCategories = await product_tag.findAll({
+                where: {
+                    product_id: +id,
+                },
+            });
+            for (const oldTag of oldCategories) {
+                await product_tag.destroy({
+                    where: {
+                        id: oldTag.id,
+                    },
+                });
+            }
+            for (const newTag of categories) {
+                await product_tag.create({
+                    product_id: id,
+                    category_id: Number(newTag),
+                    createdAt: new Date(),
+                    updatedAt: new Date(),
+                });
+            }
+            res.status(200).json({
+                message: "Success update product",
+            });
+        } catch (error) {
+            console.log(error);
+            next(error);
+        }
+    }
     static async productByUser(req, res, next) {
         try {
             const productByUser = await product.findAll({
