@@ -2,6 +2,7 @@ const { Op } = require('sequelize')
 const { product, offer, product_tag, category, user } = require("../models");
 // const ProductSingleton = require("../services/temp_product_data.service");
 const { validationResult } = require("express-validator");
+const sequelize = require("sequelize");
 
 class ProductController {
     // Search by name product, ....
@@ -96,207 +97,211 @@ class ProductController {
             next(err);
         }
     }
+  
 
-    static async offeringProduct(req, res, next) {
-        try {
-            const { price_offer } = req.body;
-            const { id } = req.params;
-            const errors = validationResult(req);
-            if (!errors.isEmpty()) {
-                throw {
-                    status: 400,
-                    message: errors.array()[0].msg,
-                };
-            }
-            const offeringProduct = await product.findByPk(id);
-            if (!offeringProduct) {
-                throw {
-                    status: 404,
-                    message: "Product not found",
-                };
-            }
-            await offer.create({
-                buyer_id: req.user.id,
-                product_id: id,
-                price_offer: price_offer,
-                status: "pending",
-                createdAt: new Date(),
-                updatedAt: new Date(),
-            });
-            res.status(201).json({
-                message: "Offering Success",
-            });
-        } catch (err) {
-            next(err);
-        }
+  static async offeringProduct(req, res, next) {
+    try {
+      const { price_offer } = req.body;
+      const { id } = req.params;
+      const errors = validationResult(req);
+      if (!errors.isEmpty()) {
+        throw {
+          status: 400,
+          message: errors.array()[0].msg,
+        };
+      }
+      const offeringProduct = await product.findByPk(id);
+      if (!offeringProduct) {
+        throw {
+          status: 404,
+          message: "Product not found",
+        };
+      }
+      await offer.create({
+        buyer_id: req.user.id,
+        product_id: id,
+        price_offer: price_offer,
+        status: "pending",
+        createdAt: new Date(),
+        updatedAt: new Date(),
+      });
+      res.status(201).json({
+        message: "Offering Success",
+      });
+    } catch (err) {
+      next(err);
     }
+  }
 
-    static async isOffering(req, res, next) {
-        try {
-            const { id } = req.params;
-            const isOffering = await offer.findOne({
-                where: {
-                    buyer_id: req.user.id,
-                    product_id: id,
-                    status: "pending",
-                },
-            });
-            if (isOffering) {
-                throw {
-                    status: 400,
-                    message: "Offering is not valid",
-                };
-            }
-            res.status(200).json({
-                message: "Offering is valid",
-            });
-        } catch (err) {
-            next(err);
-        }
+  static async isOffering(req, res, next) {
+    try {
+      const { id } = req.params;
+      const isOffering = await offer.findOne({
+        where: {
+          buyer_id: req.user.id,
+          product_id: id,
+          status: "pending",
+        },
+      });
+      if (isOffering) {
+        throw {
+          status: 400,
+          message: "Offering is not valid",
+        };
+      }
+      res.status(200).json({
+        message: "Offering is valid",
+      });
+    } catch (err) {
+      next(err);
     }
+  }
 
-    // static async previewProduct(req, res, next) {
-    //     try {
-    //         //   const { name, price, category, description } = req.body;
-    //         const filePaths = req.files.map((file) => file.path);
-    //         console.log(filePaths);
+  // static async previewProduct(req, res, next) {
+  //     try {
+  //         //   const { name, price, category, description } = req.body;
+  //         const filePaths = req.files.map((file) => file.path);
+  //         console.log(filePaths);
 
-    //         const dataTemp = ProductSingleton.getInstance();
-    //         dataTemp.setData = {
-    //             ...req.body,
-    //             product_pict: filePaths,
-    //         };
+  //         const dataTemp = ProductSingleton.getInstance();
+  //         dataTemp.setData = {
+  //             ...req.body,
+  //             product_pict: filePaths,
+  //         };
 
-    //         res.status(200).json({
-    //             preview_data: dataTemp.getData,
-    //         });
-    //     } catch (error) {
-    //         next(error);
-    //     }
-    // }
+  //         res.status(200).json({
+  //             preview_data: dataTemp.getData,
+  //         });
+  //     } catch (error) {
+  //         next(error);
+  //     }
+  // }
 
-    // static async reEditProduct(req, res, next) {
-    //     try {
-    //         const dataTemp = ProductSingleton.getInstance();
-    //         if (!dataTemp.getData) {
-    //             throw {
-    //                 status: 404,
-    //                 message: "Isi update dulu bos",
-    //             };
-    //         }
-    //         res.status(200).json({
-    //             preview_data: dataTemp.getData,
-    //         });
-    //         dataTemp.resetData();
-    //     } catch (error) {
-    //         console.log(error);
-    //         next(error);
-    //     }
-    // }
+  // static async reEditProduct(req, res, next) {
+  //     try {
+  //         const dataTemp = ProductSingleton.getInstance();
+  //         if (!dataTemp.getData) {
+  //             throw {
+  //                 status: 404,
+  //                 message: "Isi update dulu bos",
+  //             };
+  //         }
+  //         res.status(200).json({
+  //             preview_data: dataTemp.getData,
+  //         });
+  //         dataTemp.resetData();
+  //     } catch (error) {
+  //         console.log(error);
+  //         next(error);
+  //     }
+  // }
 
-    static async createProduct(req, res, next) {
-        try {
-            const errors = validationResult(req);
-            if (!errors.isEmpty()) {
-                throw {
-                    status: 400,
-                    message: errors.array()[0].msg,
-                };
-            }
-            const { name, price, description, categories } = req.body;
-            const filePaths = req.files.map((file) => file.path);
-            const productCreate = await product.create({
-                name: name,
-                price: price,
-                description: description,
-                status: "available",
-                user_id: req.user.id,
-                product_pict: filePaths,
-                createdAt: new Date(),
-                updatedAt: new Date(),
-            });
-            categories.split(",").forEach((category) => {
-                product_tag.create({
-                    product_id: productCreate.id,
-                    category_id: +category,
-                    createdAt: new Date(),
-                    updatedAt: new Date(),
-                });
-            });
-            res.status(201).json({
-                message: "Success add new product",
-            });
-        } catch (error) {
-            next(error);
-        }
+  static async createProduct(req, res, next) {
+    try {
+      const errors = validationResult(req);
+      if (!errors.isEmpty()) {
+        throw {
+          status: 400,
+          message: errors.array()[0].msg,
+        };
+      }
+      const { name, price, description, categories } = req.body;
+      const filePaths = req.files.map((file) => file.path);
+      const productCreate = await product.create({
+        name: name,
+        price: price,
+        description: description,
+        status: "available",
+        user_id: req.user.id,
+        product_pict: filePaths,
+        createdAt: new Date(),
+        updatedAt: new Date(),
+      });
+      categories.split(",").forEach((category) => {
+        product_tag.create({
+          product_id: productCreate.id,
+          category_id: +category,
+          createdAt: new Date(),
+          updatedAt: new Date(),
+        });
+      });
+      res.status(201).json({
+        message: "Success add new product",
+      });
+    } catch (error) {
+      next(error);
     }
+  }
 
-    static async updateProduct(req, res, next) {
-        try {
-            const errors = validationResult(req);
-            if (!errors.isEmpty()) {
-                throw {
-                    status: 400,
-                    message: errors.array()[0].msg,
-                };
-            }
-            const { name, price, description, categories } = req.body;
-            const { id } = req.params;
-            const filePaths = req.files.map((file) => file.path);
+  static async updateProduct(req, res, next) {
+    try {
+      const errors = validationResult(req);
+      if (!errors.isEmpty()) {
+        throw {
+          status: 400,
+          message: errors.array()[0].msg,
+        };
+      }
+      const { name, price, description, categories } = req.body;
+      const { id } = req.params;
+      const filePaths = req.files.map((file) => file.path);
 
-            const product = await product.findOne({
-                where: {
-                    user_id: req.user.id,
-                },
-            });
-            if (!product) {
-                throw {
-                    status: 401,
-                    message: "The product is not yours",
-                };
-            }
+      const getProduct = await product.findOne({
+        where: {
+          user_id: req.user.id,
+          id,
+        },
+      });
+      if (!getProduct) {
+        throw {
+          status: 401,
+          message: "The product is not yours",
+        };
+      }
 
-            const productUpdate = await product.update({
-                name: name,
-                price: price,
-                description: description,
-                product_pict: filePaths,
-                createdAt: new Date(),
-                updatedAt: new Date(),
-            }, {
-                where: {
-                    id,
-                },
-            });
-            console.log(productUpdate);
-            const oldCategories = await product_tag.findAll({
-                where: {
-                    product_id: +id,
-                },
-            });
-            for (const oldTag of oldCategories) {
-                await product_tag.destroy({
-                    where: {
-                        id: oldTag.id,
-                    },
-                });
-            }
-            for (const newTag of categories) {
-                await product_tag.create({
-                    product_id: id,
-                    category_id: Number(newTag),
-                    createdAt: new Date(),
-                    updatedAt: new Date(),
-                });
-            }
-            res.status(200).json({
-                message: "Success update product",
-            });
-        } catch (error) {
-            console.log(error);
-            next(error);
+      const productUpdate = await product.update(
+        {
+          name,
+          price,
+          description,
+          product_pict: filePaths,
+          createdAt: new Date(),
+          updatedAt: new Date(),
+        },
+        {
+          where: {
+            id,
+          },
         }
-    }
+      );
+      console.log(productUpdate);
+      const oldCategories = await product_tag.findAll({
+        where: {
+          product_id: +id,
+        },
+      });
+      for (const oldTag of oldCategories) {
+        await product_tag.destroy({
+          where: {
+            id: oldTag.id,
+          },
+        });
+      }
+      for (const newTag of categories) {
+        await product_tag.create({
+          product_id: id,
+          category_id: Number(newTag),
+          createdAt: new Date(),
+          updatedAt: new Date(),
+        });
+      }
+      res.status(200).json({
+        message: "Success update product",
+      });
+    } catch (error) {
+      console.log(error);
+      next(error);
+    }}
 
     static async deleteProduct(req, res, next) {
         try {
@@ -342,45 +347,39 @@ class ProductController {
             next(err);
         }
     }
-
-    static async getSoldProducts(req, res, next) {
-        try {
-            const soldProducts = await product.findAll({
-                where: {
-                    status: "sold",
-                    id: req.user.id,
-                },
-            });
-            if (!soldProducts) {
-                throw {
-                    status: 404,
-                    message: "Product not found",
-                };
-            }
-            res.status(200).json(soldProducts);
-        } catch (error) {
-            next(error);
-        }
+  
+  static async getSoldProducts(req, res, next) {
+    try {
+      const soldProducts = await product.findAll({
+        where: {
+          user_id: req.user.id,
+        },
+        include: {
+          model: product_tag,
+          // nested: true,
+          include: [{
+            model: category,
+            attributes: []
+            // attributes: ['name']
+          }],
+          attributes: [
+            [sequelize.literal('"product_tags->category"."id"'), "id"],
+            [sequelize.literal('"product_tags->category"."name"'), "category_name"],
+          ],
+        },
+      });
+      if (!soldProducts) {
+        throw {
+          status: 404,
+          message: "Product not found",
+        };
+      }
+      res.status(200).json(soldProducts);
+    } catch (error) {
+      console.log(error);
+      next(error);
     }
-
-    static async getOfferedProducts(req, res, next) {
-        try {
-            const offeredProducts = await offer.findAll({
-                include: {
-                    model: product,
-                    where: {
-                        user_id: req.user.id,
-                    },
-                },
-                where: {
-                    status: "pending",
-                },
-            });
-            res.status(200).json(offeredProducts);
-        } catch (err) {
-            next(err);
-        }
-    }
+  }
 }
 
 module.exports = ProductController;
