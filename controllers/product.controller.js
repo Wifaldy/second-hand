@@ -1,5 +1,5 @@
 const { Op } = require('sequelize')
-const { product, offer, product_tag, category } = require("../models");
+const { product, offer, product_tag, category, user } = require("../models");
 // const ProductSingleton = require("../services/temp_product_data.service");
 const { validationResult } = require("express-validator");
 
@@ -76,7 +76,12 @@ class ProductController {
     static async detailProduct(req, res, next) {
         try {
             const { id } = req.params;
-            const detailProduct = await product.findByPk(id);
+            const detailProduct = await product.findByPk(id, {
+                include: {
+                    model: product,
+                    attributes: ["name", "price"],
+                },
+            });
             if (!detailProduct) {
                 throw {
                     status: 404,
@@ -226,6 +231,102 @@ class ProductController {
         }
     }
 
+    static async updateProduct(req, res, next) {
+        try {
+            const errors = validationResult(req);
+            if (!errors.isEmpty()) {
+                throw {
+                    status: 400,
+                    message: errors.array()[0].msg,
+                };
+            }
+            const { name, price, description, categories } = req.body;
+            const { id } = req.params;
+            const filePaths = req.files.map((file) => file.path);
+
+            const product = await product.findOne({
+                where: {
+                    user_id: req.user.id,
+                },
+            });
+            if (!product) {
+                throw {
+                    status: 401,
+                    message: "The product is not yours",
+                };
+            }
+
+            const productUpdate = await product.update({
+                name: name,
+                price: price,
+                description: description,
+                product_pict: filePaths,
+                createdAt: new Date(),
+                updatedAt: new Date(),
+            }, {
+                where: {
+                    id,
+                },
+            });
+            console.log(productUpdate);
+            const oldCategories = await product_tag.findAll({
+                where: {
+                    product_id: +id,
+                },
+            });
+            for (const oldTag of oldCategories) {
+                await product_tag.destroy({
+                    where: {
+                        id: oldTag.id,
+                    },
+                });
+            }
+            for (const newTag of categories) {
+                await product_tag.create({
+                    product_id: id,
+                    category_id: Number(newTag),
+                    createdAt: new Date(),
+                    updatedAt: new Date(),
+                });
+            }
+            res.status(200).json({
+                message: "Success update product",
+            });
+        } catch (error) {
+            console.log(error);
+            next(error);
+        }
+    }
+
+    static async deleteProduct(req, res, next) {
+        try {
+            const { id } = req.params;
+            const findProduct = await product.findByPk(id);
+            if (!findProduct) {
+                throw {
+                    status: 404,
+                    message: "Product not found",
+                };
+            }
+            if (findProduct.user_id !== req.user.id) {
+                throw {
+                    status: 401,
+                    message: "The product is not yours",
+                };
+            }
+            await product.destroy({
+                where: {
+                    id,
+                },
+            });
+            res.status(200).json({
+                message: "Success delete product",
+            });
+        } catch (err) {
+            next(err);
+        }
+    }
+
     static async productByUser(req, res, next) {
         try {
             const productByUser = await product.findAll({
@@ -242,23 +343,42 @@ class ProductController {
         }
     }
 
-    static async getSoldProducts(req, res, next){
+    static async getSoldProducts(req, res, next) {
         try {
             const soldProducts = await product.findAll({
                 where: {
-                    status: 'sold',
+                    status: "sold",
                     id: req.user.id,
-                }
+                },
             });
-            if(!soldProducts) {
+            if (!soldProducts) {
                 throw {
                     status: 404,
-                    message: 'Product not found'
-                }
+                    message: "Product not found",
+                };
             }
             res.status(200).json(soldProducts);
         } catch (error) {
             next(error);
+        }
+    }
+
+    static async getOfferedProducts(req, res, next) {
+        try {
+            const offeredProducts = await offer.findAll({
+                include: {
+                    model: product,
+                    where: {
+                        user_id: req.user.id,
+                    },
+                },
+                where: {
+                    status: "pending",
+                },
+            });
+            res.status(200).json(offeredProducts);
+        } catch (err) {
+            next(err);
         }
     }
 }
