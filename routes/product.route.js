@@ -76,6 +76,8 @@ productRouter.put(
     ProductController.updateProduct
 );
 
+productRouter.delete("/product/:id", isAuth, ProductController.deleteProduct);
+
 // productRouter.post(
 //   "/product-preview",
 //   upload.array("product_pict"),
