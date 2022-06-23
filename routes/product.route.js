@@ -11,7 +11,7 @@ const upload = multer({
         if (
             file.mimetype === "image/jpeg" ||
             file.mimetype === "image/jpg" ||
-            file.mimetype === "image/png"
+            file.mimetype === "image/png" 
         ) {
             cb(null, true);
         } else {
@@ -20,28 +20,39 @@ const upload = multer({
     },
 });
 
+// Search Data Product by name
+productRouter.get("/search-product", ProductController.searchProduct)
+
+// Get All Data Product
+productRouter.get("/products", ProductController.listProduct)
+
 productRouter.get("/product/:id", ProductController.detailProduct);
 
-productRouter.post("/offering/:id", isAuth, ProductController.offeringProduct);
+productRouter.post(
+    "/offering/:id", [body("price_offer").notEmpty().withMessage("Price is required")],
+    isAuth,
+    ProductController.offeringProduct
+);
 
 productRouter.get("/is-offering/:id", isAuth, ProductController.isOffering);
 
 productRouter.get("/product-by-user", isAuth, ProductController.productByUser);
+
+productRouter.get("/product-histories", isAuth, ProductController.getSoldProducts);
 
 productRouter.post(
     "/product",
     upload.array("product_pict"),
     isAuth, [
         body("name").notEmpty().withMessage("Product name is required"),
-        body("categories").notEmpty().withMessage("Please fill a valid categories"),
         body("price").notEmpty().withMessage("Price is required"),
         body("description").notEmpty().withMessage("Description is required"),
-        body("product_pict")
-        .notEmpty()
-        .withMessage("Product pictures are required")
-        .custom((value, { req }) => {
+        body("categories").notEmpty().withMessage("Please fill a valid categories"),
+        body("product_pict").custom((value, { req }) => {
             if (req.files.length > 4) {
                 throw new Error("Exceeded maximum pictures allowed");
+            } else if (!req.files) {
+                throw new Error("Please upload a picture");
             }
             return true;
         }),

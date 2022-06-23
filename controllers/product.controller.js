@@ -1,8 +1,78 @@
-const { product, offer, product_tag } = require("../models");
+const { Op } = require('sequelize')
+const { product, offer, product_tag, category } = require("../models");
 // const ProductSingleton = require("../services/temp_product_data.service");
 const { validationResult } = require("express-validator");
 
 class ProductController {
+    // Search by name product, ....
+    static async searchProduct(req, res, next) {
+        try {
+            const productSearch = await product.findAll({
+                order: [['created_at', 'DESC']],
+                where: {
+                    name: {
+                        [Op.iLike]: `%${req.query.name}%`
+                    }
+                }
+            })
+
+            if (!productSearch) {
+                throw {
+                    status: 200,
+                    message: "Product Not Found"
+                }
+            } else {
+                res.status(200).json(productSearch)
+            }
+        } catch (err) {
+            next(err)
+        }
+    }
+
+    // All Product 
+    static async listProduct(req, res, next) {
+        try {
+            const categoryName = req.query.category || ''
+            const { offset, limit } = req.query
+            const listProducts = await product.findAndCountAll(
+                {
+                    order: [['created_at', 'DESC']],
+                    offset, 
+                    limit,
+                    subQuery: false,
+                    where: {
+                        '$product_tags.category.name$': {
+                            [Op.iLike]: `%${categoryName}%`
+                        }
+                    },
+                    include: {
+                        model: product_tag,
+                        // as: 'Categories',
+                        attributes: ['category_id'],
+                        include: {
+                            model: category,
+                            attributes: ['name'],
+                        },
+                    },
+                }
+            );
+            
+            if (!listProducts.rows) {
+                throw {
+                    status: 404,
+                    message: "Product is Empty"
+                }
+            } else {
+                res.status(200).json({
+                    message: "List Products",
+                    data: listProducts.rows
+                })
+            }
+        } catch (err) {
+            next(err)
+        }
+    }
+
     static async detailProduct(req, res, next) {
         try {
             const { id } = req.params;
@@ -26,6 +96,13 @@ class ProductController {
         try {
             const { price_offer } = req.body;
             const { id } = req.params;
+            const errors = validationResult(req);
+            if (!errors.isEmpty()) {
+                throw {
+                    status: 400,
+                    message: errors.array()[0].msg,
+                };
+            }
             const offeringProduct = await product.findByPk(id);
             if (!offeringProduct) {
                 throw {
@@ -133,21 +210,14 @@ class ProductController {
                 createdAt: new Date(),
                 updatedAt: new Date(),
             });
-            categories.forEach((category) => {
+            categories.split(",").forEach((category) => {
                 product_tag.create({
                     product_id: productCreate.id,
-                    category_id: category,
+                    category_id: +category,
                     createdAt: new Date(),
                     updatedAt: new Date(),
                 });
             });
-            if (!category.instanceof(Array)) {
-                throw {
-                    status: 400,
-                    message: "Category must be an array",
-                };
-            }
-
             res.status(201).json({
                 message: "Success add new product",
             });
@@ -169,6 +239,26 @@ class ProductController {
             });
         } catch (err) {
             next(err);
+        }
+    }
+
+    static async getSoldProducts(req, res, next){
+        try {
+            const soldProducts = await product.findAll({
+                where: {
+                    status: 'sold',
+                    id: req.user.id,
+                }
+            });
+            if(!soldProducts) {
+                throw {
+                    status: 404,
+                    message: 'Product not found'
+                }
+            }
+            res.status(200).json(soldProducts);
+        } catch (error) {
+            next(error);
         }
     }
 }

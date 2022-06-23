@@ -45,16 +45,18 @@ class UserController {
                 token: token,
             });
         } catch (err) {
+            console.log(err);
             next(err);
         }
     }
     static async registerUser(req, res, next) {
         try {
             const { name, email, password } = req.body;
-            if (!name || !email || !password) {
+            const errors = validationResult(req);
+            if (!errors.isEmpty()) {
                 throw {
                     status: 400,
-                    message: "Name, Email, or Password should not be empty",
+                    message: errors.array()[0].msg,
                 };
             }
             const findUser = await user.findOne({
@@ -65,7 +67,7 @@ class UserController {
             if (findUser) {
                 throw {
                     status: 400,
-                    message: "Invalid Email",
+                    message: "Email already exist",
                 };
             }
             await user.create({
