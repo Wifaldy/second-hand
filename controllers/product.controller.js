@@ -227,6 +227,36 @@ class ProductController {
             next(error);
         }
     }
+
+    static async deleteProduct(req, res, next) {
+        try {
+            const { id } = req.params;
+            const findProduct = await product.findByPk(id);
+            if (!findProduct) {
+                throw {
+                    status: 404,
+                    message: "Product not found",
+                };
+            }
+            if (findProduct.user_id !== req.user.id) {
+                throw {
+                    status: 401,
+                    message: "The product is not yours",
+                };
+            }
+            await product.destroy({
+                where: {
+                    id,
+                },
+            });
+            res.status(200).json({
+                message: "Success delete product",
+            });
+        } catch (err) {
+            next(err);
+        }
+    }
+
     static async productByUser(req, res, next) {
         try {
             const productByUser = await product.findAll({
