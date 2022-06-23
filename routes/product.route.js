@@ -20,6 +20,12 @@ const upload = multer({
     },
 });
 
+// Search Data Product by name
+productRouter.get("/search-product", ProductController.searchProduct)
+
+// Get All Data Product
+productRouter.get("/products", ProductController.listProduct)
+
 productRouter.get("/product/:id", ProductController.detailProduct);
 
 productRouter.get("/product-by-user", isAuth, ProductController.productByUser);
@@ -75,6 +81,8 @@ productRouter.put(
     ],
     ProductController.updateProduct
 );
+
+productRouter.delete("/product/:id", isAuth, ProductController.deleteProduct);
 
 // productRouter.post(
 //   "/product-preview",

@@ -85,86 +85,88 @@ class UserController {
         }
     }
 
-    static async detailUser(req, res, next) {
-        try {
-            const dataUser = await user.findOne({
-                where: {
-                    id: req.user.id,
-                },
-            });
-            if (!dataUser) {
-                throw {
-                    status: 401,
-                    message: "Unauthorized request",
-                };
-            } else {
-                // res.status(200).jsonn(dataUser)
-                res.status(200).json({
-                    id: dataUser.id,
-                    name: dataUser.name,
-                    email: dataUser.email,
-                    city: dataUser.city,
-                    address: dataUser.address,
-                    no_hp: dataUser.no_hp,
-                    profile_pict: dataUser.profile_pict,
-                });
-            }
-        } catch (error) {
-            next(err);
+  static async detailUser(req, res, next) {
+    try {
+      const dataUser = await user.findOne({
+        where: {
+          id: req.user.id
         }
+      })
+
+      if (!dataUser) {
+        throw {
+          status: 401,
+          message: 'Unauthorized request'
+        }
+      } else {
+        // res.status(200).jsonn(dataUser)
+        res.status(200).json({
+          id: dataUser.id,
+          name: dataUser.name,
+          email: dataUser.email,
+          city: dataUser.city,
+          address: dataUser.address,
+          no_hp: dataUser.no_hp,
+          profile_pict: dataUser.profile_pict
+        })
+      }
+    } catch (error) {
+      next(err)
+    }
+  }
+
+  static async updateUser(req, res, next) {
+    try {
+      const dataUser = await user.findOne({
+        where: {
+          id: req.user.id
+        }
+      })
+
+    if (req.file) {
+      req.body.profile_pict = `http://localhost:3000/user/${req.file.filename}`;
     }
 
-    static async updateUser(req, res, next) {
-        try {
-            const dataUser = await user.findOne({
-                where: {
-                    id: req.user.id,
-                },
-            });
-            if (!dataUser) {
-                throw {
-                    status: 401,
-                    message: "Unauthorized request",
-                };
-            }
-            if (req.file) {
-                req.body.profile_pict = `${req.file.filename}`;
-            }
-            const { name, city, address, no_hp } = req.body;
-            const errors = validationResult(req);
-            if (!errors.isEmpty()) {
-                throw {
-                    status: 400,
-                    message: errors.array()[0].msg,
-                };
-            }
-            await user.update({
-                name,
-                city,
-                address,
-                no_hp,
-                profile_pict: req.body.profile_pict,
-            }, {
-                where: {
-                    id: req.user.id,
-                },
-            });
-
-            // Delete File
-            const DIR =
-                "public/user/" +
-                dataUser.profile_pict.split("http://localhost:3000/user/")[1];
-            if (fs.existsSync(DIR)) {
-                fs.unlinkSync(DIR);
-            }
-            res.status(200).json({
-                message: "Successfully update Users",
-            });
-        } catch (err) {
-            console.log(err);
-            next(err);
-        }
+    const { name, city, address, no_hp } = req.body;
+    const errors = validationResult(req.body);
+    if (!errors.isEmpty()) {
+      throw {
+        status: 400,
+        message: errors.array()[0].msg,
+      };
     }
+
+    await user.update(
+      {
+        name,
+        city,
+        address,
+        no_hp,
+        profile_pict: req.body.profile_pict,
+      },
+      {
+        where: {
+          id: req.user.id,
+        },
+      }
+    );
+
+    if (req.file) {
+      // Delete File
+      const DIR = "public/user/" + dataUser.profile_pict.split("http://localhost:3000/user/")[1];
+      if (fs.existsSync(DIR)) {
+        fs.unlinkSync(DIR);
+      }
+    }
+
+    res.status(200).json({
+      message: "Successfully update Users",
+    });
+
+    } catch (err) {
+      next(err);
+    }
+  }
 }
 
 module.exports = UserController;

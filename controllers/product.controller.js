@@ -1,27 +1,103 @@
-const { product, offer, product_tag, category } = require("../models");
+const { Op } = require('sequelize')
+const { product, offer, product_tag, category, user } = require("../models");
 // const ProductSingleton = require("../services/temp_product_data.service");
 const { validationResult } = require("express-validator");
 const sequelize = require("sequelize");
 
 class ProductController {
-  static async detailProduct(req, res, next) {
-    try {
-      const { id } = req.params;
-      const detailProduct = await product.findByPk(id);
-      if (!detailProduct) {
-        throw {
-          status: 404,
-          message: "Product not found",
-        };
-      }
-      res.status(200).json({
-        message: "Detail Product",
-        data: detailProduct,
-      });
-    } catch (err) {
-      next(err);
+    // Search by name product, ....
+    static async searchProduct(req, res, next) {
+        try {
+            const productSearch = await product.findAll({
+                order: [['created_at', 'DESC']],
+                where: {
+                    name: {
+                        [Op.iLike]: `%${req.query.name}%`
+                    }
+                }
+            })
+
+            if (!productSearch) {
+                throw {
+                    status: 200,
+                    message: "Product Not Found"
+                }
+            } else {
+                res.status(200).json(productSearch)
+            }
+        } catch (err) {
+            next(err)
+        }
     }
-  }
+
+    // All Product 
+    static async listProduct(req, res, next) {
+        try {
+            const categoryName = req.query.category || ''
+            const { offset, limit } = req.query
+            const listProducts = await product.findAndCountAll(
+                {
+                    order: [['created_at', 'DESC']],
+                    offset, 
+                    limit,
+                    subQuery: false,
+                    where: {
+                        '$product_tags.category.name$': {
+                            [Op.iLike]: `%${categoryName}%`
+                        }
+                    },
+                    include: {
+                        model: product_tag,
+                        // as: 'Categories',
+                        attributes: ['category_id'],
+                        include: {
+                            model: category,
+                            attributes: ['name'],
+                        },
+                    },
+                }
+            );
+            
+            if (!listProducts.rows) {
+                throw {
+                    status: 404,
+                    message: "Product is Empty"
+                }
+            } else {
+                res.status(200).json({
+                    message: "List Products",
+                    data: listProducts.rows
+                })
+            }
+        } catch (err) {
+            next(err)
+        }
+    }
+
+    static async detailProduct(req, res, next) {
+        try {
+            const { id } = req.params;
+            const detailProduct = await product.findByPk(id, {
+                include: {
+                    model: product,
+                    attributes: ["name", "price"],
+                },
+            });
+            if (!detailProduct) {
+                throw {
+                    status: 404,
+                    message: "Product not found",
+                };
+            }
+            res.status(200).json({
+                message: "Detail Product",
+                data: detailProduct,
+            });
+        } catch (err) {
+            next(err);
+        }
+    }
+  
 
   static async offeringProduct(req, res, next) {
     try {
@@ -225,24 +301,53 @@ class ProductController {
     } catch (error) {
       console.log(error);
       next(error);
-    }
-  }
-  static async productByUser(req, res, next) {
-    try {
-      const productByUser = await product.findAll({
-        where: {
-          user_id: req.user.id,
-        },
-      });
-      res.status(200).json({
-        message: "Product by user",
-        data: productByUser,
-      });
-    } catch (err) {
-      next(err);
-    }
-  }
+    }}
 
+    static async deleteProduct(req, res, next) {
+        try {
+            const { id } = req.params;
+            const findProduct = await product.findByPk(id);
+            if (!findProduct) {
+                throw {
+                    status: 404,
+                    message: "Product not found",
+                };
+            }
+            if (findProduct.user_id !== req.user.id) {
+                throw {
+                    status: 401,
+                    message: "The product is not yours",
+                };
+            }
+            await product.destroy({
+                where: {
+                    id,
+                },
+            });
+            res.status(200).json({
+                message: "Success delete product",
+            });
+        } catch (err) {
+            next(err);
+        }
+    }
+
+    static async productByUser(req, res, next) {
+        try {
+            const productByUser = await product.findAll({
+                where: {
+                    user_id: req.user.id,
+                },
+            });
+            res.status(200).json({
+                message: "Product by user",
+                data: productByUser,
+            });
+        } catch (err) {
+            next(err);
+        }
+    }
+  
   static async getSoldProducts(req, res, next) {
     try {
       const soldProducts = await product.findAll({
