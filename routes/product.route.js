@@ -26,11 +26,13 @@ productRouter.get("/search", ProductController.searchProduct);
 // Get All Data Product
 productRouter.get("/", ProductController.listProduct);
 
-productRouter.get("/:id", ProductController.detailProduct);
+productRouter.get("/histories", isAuth, ProductController.getSoldProducts);
 
 productRouter.get("/user", isAuth, ProductController.productByUser);
 
-productRouter.get("/histories", isAuth, ProductController.getSoldProducts);
+productRouter.get("/offered", isAuth, ProductController.getOfferedProducts);
+
+productRouter.get("/:id", ProductController.detailProduct);
 
 productRouter.post(
   "/",
@@ -53,7 +55,6 @@ productRouter.post(
   ProductController.createProduct
 ); // update terbitkan
 
-productRouter.get("/offered", isAuth, ProductController.getOfferedProducts);
 productRouter.put(
   "/:id",
   upload.array("product_pict"),

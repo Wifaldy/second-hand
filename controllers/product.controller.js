@@ -145,7 +145,6 @@ class ProductController {
       }
       const { name, price, description, categories } = req.body;
       const filePaths = req.files.map((file) => file.path);
-      console.log(req.files);
       const productCreate = await product.create({
         name: name,
         price: price,
@@ -156,18 +155,19 @@ class ProductController {
         createdAt: new Date(),
         updatedAt: new Date(),
       });
-      // categories.forEach((category) => {
-      //   product_tag.create({
-      //     product_id: productCreate.id,
-      //     category_id: +category,
-      //     createdAt: new Date(),
-      //     updatedAt: new Date(),
-      //   });
-      // });
+      categories.forEach(async (category) => {
+        await product_tag.create({
+          product_id: productCreate.id,
+          category_id: +category,
+          createdAt: new Date(),
+          updatedAt: new Date(),
+        });
+      });
       res.status(201).json({
         message: "Success add new product",
       });
     } catch (error) {
+      console.log(error);
       next(error);
     }
   }
