@@ -5,9 +5,9 @@ const additionalRouter = require("./additional.routes");
 
 const router = require("express").Router();
 
-router.use(userRouter);
-router.use(productRouter);
-router.use(offerRouter);
+router.use("/user", userRouter);
+router.use("/product", productRouter);
+router.use("/offer", offerRouter);
 router.use(additionalRouter);
 
 module.exports = router;
