@@ -2,6 +2,7 @@ const { Op } = require("sequelize");
 const { product, offer, product_tag, category, user } = require("../models");
 // const ProductSingleton = require("../services/temp_product_data.service");
 const { validationResult } = require("express-validator");
+const sequelize = require("sequelize");
 
 class ProductController {
   // Search by name product, ....
@@ -184,12 +185,13 @@ class ProductController {
       const { id } = req.params;
       const filePaths = req.files.map((file) => file.path);
 
-      const product = await product.findOne({
+      const getProduct = await product.findOne({
         where: {
           user_id: req.user.id,
+          id,
         },
       });
-      if (!product) {
+      if (!getProduct) {
         throw {
           status: 401,
           message: "The product is not yours",
@@ -198,9 +200,9 @@ class ProductController {
 
       const productUpdate = await product.update(
         {
-          name: name,
-          price: price,
-          description: description,
+          name,
+          price,
+          description,
           product_pict: filePaths,
           createdAt: new Date(),
           updatedAt: new Date(),
@@ -290,8 +292,25 @@ class ProductController {
     try {
       const soldProducts = await product.findAll({
         where: {
-          status: "sold",
-          id: req.user.id,
+          user_id: req.user.id,
+        },
+        include: {
+          model: product_tag,
+          // nested: true,
+          include: [
+            {
+              model: category,
+              attributes: [],
+              // attributes: ['name']
+            },
+          ],
+          attributes: [
+            [sequelize.literal('"product_tags->category"."id"'), "id"],
+            [
+              sequelize.literal('"product_tags->category"."name"'),
+              "category_name",
+            ],
+          ],
         },
       });
       if (!soldProducts) {
@@ -325,6 +344,8 @@ class ProductController {
       });
     } catch (err) {
       next(err);
+      console.log(error);
+      next(error);
     }
   }
 }
