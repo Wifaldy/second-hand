@@ -251,15 +251,16 @@ class ProductController {
         },
         include: {
           model: product_tag,
-          nested: true,
+          // nested: true,
           include: [{
             model: category,
-          }]
-          // attributes: [
-          //   "product_id",
-          //   "category_id",
-          //   // [sequelize.literal('"category"."name"'), "categories"],
-          // ],
+            attributes: []
+            // attributes: ['name']
+          }],
+          attributes: [
+            [sequelize.literal('"product_tags->category"."id"'), "id"],
+            [sequelize.literal('"product_tags->category"."name"'), "category_name"],
+          ],
         },
       });
       if (!soldProducts) {
