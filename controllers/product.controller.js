@@ -44,6 +44,7 @@ class ProductController {
           "$product_tags.category.name$": {
             [Op.iLike]: `%${categoryName}%`,
           },
+          status: "available",
         },
         include: {
           model: product_tag,
@@ -293,6 +294,7 @@ class ProductController {
       const soldProducts = await product.findAll({
         where: {
           user_id: req.user.id,
+          status: "sold",
         },
         include: {
           model: product_tag,
