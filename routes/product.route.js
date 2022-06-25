@@ -46,7 +46,7 @@ productRouter.post(
     body("product_pict").custom((value, { req }) => {
       if (req.files.length > 4) {
         throw new Error("Exceeded maximum pictures allowed");
-      } else if (!req.files) {
+      } else if (req.files.length < 1) {
         throw new Error("Please upload a picture");
       }
       return true;

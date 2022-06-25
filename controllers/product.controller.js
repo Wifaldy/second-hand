@@ -77,8 +77,7 @@ class ProductController {
       const { id } = req.params;
       const detailProduct = await product.findByPk(id, {
         include: {
-          model: product,
-          attributes: ["name", "price"],
+          model: user,
         },
       });
       if (!detailProduct) {
@@ -147,28 +146,28 @@ class ProductController {
       const { name, price, description, categories } = req.body;
       const filePaths = req.files.map((file) => file.path);
       const productCreate = await product.create({
-        name: name,
-        price: price,
-        description: description,
-        status: "available",
         user_id: req.user.id,
+        name,
+        price,
+        description,
+        status: "available",
         product_pict: filePaths,
         createdAt: new Date(),
         updatedAt: new Date(),
       });
-      categories.forEach(async (category) => {
+      categories.forEach(async (categoryId) => {
         await product_tag.create({
           product_id: productCreate.id,
-          category_id: +category,
+          category_id: +categoryId,
           createdAt: new Date(),
           updatedAt: new Date(),
         });
       });
+
       res.status(201).json({
         message: "Success add new product",
       });
     } catch (error) {
-      console.log(error);
       next(error);
     }
   }
@@ -346,8 +345,6 @@ class ProductController {
       });
     } catch (err) {
       next(err);
-      console.log(error);
-      next(error);
     }
   }
 }

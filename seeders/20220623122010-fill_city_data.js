@@ -6,11 +6,11 @@ module.exports = {
   async up(queryInterface, Sequelize) {
     try {
       let cityData = await getAllCityData();
-      cityData = cityData.map(city => ({
+      cityData = cityData.map((city) => ({
         name: city.nama,
         createdAt: new Date(),
-        updatedAt: new Date()
-      }))
+        updatedAt: new Date(),
+      }));
       await queryInterface.bulkInsert("cities", cityData);
     } catch (error) {
       throw new Error(error);
@@ -28,10 +28,10 @@ module.exports = {
   },
 
   async down(queryInterface, Sequelize) {
-    await queryInterface.bulkDelete(
-      "cities",
-      { truncate: true, restartIdentity: true }
-    );
+    await queryInterface.bulkDelete("cities", null, {
+      truncate: true,
+      restartIdentity: true,
+    });
     /**
      * Add commands to revert seed here.
      *

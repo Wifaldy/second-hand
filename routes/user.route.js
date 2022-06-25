@@ -20,32 +20,8 @@ const upload = multer({
   },
 });
 
-userRouter.post(
-  "/sign-up",
-  [
-    body("name").notEmpty().withMessage("Name is required"),
-    body("email")
-      .isEmail()
-      .normalizeEmail()
-      .withMessage("Please fill a valid email")
-      .notEmpty()
-      .withMessage("Email is required"),
-    body("password").notEmpty().withMessage("Password is required"),
-  ],
-  UserController.registerUser
-);
-
-userRouter.post(
-  "/login",
-  [
-    body("email").notEmpty().withMessage("Email is required"),
-    body("password").notEmpty().withMessage("Password is required"),
-  ],
-  UserController.postLogin
-);
-
 // detail user
-userRouter.get("/detail-user", isAuth, UserController.detailUser);
+userRouter.get("/", isAuth, UserController.detailUser);
 
 // update data user
 userRouter.put(
