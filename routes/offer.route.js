@@ -1,17 +1,33 @@
 const offerRouter = require("express").Router();
 const OfferController = require("../controllers/offer.controller");
 const isAuth = require("../middlewares/isAuth");
-const { body } = require("express-validator");
+const { body, param } = require("express-validator");
 
 offerRouter.post(
   "/:id",
-  [body("price_offer").notEmpty().withMessage("Price is required")],
+  [
+    param("id").isInt().withMessage("Product id must be an integer"),
+    body("price_offer")
+      .notEmpty()
+      .withMessage("Price is required")
+      .isInt()
+      .withMessage("Price must be an integer"),
+  ],
   isAuth,
   OfferController.offeringProduct
 );
+offerRouter.get(
+  "/is-offering/:id",
+  isAuth,
+  [param("id").isInt().withMessage("Product id must be an integer")],
+  OfferController.isOffering
+);
 
-offerRouter.get("/is-offering/:id", isAuth, OfferController.isOffering);
-
-offerRouter.get("/:id", isAuth, OfferController.detailOffering);
+offerRouter.get(
+  "/:id",
+  isAuth,
+  [param("id").isInt().withMessage("Product id must be an integer")],
+  OfferController.detailOffering
+);
 
 module.exports = offerRouter;

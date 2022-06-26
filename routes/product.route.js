@@ -1,7 +1,7 @@
 const productRouter = require("express").Router();
 const ProductController = require("../controllers/product.controller");
 const isAuth = require("../middlewares/isAuth");
-const { body } = require("express-validator");
+const { body, param } = require("express-validator");
 const multer = require("multer");
 const { storageProduct } = require("../middlewares/multerStorage.middleware");
 const upload = multer({
@@ -32,7 +32,11 @@ productRouter.get("/user", isAuth, ProductController.productByUser);
 
 productRouter.get("/offered", isAuth, ProductController.getOfferedProducts);
 
-productRouter.get("/:id", ProductController.detailProduct);
+productRouter.get(
+  "/:id",
+  [param("id").isInt().withMessage("Product id must be an integer")],
+  ProductController.detailProduct
+);
 
 productRouter.post(
   "/",
@@ -40,7 +44,11 @@ productRouter.post(
   isAuth,
   [
     body("name").notEmpty().withMessage("Product name is required"),
-    body("price").notEmpty().withMessage("Price is required"),
+    body("price")
+      .notEmpty()
+      .withMessage("Price is required")
+      .isInt()
+      .withMessage("Price must be an integer"),
     body("description").notEmpty().withMessage("Description is required"),
     body("categories").notEmpty().withMessage("Please fill a valid categories"),
     body("product_pict").custom((value, { req }) => {
@@ -60,8 +68,13 @@ productRouter.put(
   upload.array("product_pict"),
   isAuth,
   [
+    param("id").isInt().withMessage("Product id must be an integer"),
     body("name").notEmpty().withMessage("Product name is required"),
-    body("price").notEmpty().withMessage("Price is required"),
+    body("price")
+      .notEmpty()
+      .withMessage("Price is required")
+      .isInt()
+      .withMessage("Price must be an integer"),
     body("description").notEmpty().withMessage("Description is required"),
     body("categories").notEmpty().withMessage("Please fill a valid categories"),
     body("product_pict").custom((value, { req }) => {
@@ -76,7 +89,12 @@ productRouter.put(
   ProductController.updateProduct
 );
 
-productRouter.delete("/:id", isAuth, ProductController.deleteProduct);
+productRouter.delete(
+  "/:id",
+  isAuth,
+  [param("id").isInt().withMessage("Product id must be an integer")],
+  ProductController.deleteProduct
+);
 
 // productRouter.post(
 //   "/product-preview",

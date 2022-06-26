@@ -32,7 +32,11 @@ userRouter.put(
     body("name").notEmpty().withMessage("Name is required"),
     body("city").notEmpty().withMessage("City is required"),
     body("address").notEmpty().withMessage("address is required"),
-    body("no_hp").notEmpty().withMessage("No Handphone is required"),
+    body("no_hp")
+      .notEmpty()
+      .withMessage("No Handphone is required")
+      .isInt()
+      .withMessage("no_hp must be an integer"),
     body("profile_pict").custom((value, { req }) => {
       if (!req.file) {
         throw new Error("Profile pict is required");

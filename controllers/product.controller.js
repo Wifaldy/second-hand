@@ -75,6 +75,13 @@ class ProductController {
   static async detailProduct(req, res, next) {
     try {
       const { id } = req.params;
+      const errors = validationResult(req);
+      if (!errors.isEmpty()) {
+        throw {
+          status: 400,
+          message: errors.array()[0].msg,
+        };
+      }
       const detailProduct = await product.findByPk(id, {
         include: {
           model: user,
@@ -246,6 +253,13 @@ class ProductController {
   static async deleteProduct(req, res, next) {
     try {
       const { id } = req.params;
+      const errors = validationResult(req);
+      if (!errors.isEmpty()) {
+        throw {
+          status: 400,
+          message: errors.array()[0].msg,
+        };
+      }
       const findProduct = await product.findByPk(id);
       if (!findProduct) {
         throw {
