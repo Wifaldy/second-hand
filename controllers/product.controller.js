@@ -8,7 +8,7 @@ class ProductController {
     static async searchProduct(req, res, next) {
         try {
             const productSearch = await product.findAll({
-                order: [['created_at', 'DESC']],
+                order: [['createdAt', 'DESC']],
                 where: {
                     name: {
                         [Op.iLike]: `%${req.query.name}%`
@@ -36,7 +36,7 @@ class ProductController {
             const { offset, limit } = req.query
             const listProducts = await product.findAndCountAll(
                 {
-                    order: [['created_at', 'DESC']],
+                    order: [['createdAt', 'DESC']],
                     offset, 
                     limit,
                     subQuery: false,
@@ -45,15 +45,15 @@ class ProductController {
                             [Op.iLike]: `%${categoryName}%`
                         }
                     },
-                    include: {
+                    include: [{
                         model: product_tag,
-                        // as: 'Categories',
+                        // as: 'product_tag',
                         attributes: ['category_id'],
                         include: {
                             model: category,
                             attributes: ['name'],
                         },
-                    },
+                    }],
                 }
             );
             
