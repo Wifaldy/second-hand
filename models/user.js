@@ -19,6 +19,9 @@ module.exports = (sequelize, DataTypes) => {
       user.belongsTo(models.city, {
         foreignKey: "city_id",
       });
+      user.hasMany(models.wishlist, {
+        foreignKey: "user_id",
+      });
     }
   }
   user.init(
