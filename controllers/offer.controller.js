@@ -127,6 +127,116 @@ class OfferController {
       next(err);
     }
   }
+  static async updateOfferStatus(req, res, next) {
+    try {
+      const { status, id } = req.params;
+      const errors = validationResult(req);
+      if (!errors.isEmpty()) {
+        throw {
+          status: 400,
+          message: errors.array()[0].msg,
+        };
+      }
+      const findOffer = await offer.findOne({
+        include: {
+          model: product,
+        },
+        where: {
+          status: "pending",
+          id: id,
+        },
+      });
+      if (!findOffer) {
+        throw {
+          status: 404,
+          message: "Offer not found",
+        };
+      }
+      if (findOffer.dataValues.product.dataValues.user_id !== req.user.id) {
+        throw {
+          status: 400,
+          message: "Unauthorized",
+        };
+      }
+      if (status === "accepted") {
+        await offer.update(
+          {
+            status: "accepted",
+            updatedAt: new Date(),
+          },
+          {
+            where: {
+              id: id,
+            },
+          }
+        );
+      }
+      if (status === "rejected") {
+        await offer.update(
+          {
+            status: "rejected",
+            updatedAt: new Date(),
+          },
+          {
+            where: {
+              id: id,
+            },
+          }
+        );
+      }
+      if (status === "cancelled") {
+        await offer.update(
+          {
+            status: "cancelled",
+            updatedAt: new Date(),
+          },
+          {
+            where: {
+              id: id,
+            },
+          }
+        );
+      }
+      if (status === "success") {
+        await offer.update(
+          {
+            status: "sold",
+            updatedAt: new Date(),
+          },
+          {
+            where: {
+              id: id,
+            },
+          }
+        );
+        const productId = await offer.findOne({
+          include: {
+            model: product,
+          },
+          where: {
+            status: "sold",
+            id: id,
+          },
+        });
+        await product.update(
+          {
+            status: "sold",
+            updatedAt: new Date(),
+          },
+          {
+            where: {
+              id: productId.dataValues.product.dataValues.id,
+            },
+          }
+        );
+      }
+      res.status(200).json({
+        message: "Offer status updated",
+      });
+    } catch (err) {
+      next(err);
+    }
+  }
 }
 
 module.exports = OfferController;
