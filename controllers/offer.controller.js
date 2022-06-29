@@ -125,6 +125,7 @@ class OfferController {
             where: {
               id: sellerId,
             },
+            attributes: { exclude: ["password"] },
           },
           {
             model: product,

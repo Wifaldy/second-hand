@@ -92,6 +92,7 @@ class ProductController {
         include: [
           {
             model: user,
+            attributes: { exclude: ["password"] },
           },
           {
             model: product_tag,
