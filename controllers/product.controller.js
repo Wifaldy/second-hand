@@ -13,58 +13,56 @@ const sequelize = require("sequelize");
 require("dotenv").config();
 
 class ProductController {
-  // Search by name product, ....
-  static async searchProduct(req, res, next) {
-    try {
-      const productSearch = await product.findAll({
-        order: [["createdAt", "DESC"]],
-        where: {
-          name: {
-            [Op.iLike]: `%${req.query.name}%`,
-          },
-        },
-      });
-      if (!productSearch) {
-        throw {
-          status: 200,
-          message: "Product Not Found",
-        };
-      } else {
-        res.status(200).json(productSearch);
-      }
-    } catch (err) {
-      next(err);
-    }
-  }
-
   // All Product
   static async listProduct(req, res, next) {
     try {
+      const userId = req.user ? req.user.id : 0;
       const categoryName = req.query.category || "";
-      const { offset, limit } = req.query;
+      const searchName = req.query.search || "";
+      // const { offset, limit } = req.query;
+      const page = req.query.page > 0 ? req.query.page : 1;
+      const limit = req.query.limit > 0 ? req.query.limit : 10;
+      const offset = (page - 1) * limit;
       const listProducts = await product.findAndCountAll({
         order: [["createdAt", "DESC"]],
         offset,
         limit,
-        subQuery: false,
         distinct: true,
         where: {
-          "$product_tags.category.name$": {
-            [Op.iLike]: `%${categoryName}%`,
+          name: {
+            [Op.iLike]: `%${searchName}%`,
+          },
+          user_id: {
+            [Op.ne]: userId,
           },
           status: "available",
         },
-        include: {
-          model: product_tag,
-          // as: 'Categories',
-          attributes: ["category_id"],
-          include: {
-            model: category,
-            attributes: ["name"],
+        include: [
+          {
+            model: product_tag,
+            // as: 'categories',
+            attributes: [
+              "category_id",
+              [
+                sequelize.literal('"product_tags->category"."name"'),
+                "category_name",
+              ],
+            ],
+            include: {
+              model: category,
+              attributes: [],
+              duplicating: false,
+              where: {
+                name: {
+                  [Op.iLike]: `%${categoryName}%`,
+                },
+              },
+              required: true,
+            },
           },
-        },
+        ],
       });
-      if (!listProducts.rows) {
+      if (!listProducts.rows[0]) {
         throw {
           status: 404,
           message: "Product is Empty",

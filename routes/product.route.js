@@ -20,10 +20,7 @@ const upload = multer({
   },
 });
 
-// Search Data Product by name
-productRouter.get("/search", ProductController.searchProduct);
-
-// Get All Data Product
+// Get All Data & Search Product
 productRouter.get("/", ProductController.listProduct);
 
 productRouter.get("/histories", isAuth, ProductController.getSoldProducts);

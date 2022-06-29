@@ -64,7 +64,7 @@ class UserController {
           },
         }
       );
-      if (req.file) {
+      if (req.file && dataUser.profile_pict) {
         // Delete File
         const DIR =
           "public/user/" +
