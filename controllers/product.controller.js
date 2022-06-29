@@ -1,19 +1,27 @@
 const { Op } = require("sequelize");
-const { product, offer, product_tag, category, user } = require("../models");
+const {
+  product,
+  offer,
+  product_tag,
+  category,
+  user,
+  notification,
+} = require("../models");
 // const ProductSingleton = require("../services/temp_product_data.service");
 const { validationResult } = require("express-validator");
 const sequelize = require("sequelize");
+require("dotenv").config();
 
 class ProductController {
   // All Product
   static async listProduct(req, res, next) {
     try {
       const userId = req.user ? req.user.id : 0;
-      const categoryName = req.query.category || '';
-      const searchName = req.query.search || '';
+      const categoryName = req.query.category || "";
+      const searchName = req.query.search || "";
       // const { offset, limit } = req.query;
-      const page = (req.query.page > 0) ? req.query.page : 1;
-      const limit = (req.query.limit > 0) ? req.query.limit : 10;
+      const page = req.query.page > 0 ? req.query.page : 1;
+      const limit = req.query.limit > 0 ? req.query.limit : 10;
       const offset = (page - 1) * limit;
       const listProducts = await product.findAndCountAll({
         order: [["createdAt", "DESC"]],
@@ -22,7 +30,7 @@ class ProductController {
         distinct: true,
         where: {
           name: {
-            [Op.iLike]: `%${searchName}%`
+            [Op.iLike]: `%${searchName}%`,
           },
           user_id: {
             [Op.ne]: userId,
@@ -34,22 +42,22 @@ class ProductController {
             model: product_tag,
             // as: 'categories',
             attributes: [
-                "category_id", 
-                [ 
-                  sequelize.literal('"product_tags->category"."name"'),
-                  "category_name",
-                ]
+              "category_id",
+              [
+                sequelize.literal('"product_tags->category"."name"'),
+                "category_name",
+              ],
             ],
             include: {
-                model: category,
-                attributes: [],
-                duplicating: false,
-                where: {
-                    name: {
-                        [Op.iLike]: `%${categoryName}%`
-                    }
+              model: category,
+              attributes: [],
+              duplicating: false,
+              where: {
+                name: {
+                  [Op.iLike]: `%${categoryName}%`,
                 },
-                required: true
+              },
+              required: true,
             },
           },
         ],
@@ -62,7 +70,7 @@ class ProductController {
       } else {
         res.status(200).json({
           message: "List Products",
-          data: listProducts.rows,
+          data: listProducts,
         });
       }
     } catch (err) {
@@ -81,9 +89,17 @@ class ProductController {
         };
       }
       const detailProduct = await product.findByPk(id, {
-        include: {
-          model: user,
-        },
+        include: [
+          {
+            model: user,
+          },
+          {
+            model: product_tag,
+            include: {
+              model: category,
+            },
+          },
+        ],
       });
       if (!detailProduct) {
         throw {
@@ -149,7 +165,12 @@ class ProductController {
         };
       }
       const { name, price, description, categories } = req.body;
-      const filePaths = req.files.map((file) => file.path);
+      const filePaths = req.files.map((file) => file.filename);
+      filePaths.forEach((file, i) => {
+        filePaths[i] = `${process.env.BASE_URL}products/${file}`;
+      });
+      //Isi file paths => public//user//
+      //Product pict => (URL)/public/user/detail-gambar.ext
       const productCreate = await product.create({
         user_id: req.user.id,
         name,
@@ -168,7 +189,14 @@ class ProductController {
           updatedAt: new Date(),
         });
       });
-
+      await notification.create({
+        user_id: req.user.id,
+        product_id: productCreate.id,
+        title: "Berhasil di terbitkan",
+        status: "unread",
+        createdAt: new Date(),
+        updatedAt: new Date(),
+      });
       res.status(201).json({
         message: "Success add new product",
       });
