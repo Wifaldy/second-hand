@@ -319,6 +319,12 @@ class ProductController {
           user_id: req.user.id,
         },
       });
+      if (productByUser.length === 0) {
+        throw {
+          status: 404,
+          message: "Product not found",
+        };
+      }
       res.status(200).json({
         message: "Product by user",
         data: productByUser,
