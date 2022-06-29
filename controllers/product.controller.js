@@ -358,7 +358,7 @@ class ProductController {
           ],
         },
       });
-      if (!soldProducts) {
+      if (soldProducts.length < 1) {
         throw {
           status: 404,
           message: "Product not found",
