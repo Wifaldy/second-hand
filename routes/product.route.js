@@ -30,12 +30,6 @@ productRouter.get("/user", isAuth, ProductController.productByUser);
 
 productRouter.get("/offered", isAuth, ProductController.getOfferedProducts);
 
-productRouter.get(
-  "/:id",
-  [param("id").isInt().withMessage("Product id must be an integer")],
-  ProductController.detailProduct
-);
-
 productRouter.post(
   "/",
   upload.array("product_pict"),
@@ -85,6 +79,12 @@ productRouter.put(
     }),
   ],
   ProductController.updateProduct
+);
+
+productRouter.get(
+  "/:id",
+  [param("id").isInt().withMessage("Product id must be an integer")],
+  ProductController.detailProduct
 );
 
 productRouter.delete(

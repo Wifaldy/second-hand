@@ -22,6 +22,9 @@ module.exports = (sequelize, DataTypes) => {
       user.hasMany(models.wishlist, {
         foreignKey: "user_id",
       });
+      user.hasMany(models.notification, {
+        foreignKey: "user_id",
+      });
     }
   }
   user.init(
