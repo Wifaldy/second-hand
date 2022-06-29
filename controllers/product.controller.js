@@ -13,36 +13,13 @@ const sequelize = require("sequelize");
 require("dotenv").config();
 
 class ProductController {
-  // Search by name product, ....
-  static async searchProduct(req, res, next) {
-    try {
-      const productSearch = await product.findAll({
-        order: [["createdAt", "DESC"]],
-        where: {
-          name: {
-            [Op.iLike]: `%${req.query.name}%`,
-          },
-        },
-      });
-
-      if (!productSearch) {
-        console.log('TES');
-        throw {
-          status: 200,
-          message: "Product Not Found",
-        };
-      } else {
-        res.status(200).json(productSearch);
-      }
-    } catch (err) {
-      next(err);
-    }
-  }
+  // Search by name product, ...
 
   // All Product
   static async listProduct(req, res, next) {
     try {
       const userId = req.user ? req.user.id : 0;
+      console.log(req.user);
       const categoryName = req.query.category || "";
       const searchName = req.query.search || "";
       // const { offset, limit } = req.query;
