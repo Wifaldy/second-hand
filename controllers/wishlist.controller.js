@@ -19,6 +19,18 @@ class WishlistController {
           message: "Product not found",
         };
       }
+      const findWishlist = await wishlist.findOne({
+        where: {
+          user_id: req.user.id,
+          product_id: id,
+        },
+      });
+      if (findWishlist) {
+        throw {
+          status: 400,
+          message: "Product already in wishlist",
+        };
+      }
       await wishlist.create({
         user_id: req.user.id,
         product_id: id,

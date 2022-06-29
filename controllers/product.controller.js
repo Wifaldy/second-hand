@@ -1,8 +1,16 @@
 const { Op } = require("sequelize");
-const { product, offer, product_tag, category, user } = require("../models");
+const {
+  product,
+  offer,
+  product_tag,
+  category,
+  user,
+  notification,
+} = require("../models");
 // const ProductSingleton = require("../services/temp_product_data.service");
 const { validationResult } = require("express-validator");
 const sequelize = require("sequelize");
+require("dotenv").config();
 
 class ProductController {
   // Search by name product, ....
@@ -16,7 +24,6 @@ class ProductController {
           },
         },
       });
-
       if (!productSearch) {
         throw {
           status: 200,
@@ -40,6 +47,7 @@ class ProductController {
         offset,
         limit,
         subQuery: false,
+        distinct: true,
         where: {
           "$product_tags.category.name$": {
             [Op.iLike]: `%${categoryName}%`,
@@ -64,7 +72,7 @@ class ProductController {
       } else {
         res.status(200).json({
           message: "List Products",
-          data: listProducts.rows,
+          data: listProducts,
         });
       }
     } catch (err) {
@@ -83,9 +91,17 @@ class ProductController {
         };
       }
       const detailProduct = await product.findByPk(id, {
-        include: {
-          model: user,
-        },
+        include: [
+          {
+            model: user,
+          },
+          {
+            model: product_tag,
+            include: {
+              model: category,
+            },
+          },
+        ],
       });
       if (!detailProduct) {
         throw {
@@ -151,7 +167,12 @@ class ProductController {
         };
       }
       const { name, price, description, categories } = req.body;
-      const filePaths = req.files.map((file) => file.path);
+      const filePaths = req.files.map((file) => file.filename);
+      filePaths.forEach((file, i) => {
+        filePaths[i] = `${process.env.BASE_URL}products/${file}`;
+      });
+      //Isi file paths => public//user//
+      //Product pict => (URL)/public/user/detail-gambar.ext
       const productCreate = await product.create({
         user_id: req.user.id,
         name,
@@ -170,7 +191,14 @@ class ProductController {
           updatedAt: new Date(),
         });
       });
-
+      await notification.create({
+        user_id: req.user.id,
+        product_id: productCreate.id,
+        title: "Berhasil di terbitkan",
+        status: "unread",
+        createdAt: new Date(),
+        updatedAt: new Date(),
+      });
       res.status(201).json({
         message: "Success add new product",
       });

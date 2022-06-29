@@ -17,14 +17,15 @@ const storageUser = multer.diskStorage({
 });
 const storageProduct = multer.diskStorage({
   destination: function (req, file, cb) {
-    if (fs.existsSync("public/product/")) {
-      cb(null, "public/product");
+    if (fs.existsSync("public/products/")) {
+      cb(null, "public/products");
     } else {
-      fs.mkdirSync("public/product", { recursive: true });
-      cb(null, "public/product");
+      fs.mkdirSync("public/products", { recursive: true });
+      cb(null, "public/products");
     }
   },
   filename: function (req, file, cb) {
+    file.originalname = file.originalname.replaceAll(" ", "-");
     const uniqueSuffix = Date.now() + "-" + file.originalname;
     cb(null, file.fieldname + "-" + uniqueSuffix);
   },

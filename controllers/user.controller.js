@@ -1,6 +1,4 @@
 const { user } = require("../models");
-const bcrypt = require("bcryptjs");
-const jwt = require("jsonwebtoken");
 const { validationResult } = require("express-validator");
 const fs = require("fs");
 require("dotenv").config();
@@ -42,9 +40,9 @@ class UserController {
         };
       }
       if (req.file) {
-        req.body.profile_pict = `http://localhost:3000/user/${req.file.filename}`;
+        req.body.profile_pict = `${process.env.BASE_URL}user/${req.file.filename}`;
       }
-      const { name, city, address, no_hp } = req.body;
+      const { name, city_id, address, no_hp } = req.body;
       const errors = validationResult(req.body);
       if (!errors.isEmpty()) {
         throw {
@@ -55,7 +53,7 @@ class UserController {
       await user.update(
         {
           name,
-          city,
+          city_id,
           address,
           no_hp,
           profile_pict: req.body.profile_pict,
@@ -70,7 +68,7 @@ class UserController {
         // Delete File
         const DIR =
           "public/user/" +
-          dataUser.profile_pict.split("http://localhost:3000/user/")[1];
+          dataUser.profile_pict.split(`${process.env.BASE_URL}user/`)[1];
         if (fs.existsSync(DIR)) {
           fs.unlinkSync(DIR);
         }
