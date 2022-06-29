@@ -18,6 +18,7 @@ class ProductController {
       });
 
       if (!productSearch) {
+        console.log('TES');
         throw {
           status: 200,
           message: "Product Not Found",
@@ -56,6 +57,7 @@ class ProductController {
           },
         },
       });
+      console.log(listProducts);
       if (!listProducts.rows) {
         throw {
           status: 404,
@@ -156,12 +158,13 @@ class ProductController {
         user_id: req.user.id,
         name,
         price,
-        description,
+        description, 
         status: "available",
         product_pict: filePaths,
         createdAt: new Date(),
         updatedAt: new Date(),
       });
+
       categories.forEach(async (categoryId) => {
         await product_tag.create({
           product_id: productCreate.id,
@@ -220,7 +223,7 @@ class ProductController {
           },
         }
       );
-      console.log(productUpdate);
+      
       const oldCategories = await product_tag.findAll({
         where: {
           product_id: +id,
