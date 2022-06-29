@@ -3,12 +3,18 @@ const { product, offer, product_tag, category, user } = require("../models");
 // const ProductSingleton = require("../services/temp_product_data.service");
 const { validationResult } = require("express-validator");
 const sequelize = require("sequelize");
+const isAuth = require("../middlewares/isAuth");
 
 class ProductController {
   // All Product
   static async listProduct(req, res, next) {
     try {
+    //   if (req.headers.authorization) 
+    //   isAuth
       const userId = req.user ? req.user.id : 0;
+      console.log(req.headers.authorization)
+      console.log(userId)
+      console.log(req.user)
       const categoryName = req.query.category || '';
       const searchName = req.query.search || '';
       // const { offset, limit } = req.query;

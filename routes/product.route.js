@@ -1,6 +1,7 @@
 const productRouter = require("express").Router();
 const ProductController = require("../controllers/product.controller");
 const isAuth = require("../middlewares/isAuth");
+const ifAuth = require("../middlewares/ifAuth");
 const { body, param } = require("express-validator");
 const multer = require("multer");
 const { storageProduct } = require("../middlewares/multerStorage.middleware");
@@ -21,7 +22,7 @@ const upload = multer({
 });
 
 // Get All Data & Search Product
-productRouter.get("/", ProductController.listProduct);
+productRouter.get("/", ifAuth, ProductController.listProduct);
 
 productRouter.get("/histories", isAuth, ProductController.getSoldProducts);
 
