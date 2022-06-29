@@ -31,7 +31,7 @@ offerRouter.get(
 );
 
 offerRouter.post(
-  "/:status/:id",
+  "/:id/:status",
   isAuth,
   [
     param("id").isInt().withMessage("Product id must be an integer"),
