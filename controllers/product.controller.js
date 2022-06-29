@@ -68,7 +68,7 @@ class ProductController {
       if (!listProducts.rows[0]) {
         throw {
           status: 404,
-          message: "Product is Empty",
+          message: "Product not found",
         };
       } else {
         res.status(200).json({
