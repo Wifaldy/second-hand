@@ -1,4 +1,4 @@
-const { offer, product, product_tag, user } = require("../models");
+const { offer, product, notification, user } = require("../models");
 const { validationResult } = require("express-validator");
 
 class OfferController {
@@ -20,17 +20,35 @@ class OfferController {
           message: "Product not found",
         };
       }
-      if (offeringProduct.dataValues.id === req.user.id) {
+      if (offeringProduct.id === req.user.id) {
         throw {
           status: 400,
           message: "You can't offer your own product",
         };
       }
-      await offer.create({
+      const createdOffer = await offer.create({
         buyer_id: req.user.id,
         product_id: id,
         price_offer: price_offer,
         status: "pending",
+        createdAt: new Date(),
+        updatedAt: new Date(),
+      });
+      await notification.create({
+        user_id: req.user.id,
+        product_id: id,
+        offer_id: createdOffer.id,
+        title: "Penawaran produk",
+        status: "unread",
+        createdAt: new Date(),
+        updatedAt: new Date(),
+      });
+      await notification.create({
+        user_id: offeringProduct.user_id,
+        product_id: id,
+        offer_id: createdOffer.id,
+        title: "Penawaran produk",
+        status: "unread",
         createdAt: new Date(),
         updatedAt: new Date(),
       });
@@ -93,7 +111,7 @@ class OfferController {
           },
         ],
       });
-      sellerId = sellerId.dataValues.user.dataValues.id;
+      sellerId = sellerId.user.id;
       if (sellerId !== req.user.id) {
         throw {
           status: 400,
@@ -152,7 +170,7 @@ class OfferController {
           message: "Offer not found",
         };
       }
-      if (findOffer.dataValues.product.dataValues.user_id !== req.user.id) {
+      if (findOffer.product.user_id !== req.user.id) {
         throw {
           status: 400,
           message: "Unauthorized",
@@ -170,6 +188,16 @@ class OfferController {
             },
           }
         );
+        await notification.create({
+          user_id: findOffer.buyer_id,
+          product_id: findOffer.product_id,
+          offer_id: findOffer.id,
+          title: "Penawaran produk",
+          status: "unread",
+          description: "Kamu akan segera dihubungi penjual via whatsapp",
+          createdAt: new Date(),
+          updatedAt: new Date(),
+        });
       }
       if (status === "rejected") {
         await offer.update(
@@ -225,7 +253,7 @@ class OfferController {
           },
           {
             where: {
-              id: productId.dataValues.product.dataValues.id,
+              id: productId.product.id,
             },
           }
         );

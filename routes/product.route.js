@@ -20,10 +20,7 @@ const upload = multer({
   },
 });
 
-// Search Data Product by name
-productRouter.get("/search", ProductController.searchProduct);
-
-// Get All Data Product
+// Get All Data & Search Product
 productRouter.get("/", ProductController.listProduct);
 
 productRouter.get("/histories", isAuth, ProductController.getSoldProducts);
@@ -31,12 +28,6 @@ productRouter.get("/histories", isAuth, ProductController.getSoldProducts);
 productRouter.get("/user", isAuth, ProductController.productByUser);
 
 productRouter.get("/offered", isAuth, ProductController.getOfferedProducts);
-
-productRouter.get(
-  "/:id",
-  [param("id").isInt().withMessage("Product id must be an integer")],
-  ProductController.detailProduct
-);
 
 productRouter.post(
   "/",
@@ -87,6 +78,12 @@ productRouter.put(
     }),
   ],
   ProductController.updateProduct
+);
+
+productRouter.get(
+  "/:id",
+  [param("id").isInt().withMessage("Product id must be an integer")],
+  ProductController.detailProduct
 );
 
 productRouter.delete(
