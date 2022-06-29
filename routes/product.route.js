@@ -1,88 +1,97 @@
 const productRouter = require("express").Router();
 const ProductController = require("../controllers/product.controller");
 const isAuth = require("../middlewares/isAuth");
-const { body } = require("express-validator");
+const { body, param } = require("express-validator");
 const multer = require("multer");
-const { storageUser } = require("../middlewares/multerStorage.middleware");
+const { storageProduct } = require("../middlewares/multerStorage.middleware");
 const upload = multer({
-    storage: storageUser,
-    fileFilter: (req, file, cb) => {
-        console.log(file.mimetype);
-        if (
-            file.mimetype === "image/jpeg" ||
-            file.mimetype === "image/jpg" ||
-            file.mimetype === "image/png"
-        ) {
-            cb(null, true);
-        } else {
-            cb(new Error("File should be an image"), false);
-        }
-    },
+  storage: storageProduct,
+  fileFilter: (req, file, cb) => {
+    console.log(file.mimetype);
+    if (
+      file.mimetype === "image/jpeg" ||
+      file.mimetype === "image/jpg" ||
+      file.mimetype === "image/png"
+    ) {
+      cb(null, true);
+    } else {
+      cb(new Error("File should be an image"), false);
+    }
+  },
 });
 
-// Search Data Product by name
-productRouter.get("/search-product", ProductController.searchProduct)
+// Get All Data & Search Product
+productRouter.get("/", ProductController.listProduct);
 
-// Get All Data Product
-productRouter.get("/products", ProductController.listProduct)
+productRouter.get("/histories", isAuth, ProductController.getSoldProducts);
 
-productRouter.get("/product/:id", ProductController.detailProduct);
+productRouter.get("/user", isAuth, ProductController.productByUser);
 
-productRouter.get("/product-by-user", isAuth, ProductController.productByUser);
+productRouter.get("/offered", isAuth, ProductController.getOfferedProducts);
 
 productRouter.get(
-    "/product-histories",
-    isAuth,
-    ProductController.getSoldProducts
+  "/:id",
+  [param("id").isInt().withMessage("Product id must be an integer")],
+  ProductController.detailProduct
 );
 
 productRouter.post(
-    "/product",
-    upload.array("product_pict"),
-    isAuth, [
-        body("name").notEmpty().withMessage("Product name is required"),
-        body("price").notEmpty().withMessage("Price is required"),
-        body("description").notEmpty().withMessage("Description is required"),
-        body("categories").notEmpty().withMessage("Please fill a valid categories"),
-        body("product_pict").custom((value, { req }) => {
-            if (req.files.length > 4) {
-                throw new Error("Exceeded maximum pictures allowed");
-            } else if (!req.files) {
-                throw new Error("Please upload a picture");
-            }
-            return true;
-        }),
-    ],
-    ProductController.createProduct
+  "/",
+  upload.array("product_pict"),
+  isAuth,
+  [
+    body("name").notEmpty().withMessage("Product name is required"),
+    body("price")
+      .notEmpty()
+      .withMessage("Price is required")
+      .isInt()
+      .withMessage("Price must be an integer"),
+    body("description").notEmpty().withMessage("Description is required"),
+    body("categories").notEmpty().withMessage("Please fill a valid categories"),
+    body("product_pict").custom((value, { req }) => {
+      if (req.files.length > 4) {
+        throw new Error("Exceeded maximum pictures allowed");
+      } else if (req.files.length < 1) {
+        throw new Error("Please upload a picture");
+      }
+      return true;
+    }),
+  ],
+  ProductController.createProduct
 ); // update terbitkan
 
-productRouter.get(
-    "/offered-product-by-user",
-    isAuth,
-    ProductController.getOfferedProducts
-);
 productRouter.put(
-    "/product/:id",
-    upload.array("product_pict"),
-    isAuth, [
-        body("name").notEmpty().withMessage("Product name is required"),
-        body("price").notEmpty().withMessage("Price is required"),
-        body("description").notEmpty().withMessage("Description is required"),
-        body("categories").notEmpty().withMessage("Please fill a valid categories"),
-        body("product_pict").custom((value, { req }) => {
-            console.log(req.files);
-            if (req.files.length > 4) {
-                throw new Error("Exceeded maximum pictures allowed");
-            } else if (!req.files) {
-                throw new Error("Please upload a picture");
-            }
-            return true;
-        }),
-    ],
-    ProductController.updateProduct
+  "/:id",
+  upload.array("product_pict"),
+  isAuth,
+  [
+    param("id").isInt().withMessage("Product id must be an integer"),
+    body("name").notEmpty().withMessage("Product name is required"),
+    body("price")
+      .notEmpty()
+      .withMessage("Price is required")
+      .isInt()
+      .withMessage("Price must be an integer"),
+    body("description").notEmpty().withMessage("Description is required"),
+    body("categories").notEmpty().withMessage("Please fill a valid categories"),
+    body("product_pict").custom((value, { req }) => {
+      if (req.files.length > 4) {
+        throw new Error("Exceeded maximum pictures allowed");
+      } else if (!req.files) {
+        throw new Error("Please upload a picture");
+      }
+      return true;
+    }),
+  ],
+  ProductController.updateProduct
 );
 
-productRouter.delete("/product/:id", isAuth, ProductController.deleteProduct);
+productRouter.delete(
+  "/:id",
+  isAuth,
+  [param("id").isInt().withMessage("Product id must be an integer")],
+  ProductController.deleteProduct
+);
 
 // productRouter.post(
 //   "/product-preview",
