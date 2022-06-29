@@ -30,4 +30,16 @@ offerRouter.get(
   OfferController.detailOffering
 );
 
+offerRouter.post(
+  "/:status/:id",
+  isAuth,
+  [
+    param("id").isInt().withMessage("Product id must be an integer"),
+    param("status")
+      .isIn(["accepted", "rejected", "success", "cancelled"])
+      .withMessage("Status must be accepted, rejected, success or cancelled"),
+  ],
+  OfferController.updateOfferStatus
+);
+
 module.exports = offerRouter;

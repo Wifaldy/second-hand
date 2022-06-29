@@ -268,7 +268,7 @@ class ProductController {
       if (findProduct.user_id !== req.user.id) {
         throw {
           status: 401,
-          message: "The product is not yours",
+          message: "Unauthorized",
         };
       }
       await product.destroy({
