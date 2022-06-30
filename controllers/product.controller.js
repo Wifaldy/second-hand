@@ -13,10 +13,13 @@ const sequelize = require("sequelize");
 require("dotenv").config();
 
 class ProductController {
+  // Search by name product, ...
+
   // All Product
   static async listProduct(req, res, next) {
     try {
       const userId = req.user ? req.user.id : 0;
+      console.log(req.user);
       const categoryName = req.query.category || "";
       const searchName = req.query.search || "";
       // const { offset, limit } = req.query;
@@ -176,12 +179,13 @@ class ProductController {
         user_id: req.user.id,
         name,
         price,
-        description,
+        description, 
         status: "available",
         product_pict: filePaths,
         createdAt: new Date(),
         updatedAt: new Date(),
       });
+
       categories.forEach(async (categoryId) => {
         await product_tag.create({
           product_id: productCreate.id,
@@ -247,7 +251,7 @@ class ProductController {
           },
         }
       );
-      console.log(productUpdate);
+      
       const oldCategories = await product_tag.findAll({
         where: {
           product_id: +id,
@@ -361,7 +365,7 @@ class ProductController {
           ],
         },
       });
-      if (!soldProducts) {
+      if (soldProducts.length < 1) {
         throw {
           status: 404,
           message: "Product not found",
