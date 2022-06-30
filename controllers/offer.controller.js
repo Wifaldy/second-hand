@@ -80,7 +80,7 @@ class OfferController {
       if (isOffering) {
         throw {
           status: 400,
-          message: "Offering is not valid",
+          message: "You already offered this product",
         };
       }
       res.status(200).json({
