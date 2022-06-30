@@ -21,12 +21,15 @@ class AdditionalController {
     }
   }
 
-  static async getCategories(req, res, next){
+  static async getCategories(_req, res, next) {
+
     try {
       const categories = await category.findAll({
         attributes: ["id", "name"],
       });
+
       if (categories.length < 1) {
+
         throw {
           status: 404,
           message: "Category data is empty",

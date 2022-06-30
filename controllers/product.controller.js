@@ -95,6 +95,7 @@ class ProductController {
         include: [
           {
             model: user,
+            attributes: { exclude: ["password"] },
           },
           {
             model: product_tag,
@@ -178,7 +179,7 @@ class ProductController {
         user_id: req.user.id,
         name,
         price,
-        description, 
+        description,
         status: "available",
         product_pict: filePaths,
         createdAt: new Date(),
@@ -250,7 +251,7 @@ class ProductController {
           },
         }
       );
-      
+
       const oldCategories = await product_tag.findAll({
         where: {
           product_id: +id,
@@ -275,7 +276,6 @@ class ProductController {
         message: "Success update product",
       });
     } catch (error) {
-      console.log(error);
       next(error);
     }
   }

@@ -3,14 +3,15 @@ const fs = require("fs");
 
 const storageUser = multer.diskStorage({
   destination: function (req, file, cb) {
-    if (fs.existsSync("public/user/")) {
-      cb(null, "public/user");
+    if (fs.existsSync("public/users/")) {
+      cb(null, "public/users");
     } else {
-      fs.mkdirSync("public/user", { recursive: true });
-      cb(null, "public/user");
+      fs.mkdirSync("public/users", { recursive: true });
+      cb(null, "public/users");
     }
   },
   filename: function (req, file, cb) {
+    file.originalname = file.originalname.replaceAll(" ", "-");
     const uniqueSuffix = Date.now() + "-" + file.originalname;
     cb(null, file.fieldname + "-" + uniqueSuffix);
   },
