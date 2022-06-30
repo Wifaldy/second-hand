@@ -7,7 +7,6 @@ const { storageUser } = require("../middlewares/multerStorage.middleware");
 const upload = multer({
   storage: storageUser,
   fileFilter: (req, file, cb) => {
-    console.log(file.mimetype);
     if (
       file.mimetype === "image/jpeg" ||
       file.mimetype === "image/jpg" ||

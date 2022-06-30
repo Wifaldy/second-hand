@@ -11,6 +11,7 @@ const storageUser = multer.diskStorage({
     }
   },
   filename: function (req, file, cb) {
+    file.originalname = file.originalname.replaceAll(" ", "-");
     const uniqueSuffix = Date.now() + "-" + file.originalname;
     cb(null, file.fieldname + "-" + uniqueSuffix);
   },

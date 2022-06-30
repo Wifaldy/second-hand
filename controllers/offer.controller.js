@@ -80,7 +80,7 @@ class OfferController {
       if (isOffering) {
         throw {
           status: 400,
-          message: "Offering is not valid",
+          message: "You already offered this product",
         };
       }
       res.status(200).json({
@@ -125,6 +125,7 @@ class OfferController {
             where: {
               id: sellerId,
             },
+            attributes: { exclude: ["password"] },
           },
           {
             model: product,
@@ -164,6 +165,7 @@ class OfferController {
           id: id,
         },
       });
+      console.log(req.user);
       if (!findOffer) {
         throw {
           status: 404,

@@ -14,10 +14,13 @@ const fs = require("fs");
 require("dotenv").config();
 
 class ProductController {
+  // Search by name product, ...
+
   // All Product
   static async listProduct(req, res, next) {
     try {
       const userId = req.user ? req.user.id : 0;
+      console.log(req.user);
       const categoryName = req.query.category || "";
       const searchName = req.query.search || "";
       // const { offset, limit } = req.query;
@@ -93,6 +96,7 @@ class ProductController {
         include: [
           {
             model: user,
+            attributes: { exclude: ["password"] },
           },
           {
             model: product_tag,
@@ -182,6 +186,7 @@ class ProductController {
         createdAt: new Date(),
         updatedAt: new Date(),
       });
+
       categories.forEach(async (categoryId) => {
         await product_tag.create({
           product_id: productCreate.id,
@@ -250,7 +255,7 @@ class ProductController {
           },
         }
       );
-      console.log(productUpdate);
+
       const oldCategories = await product_tag.findAll({
         where: {
           product_id: +id,
@@ -288,7 +293,6 @@ class ProductController {
         message: "Success update product",
       });
     } catch (error) {
-      console.log(error);
       next(error);
     }
   }
@@ -349,6 +353,12 @@ class ProductController {
           user_id: req.user.id,
         },
       });
+      if (productByUser.length === 0) {
+        throw {
+          status: 404,
+          message: "Product not found",
+        };
+      }
       res.status(200).json({
         message: "Product by user",
         data: productByUser,
@@ -384,7 +394,7 @@ class ProductController {
           ],
         },
       });
-      if (!soldProducts[0]) {
+      if (soldProducts.length < 1) {
         throw {
           status: 404,
           message: "Product not found",
