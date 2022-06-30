@@ -40,7 +40,7 @@ class UserController {
         };
       }
       if (req.file) {
-        req.body.profile_pict = `${process.env.BASE_URL}user/${req.file.filename}`;
+        req.body.profile_pict = `${process.env.BASE_URL}users_pict/${req.file.filename}`;
       }
       const { name, city_id, address, no_hp } = req.body;
       const errors = validationResult(req.body);
@@ -67,8 +67,8 @@ class UserController {
       if (req.file && dataUser.profile_pict) {
         // Delete File
         const DIR =
-          "public/user/" +
-          dataUser.profile_pict.split(`${process.env.BASE_URL}user/`)[1];
+          "public/users_pict/" +
+          dataUser.profile_pict.split(`${process.env.BASE_URL}users_pict/`)[1];
         if (fs.existsSync(DIR)) {
           fs.unlinkSync(DIR);
         }
