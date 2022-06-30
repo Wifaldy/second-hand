@@ -45,7 +45,6 @@ class AuthController {
         token: token,
       });
     } catch (err) {
-      console.log(err);
       next(err);
     }
   }

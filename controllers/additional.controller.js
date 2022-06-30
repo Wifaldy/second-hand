@@ -1,4 +1,4 @@
-const { city } = require("../models");
+const { city, category } = require("../models");
 
 class AdditionalController {
   static async getCities(_req, res, next) {
@@ -15,6 +15,25 @@ class AdditionalController {
       res.status(200).json({
         message: "Success get all cities",
         cities,
+      });
+    } catch (error) {
+      next(error);
+    }
+  }
+  static async getCategories(_req, res, next) {
+    try {
+      const categories = await category.findAll({
+        attributes: ["id", "name"],
+      });
+      if (!categories) {
+        throw {
+          status: 404,
+          message: "Category data is empty",
+        };
+      }
+      res.status(200).json({
+        message: "Success get all categories",
+        categories,
       });
     } catch (error) {
       next(error);

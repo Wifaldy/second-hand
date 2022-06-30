@@ -247,7 +247,6 @@ class ProductController {
           },
         }
       );
-      console.log(productUpdate);
       const oldCategories = await product_tag.findAll({
         where: {
           product_id: +id,
@@ -272,7 +271,6 @@ class ProductController {
         message: "Success update product",
       });
     } catch (error) {
-      console.log(error);
       next(error);
     }
   }
