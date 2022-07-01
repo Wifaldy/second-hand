@@ -1196,12 +1196,24 @@
                     "example": "lorem ipsum dolor sit amet ipsum ipsuummm"
                   },
                   "categories": {
-                    "type": "integer",
-                    "format": "int32",
-                    "example": 1
+                    "type": "array",
+                    "items": {
+                      "type": "integer",
+                      "format": "int32"
+                    },
+                    "minItems": 1,
+                    "maxItems": 5,
+                    "example": [1, 2]
                   },
                   "product_pict": {
-                    "type": "string"
+                    "type": "array",
+                    "items": {
+                      "type": "string",
+                      "example": "https://www.w3schools.com/w3css/img_avatar3.png",
+                      "format": "binary"
+                    },
+                    "minItems": 1,
+                    "maxItems": 4
                   }
                 }
               }
