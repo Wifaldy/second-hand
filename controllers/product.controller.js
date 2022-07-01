@@ -1,4 +1,6 @@
 const { Op } = require("sequelize");
+const fs = require('fs');
+const cloudinaryProvider = require('../config/cloudinary.config');
 const {
   product,
   offer,
@@ -10,7 +12,10 @@ const {
 // const ProductSingleton = require("../services/temp_product_data.service");
 const { validationResult } = require("express-validator");
 const sequelize = require("sequelize");
-const fs = require("fs");
+
+const { cloudinary_js_config } = require("../config/cloudinary.config");
+const uploadToCloudinary = require("../services/cloudinary.service");
+
 require("dotenv").config();
 
 class ProductController {
@@ -170,10 +175,11 @@ class ProductController {
         };
       }
       const { name, price, description, categories } = req.body;
-      const filePaths = req.files.map((file) => file.filename);
-      filePaths.forEach((file, i) => {
-        filePaths[i] = `${process.env.BASE_URL}products_pict/${file}`;
-      });
+
+
+      const filePaths = await uploadToCloudinary(req.files, 'product');
+      console.log(filePaths);
+
       //Isi file paths => public//user//
       //Product pict => (URL)/public/user/detail-gambar.ext
       const productCreate = await product.create({
