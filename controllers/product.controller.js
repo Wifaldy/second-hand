@@ -12,8 +12,10 @@ const {
 // const ProductSingleton = require("../services/temp_product_data.service");
 const { validationResult } = require("express-validator");
 const sequelize = require("sequelize");
+
 const { cloudinary_js_config } = require("../config/cloudinary.config");
 const uploadToCloudinary = require("../services/cloudinary.service");
+
 require("dotenv").config();
 
 class ProductController {
@@ -174,8 +176,10 @@ class ProductController {
       }
       const { name, price, description, categories } = req.body;
 
+
       const filePaths = await uploadToCloudinary(req.files, 'product');
       console.log(filePaths);
+
       //Isi file paths => public//user//
       //Product pict => (URL)/public/user/detail-gambar.ext
       const productCreate = await product.create({
@@ -224,7 +228,10 @@ class ProductController {
       }
       const { name, price, description, categories } = req.body;
       const { id } = req.params;
-      const filePaths = req.files.map((file) => file.path);
+      const filePaths = req.files.map((file) => file.filename);
+      filePaths.forEach((file, i) => {
+        filePaths[i] = `${process.env.BASE_URL}products_pict/${file}`;
+      });
 
       const getProduct = await product.findOne({
         where: {
@@ -275,6 +282,19 @@ class ProductController {
           updatedAt: new Date(),
         });
       }
+
+      if (req.files && getProduct.product_pict) {
+        // Delete File
+        getProduct.product_pict.forEach(dataGambar => {
+          const DIR =
+            "public/products_pict/" +
+            dataGambar.split(`${process.env.BASE_URL}products_pict/`)[1];
+          if (fs.existsSync(DIR)) {
+            fs.unlinkSync(DIR);
+          }
+        });
+      }
+
       res.status(200).json({
         message: "Success update product",
       });
@@ -311,6 +331,19 @@ class ProductController {
           id,
         },
       });
+
+      if (findProduct.product_pict) {
+        // Delete File
+        findProduct.product_pict.forEach(dataGambar => {
+          const DIR =
+            "public/products_pict/" +
+            dataGambar.split(`${process.env.BASE_URL}products_pict/`)[1];
+          if (fs.existsSync(DIR)) {
+            fs.unlinkSync(DIR);
+          }
+        });
+      }
+
       res.status(200).json({
         message: "Success delete product",
       });
@@ -392,10 +425,17 @@ class ProductController {
           status: "pending",
         },
       });
-      res.status(200).json({
-        message: "Offered products",
-        data: offeredProducts,
-      });
+      if (!offeredProducts[0]) {
+        throw {
+          status: 404,
+          message: "Product not found",
+        };
+      } else {
+        res.status(200).json({
+          message: "Offered products",
+          data: offeredProducts,
+        });
+      }
     } catch (err) {
       next(err);
     }

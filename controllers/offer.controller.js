@@ -174,7 +174,7 @@ class OfferController {
       }
       if (findOffer.product.user_id !== req.user.id) {
         throw {
-          status: 400,
+          status: 401,
           message: "Unauthorized",
         };
       }

@@ -3,11 +3,11 @@ const fs = require("fs");
 
 const storageUser = multer.diskStorage({
   destination: function (req, file, cb) {
-    if (fs.existsSync("public/users/")) {
-      cb(null, "public/users");
+    if (fs.existsSync("public/users_pict/")) {
+      cb(null, "public/users_pict");
     } else {
-      fs.mkdirSync("public/users", { recursive: true });
-      cb(null, "public/users");
+      fs.mkdirSync("public/users_pict", { recursive: true });
+      cb(null, "public/users_pict");
     }
   },
   filename: function (req, file, cb) {
@@ -18,11 +18,11 @@ const storageUser = multer.diskStorage({
 });
 const storageProduct = multer.diskStorage({
   destination: function (req, file, cb) {
-    if (fs.existsSync("public/products/")) {
-      cb(null, "public/products");
+    if (fs.existsSync("public/products_pict/")) {
+      cb(null, "public/products_pict");
     } else {
-      fs.mkdirSync("public/products", { recursive: true });
-      cb(null, "public/products");
+      fs.mkdirSync("public/products_pict", { recursive: true });
+      cb(null, "public/products_pict");
     }
   },
   filename: function (req, file, cb) {
