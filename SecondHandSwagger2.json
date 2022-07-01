@@ -9,6 +9,10 @@
     {
       "url": "http://localhost:3000",
       "variables": {}
+    },
+    {
+      "url": "https://finalsecondhand-staging.herokuapp.com",
+      "variables": {}
     }
   ],
   "paths": {
