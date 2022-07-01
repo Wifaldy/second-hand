@@ -3,9 +3,8 @@ const app = express();
 const errorHandler = require("./error_handler");
 const router = require("./routes");
 const swaggerUI = require("swagger-ui-express");
-const swaggerDocument = require("./SecondHandSwagger.json");
+const swaggerDocument = require("./SecondHandSwagger2.json");
 const cors = require("cors");
-const isAuth = require("./middlewares/isAuth");
 
 app.use(express.urlencoded({ extended: false }));
 app.use(express.json());
