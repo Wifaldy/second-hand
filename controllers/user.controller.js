@@ -1,7 +1,7 @@
 const { user } = require("../models");
 const { validationResult } = require("express-validator");
-const fs = require("fs");
 require("dotenv").config();
+const uploadToCloudinary = require("../services/cloudinary.service");
 
 class UserController {
   static async detailUser(req, res, next) {
@@ -39,9 +39,6 @@ class UserController {
           message: "User not found",
         };
       }
-      if (req.file) {
-        req.body.profile_pict = `${process.env.BASE_URL}users_pict/${req.file.filename}`;
-      }
       const { name, city_id, address, no_hp } = req.body;
       const errors = validationResult(req.body);
       if (!errors.isEmpty()) {
@@ -50,13 +47,15 @@ class UserController {
           message: errors.array()[0].msg,
         };
       }
+      const filePath = await uploadToCloudinary(req.file, "user");
+      console.log(filePath);
       await user.update(
         {
           name,
           city_id,
           address,
           no_hp,
-          profile_pict: req.body.profile_pict,
+          profile_pict: filePath,
         },
         {
           where: {
@@ -64,15 +63,7 @@ class UserController {
           },
         }
       );
-      if (req.file && dataUser.profile_pict) {
-        // Delete File
-        const DIR =
-          "public/users_pict/" +
-          dataUser.profile_pict.split(`${process.env.BASE_URL}users_pict/`)[1];
-        if (fs.existsSync(DIR)) {
-          fs.unlinkSync(DIR);
-        }
-      }
+
       res.status(200).json({
         message: "Successfully update Users",
       });

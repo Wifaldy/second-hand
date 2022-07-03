@@ -1,6 +1,5 @@
 const { Op } = require("sequelize");
-const fs = require('fs');
-const cloudinaryProvider = require('../config/cloudinary.config');
+const fs = require("fs");
 const {
   product,
   offer,
@@ -13,7 +12,6 @@ const {
 const { validationResult } = require("express-validator");
 const sequelize = require("sequelize");
 
-const { cloudinary_js_config } = require("../config/cloudinary.config");
 const uploadToCloudinary = require("../services/cloudinary.service");
 
 require("dotenv").config();
@@ -25,7 +23,6 @@ class ProductController {
   static async listProduct(req, res, next) {
     try {
       const userId = req.user ? req.user.id : 0;
-      console.log(req.user);
       const categoryName = req.query.category || "";
       const searchName = req.query.search || "";
       // const { offset, limit } = req.query;
@@ -176,9 +173,7 @@ class ProductController {
       }
       const { name, price, description, categories } = req.body;
 
-
-      const filePaths = await uploadToCloudinary(req.files, 'product');
-      console.log(filePaths);
+      const filePaths = await uploadToCloudinary(req.files, "product");
 
       //Isi file paths => public//user//
       //Product pict => (URL)/public/user/detail-gambar.ext
@@ -228,10 +223,7 @@ class ProductController {
       }
       const { name, price, description, categories } = req.body;
       const { id } = req.params;
-      const filePaths = req.files.map((file) => file.filename);
-      filePaths.forEach((file, i) => {
-        filePaths[i] = `${process.env.BASE_URL}products_pict/${file}`;
-      });
+      const filePaths = await uploadToCloudinary(req.files, "product");
 
       const getProduct = await product.findOne({
         where: {
@@ -246,7 +238,7 @@ class ProductController {
         };
       }
 
-      const productUpdate = await product.update(
+      await product.update(
         {
           name,
           price,
@@ -280,18 +272,6 @@ class ProductController {
           category_id: Number(newTag),
           createdAt: new Date(),
           updatedAt: new Date(),
-        });
-      }
-
-      if (req.files && getProduct.product_pict) {
-        // Delete File
-        getProduct.product_pict.forEach(dataGambar => {
-          const DIR =
-            "public/products_pict/" +
-            dataGambar.split(`${process.env.BASE_URL}products_pict/`)[1];
-          if (fs.existsSync(DIR)) {
-            fs.unlinkSync(DIR);
-          }
         });
       }
 
@@ -334,7 +314,7 @@ class ProductController {
 
       if (findProduct.product_pict) {
         // Delete File
-        findProduct.product_pict.forEach(dataGambar => {
+        findProduct.product_pict.forEach((dataGambar) => {
           const DIR =
             "public/products_pict/" +
             dataGambar.split(`${process.env.BASE_URL}products_pict/`)[1];

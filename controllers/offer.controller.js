@@ -165,7 +165,6 @@ class OfferController {
           id: id,
         },
       });
-      console.log(req.user);
       if (!findOffer) {
         throw {
           status: 404,
