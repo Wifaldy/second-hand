@@ -15,7 +15,7 @@ module.exports = {
      */
     await queryInterface.bulkInsert("offers", [
       {
-        buyer_id: 1,
+        buyer_id: 2,
         product_id: 1,
         price_offer: 100,
         status: "pending",
@@ -23,7 +23,7 @@ module.exports = {
         updatedAt: new Date(),
       },
       {
-        buyer_id: 2,
+        buyer_id: 1,
         product_id: 2,
         price_offer: 200,
         status: "pending",
