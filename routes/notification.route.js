@@ -8,7 +8,7 @@ notificationRouter.get("/", isAuth, NotificationController.getNotification);
 notificationRouter.put(
   "/:id",
   isAuth,
-  [param("id").isInt().withMessage("id must be an integer")],
+  [param("id").isNumeric().withMessage("id must be a number")],
   NotificationController.updateNotification
 );
 
