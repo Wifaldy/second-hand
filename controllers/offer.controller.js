@@ -20,7 +20,7 @@ class OfferController {
           message: "Product not found",
         };
       }
-      if (offeringProduct.id === req.user.id) {
+      if (offeringProduct.user_id === req.user.id) {
         throw {
           status: 400,
           message: "You can't offer your own product",
@@ -101,41 +101,29 @@ class OfferController {
           message: errors.array()[0].msg,
         };
       }
-      let sellerId = await offer.findByPk(id, {
-        include: [
-          {
-            model: product,
-          },
-          {
-            model: user,
-          },
-        ],
-      });
-      sellerId = sellerId.user.id;
-      if (sellerId !== req.user.id) {
-        throw {
-          status: 400,
-          message: "Unauthorized",
-        };
-      }
-      const detailOffering = await offer.findByPk(id, {
+      const detailOffering = await offer.findOne({
         include: [
           {
             model: user,
-            where: {
-              id: sellerId,
-            },
-            attributes: { exclude: ["password"] },
           },
           {
             model: product,
           },
         ],
+        where: {
+          id: id,
+        },
       });
       if (!detailOffering) {
         throw {
           status: 404,
           message: "Offer not found",
+        };
+      }
+      if (detailOffering.product.user_id !== req.user.id) {
+        throw {
+          status: 401,
+          message: "Unauthorized",
         };
       }
       res.status(200).json({

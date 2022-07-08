@@ -14,13 +14,12 @@ class UserController {
       });
       if (!dataUser) {
         throw {
-          status: 401,
-          message: "Unauthorized request",
+          status: 404,
+          message: "Data user not found",
         };
-      } else {
-        // res.status(200).jsonn(dataUser)
-        res.status(200).json(dataUser);
       }
+      // res.status(200).jsonn(dataUser)
+      res.status(200).json({ data: dataUser });
     } catch (error) {
       next(error);
     }

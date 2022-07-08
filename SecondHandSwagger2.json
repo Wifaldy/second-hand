@@ -4122,7 +4122,7 @@
             "style": "simple",
             "schema": {
               "type": "string",
-              "example": "accepted"
+              "enum": ["accepted", "rejected", "success", "cancelled"]
             }
           }
         ],
