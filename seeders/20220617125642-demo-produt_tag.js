@@ -26,7 +26,7 @@ module.exports = {
       },
       {
         category_id: 3,
-        product_id: 1,
+        product_id: 3,
         createdAt: new Date(),
         updatedAt: new Date(),
       },
