@@ -2,7 +2,6 @@ const cloudinaryProvider = require("../config/cloudinary.config");
 const fs = require("fs");
 const directoryList = ["user", "product"];
 
-
 /**
  * Returns path dari cloudinary.
  * Semua param wajib diisi.
