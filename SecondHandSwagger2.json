@@ -1665,7 +1665,7 @@
                 },
                 "example": {
                   "status": 400,
-                  "message": "Product id must be an integer"
+                  "message": "Product id must be a number"
                 }
               }
             }
@@ -7509,7 +7509,7 @@
         },
         "example": {
           "status": 400,
-          "message": "Product id must be an integer"
+          "message": "Product id must be a number"
         }
       },
       "200-ProductDetailById": {
@@ -7669,7 +7669,7 @@
         },
         "example": {
           "status": 400,
-          "message": "Product id must be an integer"
+          "message": "Product id must be a number"
         }
       },
       "400-GetIdOfferingProduct-Productisalreadyoffered1": {
@@ -8084,7 +8084,7 @@
         },
         "example": {
           "status": 400,
-          "message": "Product id must be an integer"
+          "message": "Product id must be a number"
         }
       },
       "200-DeleteProductSuccess": {
@@ -8373,7 +8373,7 @@
         },
         "example": {
           "status": 400,
-          "message": "Product id must be an integer"
+          "message": "Product id must be a number"
         }
       },
       "400-CreateWishlistProductnotFound": {

@@ -39,7 +39,7 @@ class UserController {
         };
       }
       const { name, city_id, address, no_hp } = req.body;
-      const errors = validationResult(req.body);
+      const errors = validationResult(req);
       if (!errors.isEmpty()) {
         throw {
           status: 400,

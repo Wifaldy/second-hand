@@ -38,8 +38,8 @@ productRouter.post(
     body("price")
       .notEmpty()
       .withMessage("Price is required")
-      .isInt()
-      .withMessage("Price must be an integer"),
+      .isNumeric()
+      .withMessage("Price must be a number"),
     body("description").notEmpty().withMessage("Description is required"),
     body("categories").notEmpty().withMessage("Please fill a valid categories"),
     body("product_pict").custom((value, { req }) => {
@@ -59,13 +59,13 @@ productRouter.put(
   upload.array("product_pict"),
   isAuth,
   [
-    param("id").isInt().withMessage("Product id must be an integer"),
+    param("id").isNumeric().withMessage("Product id must be a number"),
     body("name").notEmpty().withMessage("Product name is required"),
     body("price")
       .notEmpty()
       .withMessage("Price is required")
-      .isInt()
-      .withMessage("Price must be an integer"),
+      .isNumeric()
+      .withMessage("Price must be a number"),
     body("description").notEmpty().withMessage("Description is required"),
     body("categories").notEmpty().withMessage("Please fill a valid categories"),
     body("product_pict").custom((value, { req }) => {
@@ -82,14 +82,14 @@ productRouter.put(
 
 productRouter.get(
   "/:id",
-  [param("id").isInt().withMessage("Product id must be an integer")],
+  [param("id").isNumeric().withMessage("Product id must be a number")],
   ProductController.detailProduct
 );
 
 productRouter.delete(
   "/:id",
   isAuth,
-  [param("id").isInt().withMessage("Product id must be an integer")],
+  [param("id").isNumeric().withMessage("Product id must be a number")],
   ProductController.deleteProduct
 );
 
