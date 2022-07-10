@@ -47,7 +47,6 @@ class UserController {
         };
       }
       const filePath = await uploadToCloudinary(req.file, "user");
-      console.log(filePath);
       await user.update(
         {
           name,

@@ -229,7 +229,7 @@ describe("POST /product", () => {
   it("Success", (done) => {
     request(app)
       .post("/product")
-      .set("authorization", `Bearer ${token}`)
+      .set("Authorization", `Bearer ${token}`)
       .field("name", "product 1")
       .field("price", 100)
       .field("description", "description 1")
@@ -241,7 +241,7 @@ describe("POST /product", () => {
         expect(res.body.message).toBe("Success add new product");
         done();
       });
-  });
+  }, 10000);
   it("Field violation", (done) => {
     request(app)
       .post("/product")
@@ -259,22 +259,55 @@ describe("POST /product", () => {
   });
 });
 
-// describe("PUT /product/:id", () => {
-//   request(app)
-//     .post("/product")
-//     .set("authorization", `Bearer ${token}`)
-//     .field("name", "product 1")
-//     .field("price", 100)
-//     .field("description", "description 1")
-//     .field("categories", [1, 2, 3])
-//     .attach("product_pict", inputPict)
-//     .end((err, res) => {
-//       if (err) done(err);
-//       expect(res.status).toBe(200);
-//       expect(res.body.message).toBe("Success update product");
-//       done();
-//     });
-// });
+describe("PUT /product/:id", () => {
+  it("Success", (done) => {
+    request(app)
+      .put("/product/1")
+      .set("authorization", `Bearer ${token}`)
+      .field("name", "product 1")
+      .field("price", 100)
+      .field("description", "description 1")
+      .field("categories", [1, 2, 3])
+      .attach("product_pict", inputPict)
+      .end((err, res) => {
+        if (err) done(err);
+        expect(res.status).toBe(200);
+        expect(res.body.message).toBe("Success update product");
+        done();
+      });
+  }, 10000);
+  it("Field violation", (done) => {
+    request(app)
+      .put("/product/1")
+      .set("authorization", `Bearer ${token}`)
+      .field("price", 100)
+      .field("description", "description 1")
+      .field("categories", [1, 2, 3])
+      .attach("product_pict", inputPict)
+      .end((err, res) => {
+        if (err) done(err);
+        expect(res.status).toBe(400);
+        expect(res.body.message).toBe("Product name is required");
+        done();
+      });
+  });
+  it("Unauthorized", (done) => {
+    request(app)
+      .put("/product/2")
+      .set("authorization", `Bearer ${token}`)
+      .field("name", "product 1")
+      .field("price", 100)
+      .field("description", "description 1")
+      .field("categories", [1, 2, 3])
+      .attach("product_pict", inputPict)
+      .end((err, res) => {
+        if (err) done(err);
+        expect(res.status).toBe(401);
+        expect(res.body.message).toBe("The product is not yours");
+        done();
+      });
+  }, 10000);
+});
 
 describe("DELETE /product/:id", () => {
   it("Success", (done) => {
