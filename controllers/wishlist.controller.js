@@ -63,6 +63,30 @@ class WishlistController {
       next(err);
     }
   }
+  static async deleteWishlist(req, res, next) {
+    try {
+      const { id } = req.params;
+      const findWishlist = await wishlist.findByPk(id);
+      if (!findWishlist) {
+        throw {
+          status: 404,
+          message: "Wishlist not found",
+        };
+      }
+      if (findWishlist.user_id !== req.user.id) {
+        throw {
+          status: 401,
+          message: "Unauthorized",
+        };
+      }
+      await findWishlist.destroy();
+      res.status(200).json({
+        message: "Success delete wishlist",
+      });
+    } catch (err) {
+      next(err);
+    }
+  }
 }
 
 module.exports = WishlistController;

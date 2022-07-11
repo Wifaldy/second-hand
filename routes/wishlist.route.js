@@ -12,4 +12,11 @@ wishlistRouter.post(
   WishlistController.addToWishlist
 );
 
+wishlistRouter.delete(
+  "/:id",
+  isAuth,
+  [param("id").isNumeric().withMessage("Product id must be a number")],
+  WishlistController.deleteWishlist
+);
+
 module.exports = wishlistRouter;

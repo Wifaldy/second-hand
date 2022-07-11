@@ -175,3 +175,39 @@ describe("POST /wishlist/:id", () => {
       });
   });
 });
+
+describe("DELETE /wishlist/:id", () => {
+  it("Success", (done) => {
+    request(app)
+      .delete("/wishlist/1")
+      .set("Authorization", `Bearer ${token}`)
+      .end((err, res) => {
+        if (err) done(err);
+        expect(res.status).toBe(200);
+        expect(res.body.message).toBe("Success delete wishlist");
+        done();
+      });
+  });
+  it("Not found", (done) => {
+    request(app)
+      .delete("/wishlist/10")
+      .set("Authorization", `Bearer ${token}`)
+      .end((err, res) => {
+        if (err) done(err);
+        expect(res.status).toBe(404);
+        expect(res.body.message).toBe("Wishlist not found");
+        done();
+      });
+  });
+  it("Unauthorized", (done) => {
+    request(app)
+      .delete("/wishlist/1")
+      .set("Authorization", `Bearer ${token1}`)
+      .end((err, res) => {
+        if (err) done(err);
+        expect(res.status).toBe(401);
+        expect(res.body.message).toBe("Unauthorized");
+        done();
+      });
+  });
+});
