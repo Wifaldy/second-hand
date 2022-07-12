@@ -14,13 +14,12 @@ class UserController {
       });
       if (!dataUser) {
         throw {
-          status: 401,
-          message: "Unauthorized request",
+          status: 404,
+          message: "Data user not found",
         };
-      } else {
-        // res.status(200).jsonn(dataUser)
-        res.status(200).json(dataUser);
       }
+      // res.status(200).jsonn(dataUser)
+      res.status(200).json({ data: dataUser });
     } catch (error) {
       next(error);
     }
@@ -40,7 +39,7 @@ class UserController {
         };
       }
       const { name, city_id, address, no_hp } = req.body;
-      const errors = validationResult(req.body);
+      const errors = validationResult(req);
       if (!errors.isEmpty()) {
         throw {
           status: 400,
@@ -48,7 +47,6 @@ class UserController {
         };
       }
       const filePath = await uploadToCloudinary(req.file, "user");
-      console.log(filePath);
       await user.update(
         {
           name,

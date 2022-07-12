@@ -10,7 +10,7 @@ class NotificationController {
           user_id: req.user.id,
         },
       });
-      if (!notification) {
+      if (findNotification.length < 1) {
         throw {
           status: 404,
           message: "Notification data is empty",

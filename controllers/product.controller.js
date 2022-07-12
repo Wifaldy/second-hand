@@ -311,19 +311,6 @@ class ProductController {
           id,
         },
       });
-
-      if (findProduct.product_pict) {
-        // Delete File
-        findProduct.product_pict.forEach((dataGambar) => {
-          const DIR =
-            "public/products_pict/" +
-            dataGambar.split(`${process.env.BASE_URL}products_pict/`)[1];
-          if (fs.existsSync(DIR)) {
-            fs.unlinkSync(DIR);
-          }
-        });
-      }
-
       res.status(200).json({
         message: "Success delete product",
       });
@@ -380,13 +367,13 @@ class ProductController {
           ],
         },
       });
-      if (soldProducts.length < 1) {
+      if (soldProducts.length === 0) {
         throw {
           status: 404,
           message: "Product not found",
         };
       }
-      res.status(200).json(soldProducts);
+      res.status(200).json({ data: soldProducts });
     } catch (error) {
       next(error);
     }

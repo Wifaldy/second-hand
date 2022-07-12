@@ -6,12 +6,12 @@ const { body, param } = require("express-validator");
 offerRouter.post(
   "/:id",
   [
-    param("id").isInt().withMessage("Product id must be an integer"),
+    param("id").isNumeric().withMessage("Product id must be a number"),
     body("price_offer")
       .notEmpty()
       .withMessage("Price is required")
-      .isInt()
-      .withMessage("Price must be an integer"),
+      .isNumeric()
+      .withMessage("Price must be a number"),
   ],
   isAuth,
   OfferController.offeringProduct
@@ -19,14 +19,14 @@ offerRouter.post(
 offerRouter.get(
   "/is-offering/:id",
   isAuth,
-  [param("id").isInt().withMessage("Product id must be an integer")],
+  [param("id").isNumeric().withMessage("Product id must be a number")],
   OfferController.isOffering
 );
 
 offerRouter.get(
   "/:id",
   isAuth,
-  [param("id").isInt().withMessage("Product id must be an integer")],
+  [param("id").isNumeric().withMessage("Product id must be a number")],
   OfferController.detailOffering
 );
 
@@ -34,7 +34,7 @@ offerRouter.post(
   "/:id/:status",
   isAuth,
   [
-    param("id").isInt().withMessage("Product id must be an integer"),
+    param("id").isNumeric().withMessage("Product id must be a number"),
     param("status")
       .isIn(["accepted", "rejected", "success", "cancelled"])
       .withMessage("Status must be accepted, rejected, success or cancelled"),

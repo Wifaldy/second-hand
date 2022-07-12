@@ -32,6 +32,16 @@ module.exports = {
         createdAt: new Date(),
         updatedAt: new Date(),
       },
+      {
+        user_id: 1,
+        name: "product 3",
+        price: 300,
+        description: "description 3",
+        status: "sold",
+        product_pict: ["pict 2", "pict 3"],
+        createdAt: new Date(),
+        updatedAt: new Date(),
+      },
     ]);
   },
 
