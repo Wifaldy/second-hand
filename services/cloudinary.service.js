@@ -35,8 +35,15 @@ async function uploadToCloudinary(fileData, directoryType) {
 }
 
 const deletePict = async (imgUrl) => {
-  const splitURL = imgUrl.split('/')
-  const imageId = splitURL[splitURL.length - 1].slice(0, splitURL[splitURL.length - 1].length - 4)
-  await cloudinaryProvider.uploader.destroy(imageId)
+  try {
+    const splitURL = imgUrl.split('/')
+    const imageId = splitURL[splitURL.length - 1].slice(0, splitURL[splitURL.length - 1].length - 4)
+    await cloudinaryProvider.uploader.destroy(imageId, (err, res) => {
+      console.log(err);
+    }) 
+  } catch (error) {
+    throw new Error(error);
+  }
 }
-module.exports = uploadToCloudinary;
+
+module.exports = {uploadToCloudinary, deletePict};
