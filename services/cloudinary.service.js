@@ -1,6 +1,6 @@
 const cloudinaryProvider = require("../config/cloudinary.config");
 const fs = require("fs");
-const directoryList = ["user", "product"];
+const directoryList = ["user", "product", "preview"];
 
 /**
  * Returns path dari cloudinary.
@@ -33,12 +33,20 @@ async function uploadToCloudinary(fileData, directoryType) {
   return result.secure_url; // cloud file
 }
 
-const deletePict = async (imgUrl) => {
-  const splitURL = imgUrl.split("/");
-  const imageId = splitURL[splitURL.length - 1].slice(
-    0,
-    splitURL[splitURL.length - 1].length - 4
-  );
-  await cloudinaryProvider.uploader.destroy(imageId);
+const deletePict = async (imgUrl, directoryType) => {
+  try {
+    const splitURL = imgUrl.split("/");
+    const imageId = splitURL[splitURL.length - 1].slice(
+      0,
+      splitURL[splitURL.length - 1].length - 4
+    );
+    await cloudinaryProvider.uploader.destroy(`${directoryType}/${imageId}`, {
+      invalidate: true,
+      resource_type: "image",
+    });
+  } catch (error) {
+    throw new Error(error);
+  }
 };
-module.exports = uploadToCloudinary;
+
+module.exports = { uploadToCloudinary, deletePict };
