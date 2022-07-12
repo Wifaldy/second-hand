@@ -29,6 +29,8 @@ productRouter.get("/user", isAuth, ProductController.productByUser);
 
 productRouter.get("/offered", isAuth, ProductController.getOfferedProducts);
 
+productRouter.get("/re-edit", isAuth, ProductController.reEditProduct);
+
 productRouter.post(
   "/",
   upload.array("product_pict"),
@@ -93,13 +95,11 @@ productRouter.delete(
   ProductController.deleteProduct
 );
 
-// productRouter.post(
-//   "/product-preview",
-//   upload.array("product_pict"),
-//   isAuth,
-//   ProductController.previewProduct
-// );
-
-// productRouter.get("/re-edit", isAuth, ProductController.reEditProduct);
+productRouter.post(
+  "/preview",
+  upload.array("product_pict"),
+  isAuth,
+  ProductController.previewProduct
+);
 
 module.exports = productRouter;

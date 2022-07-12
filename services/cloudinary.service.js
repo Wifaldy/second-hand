@@ -10,7 +10,6 @@ const directoryList = ["user", "product"];
  * @return {string | array} Path dari cloudinary.
  */
 async function uploadToCloudinary(fileData, directoryType) {
-
   if (!directoryList.includes(directoryType) || !directoryType)
     throw new Error(
       "Please enter correct directory type. Available type: user, product"
@@ -35,8 +34,11 @@ async function uploadToCloudinary(fileData, directoryType) {
 }
 
 const deletePict = async (imgUrl) => {
-  const splitURL = imgUrl.split('/')
-  const imageId = splitURL[splitURL.length - 1].slice(0, splitURL[splitURL.length - 1].length - 4)
-  await cloudinaryProvider.uploader.destroy(imageId)
-}
+  const splitURL = imgUrl.split("/");
+  const imageId = splitURL[splitURL.length - 1].slice(
+    0,
+    splitURL[splitURL.length - 1].length - 4
+  );
+  await cloudinaryProvider.uploader.destroy(imageId);
+};
 module.exports = uploadToCloudinary;

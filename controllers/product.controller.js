@@ -8,7 +8,7 @@ const {
   user,
   notification,
 } = require("../models");
-// const ProductSingleton = require("../services/temp_product_data.service");
+const ProductSingleton = require("../services/temp_product_data.service");
 const { validationResult } = require("express-validator");
 const sequelize = require("sequelize");
 
@@ -123,44 +123,43 @@ class ProductController {
     }
   }
 
-  // static async previewProduct(req, res, next) {
-  //     try {
-  //         //   const { name, price, category, description } = req.body;
-  //         const filePaths = req.files.map((file) => file.path);
-  //         console.log(filePaths);
+  static async previewProduct(req, res, next) {
+    try {
+      //   const { name, price, category, description } = req.body;
+      const filePaths = req.files.map((file) => file.path);
+      console.log(filePaths);
 
-  //         const dataTemp = ProductSingleton.getInstance();
-  //         dataTemp.setData = {
-  //             ...req.body,
-  //             product_pict: filePaths,
-  //         };
+      const dataTemp = ProductSingleton.getInstance();
+      dataTemp.setData = {
+        ...req.body,
+        product_pict: filePaths,
+      };
+      res.status(200).json({
+        preview_data: dataTemp.getData,
+      });
+    } catch (error) {
+      next(error);
+    }
+  }
 
-  //         res.status(200).json({
-  //             preview_data: dataTemp.getData,
-  //         });
-  //     } catch (error) {
-  //         next(error);
-  //     }
-  // }
-
-  // static async reEditProduct(req, res, next) {
-  //     try {
-  //         const dataTemp = ProductSingleton.getInstance();
-  //         if (!dataTemp.getData) {
-  //             throw {
-  //                 status: 404,
-  //                 message: "Isi update dulu bos",
-  //             };
-  //         }
-  //         res.status(200).json({
-  //             preview_data: dataTemp.getData,
-  //         });
-  //         dataTemp.resetData();
-  //     } catch (error) {
-  //         console.log(error);
-  //         next(error);
-  //     }
-  // }
+  static async reEditProduct(req, res, next) {
+    try {
+      const dataTemp = ProductSingleton.getInstance();
+      if (!dataTemp.getData) {
+        throw {
+          status: 404,
+          message: "Isi update dulu bos",
+        };
+      }
+      res.status(200).json({
+        preview_data: dataTemp.getData,
+      });
+      dataTemp.resetData();
+    } catch (error) {
+      console.log(error);
+      next(error);
+    }
+  }
 
   static async createProduct(req, res, next) {
     try {
