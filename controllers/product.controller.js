@@ -141,11 +141,12 @@ class ProductController {
 
       const dataTemp = ProductSingleton.getInstance();
       dataTemp.setData = {
+        user_id: req.user.id,
         ...req.body,
         product_pict: filePaths,
       };
       res.status(200).json({
-        preview_data: dataTemp.getData,
+        preview_data: dataTemp.getData(req.user.id),
       });
     } catch (error) {
       next(error);
@@ -155,16 +156,16 @@ class ProductController {
   static async reEditProduct(req, res, next) {
     try {
       const dataTemp = ProductSingleton.getInstance();
-      if (!dataTemp.getData) {
+      if (!dataTemp.getData(req.user.id)) {
         throw {
           status: 404,
           message: "Product not found",
         };
       }
       res.status(200).json({
-        preview_data: dataTemp.getData,
+        preview_data: dataTemp.getData(req.user.id),
       });
-      dataTemp.resetData();
+      dataTemp.resetData(req.user.id);
     } catch (error) {
       next(error);
     }
