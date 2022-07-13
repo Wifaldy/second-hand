@@ -1,5 +1,4 @@
 const { Op } = require("sequelize");
-const fs = require("fs");
 const {
   product,
   offer,
@@ -7,6 +6,7 @@ const {
   category,
   user,
   notification,
+  city,
 } = require("../models");
 const ProductSingleton = require("../services/temp_product_data.service");
 const { validationResult } = require("express-validator");
@@ -138,11 +138,23 @@ class ProductController {
       }
 
       const filePaths = await uploadToCloudinary(req.files, "preview");
-
+      const findUser = await user.findByPk(req.user.id, {
+        attributes: { exclude: ["password", "id"] },
+        include: {
+          model: city,
+        },
+      });
+      if (!findUser) {
+        throw {
+          status: 404,
+          message: "User not found",
+        };
+      }
       const dataTemp = ProductSingleton.getInstance();
       dataTemp.setData = {
         user_id: req.user.id,
         ...req.body,
+        ...findUser.dataValues,
         product_pict: filePaths,
       };
       res.status(200).json({

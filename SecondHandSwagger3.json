@@ -3261,7 +3261,7 @@
             "content": {
               "application/json; charset=utf-8": {
                 "schema": {
-                  "$ref": "#/components/schemas/ReEditProduct"
+                  "$ref": "#/components/schemas/200-ReEditProduct"
                 },
                 "example": {
                   "preview_data": {
@@ -5071,6 +5071,408 @@
                 "example": {
                   "status": 404,
                   "message": "Product not found"
+                }
+              }
+            }
+          }
+        },
+        "deprecated": false,
+        "security": [
+          {
+            "bearer": []
+          }
+        ]
+      },
+      "get": {
+        "tags": ["Offer"],
+        "summary": "Detail Offer",
+        "operationId": "DetailOffer",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "",
+            "required": true,
+            "style": "simple",
+            "schema": {
+              "type": "integer",
+              "format": "int32",
+              "example": 1
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "headers": {
+              "X-Powered-By": {
+                "content": {
+                  "text/plain": {
+                    "schema": {
+                      "type": "string"
+                    },
+                    "example": "Express"
+                  }
+                }
+              },
+              "Access-Control-Allow-Origin": {
+                "content": {
+                  "text/plain": {
+                    "schema": {
+                      "type": "string"
+                    },
+                    "example": "*"
+                  }
+                }
+              },
+              "Content-Length": {
+                "content": {
+                  "text/plain": {
+                    "schema": {
+                      "type": "string"
+                    },
+                    "example": "693"
+                  }
+                }
+              },
+              "ETag": {
+                "content": {
+                  "text/plain": {
+                    "schema": {
+                      "type": "string"
+                    },
+                    "example": "W/\"2b5-GKHV4SvrjEHN/tjESBb6EytwJL0\""
+                  }
+                }
+              },
+              "Date": {
+                "content": {
+                  "text/plain": {
+                    "schema": {
+                      "type": "string"
+                    },
+                    "example": "Wed, 13 Jul 2022 14:08:51 GMT"
+                  }
+                }
+              },
+              "Connection": {
+                "content": {
+                  "text/plain": {
+                    "schema": {
+                      "type": "string"
+                    },
+                    "example": "keep-alive"
+                  }
+                }
+              },
+              "Keep-Alive": {
+                "content": {
+                  "text/plain": {
+                    "schema": {
+                      "type": "string"
+                    },
+                    "example": "timeout=5"
+                  }
+                }
+              }
+            },
+            "content": {
+              "application/json; charset=utf-8": {
+                "schema": {
+                  "$ref": "#/components/schemas/200-DetailOffer"
+                },
+                "example": {
+                  "message": "Detail Offer",
+                  "data": {
+                    "id": 1,
+                    "buyer_id": 2,
+                    "product_id": 1,
+                    "price_offer": 100,
+                    "status": "pending",
+                    "createdAt": "2022-07-13T13:58:46.492Z",
+                    "updatedAt": "2022-07-13T13:58:46.492Z",
+                    "user": {
+                      "id": 2,
+                      "name": "Demo User 2",
+                      "email": "demouser2@gmail.com",
+                      "password": "$2a$10$iKScZNy8rEPkKlZRXMBhL.uMWzVfjvf3hCC34QKDPJKPCtVmwGUJu",
+                      "profile_pict": null,
+                      "city_id": null,
+                      "address": null,
+                      "no_hp": null,
+                      "createdAt": "2022-07-13T13:58:46.310Z",
+                      "updatedAt": "2022-07-13T13:58:46.310Z"
+                    },
+                    "product": {
+                      "id": 1,
+                      "user_id": 1,
+                      "name": "product 1",
+                      "price": 100,
+                      "description": "description 1",
+                      "status": "available",
+                      "product_pict": ["pict 1", "pict 2"],
+                      "createdAt": "2022-07-13T13:58:46.319Z",
+                      "updatedAt": "2022-07-13T13:58:46.319Z"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "headers": {
+              "X-Powered-By": {
+                "content": {
+                  "text/plain": {
+                    "schema": {
+                      "type": "string"
+                    },
+                    "example": "Express"
+                  }
+                }
+              },
+              "Access-Control-Allow-Origin": {
+                "content": {
+                  "text/plain": {
+                    "schema": {
+                      "type": "string"
+                    },
+                    "example": "*"
+                  }
+                }
+              },
+              "Content-Length": {
+                "content": {
+                  "text/plain": {
+                    "schema": {
+                      "type": "string"
+                    },
+                    "example": "39"
+                  }
+                }
+              },
+              "ETag": {
+                "content": {
+                  "text/plain": {
+                    "schema": {
+                      "type": "string"
+                    },
+                    "example": "W/\"27-IZAFFKvXCVduS1nEmYD90dhkcuM\""
+                  }
+                }
+              },
+              "Date": {
+                "content": {
+                  "text/plain": {
+                    "schema": {
+                      "type": "string"
+                    },
+                    "example": "Wed, 13 Jul 2022 14:09:11 GMT"
+                  }
+                }
+              },
+              "Connection": {
+                "content": {
+                  "text/plain": {
+                    "schema": {
+                      "type": "string"
+                    },
+                    "example": "keep-alive"
+                  }
+                }
+              },
+              "Keep-Alive": {
+                "content": {
+                  "text/plain": {
+                    "schema": {
+                      "type": "string"
+                    },
+                    "example": "timeout=5"
+                  }
+                }
+              }
+            },
+            "content": {
+              "application/json; charset=utf-8": {
+                "schema": {
+                  "$ref": "#/components/schemas/401-DetailOfferUnauthorized1"
+                },
+                "example": {
+                  "status": 401,
+                  "message": "Unauthorized"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found",
+            "headers": {
+              "X-Powered-By": {
+                "content": {
+                  "text/plain": {
+                    "schema": {
+                      "type": "string"
+                    },
+                    "example": "Express"
+                  }
+                }
+              },
+              "Access-Control-Allow-Origin": {
+                "content": {
+                  "text/plain": {
+                    "schema": {
+                      "type": "string"
+                    },
+                    "example": "*"
+                  }
+                }
+              },
+              "Content-Length": {
+                "content": {
+                  "text/plain": {
+                    "schema": {
+                      "type": "string"
+                    },
+                    "example": "42"
+                  }
+                }
+              },
+              "ETag": {
+                "content": {
+                  "text/plain": {
+                    "schema": {
+                      "type": "string"
+                    },
+                    "example": "W/\"2a-t6/d/4JywoOYcc9+ou8VYpB3HWQ\""
+                  }
+                }
+              },
+              "Date": {
+                "content": {
+                  "text/plain": {
+                    "schema": {
+                      "type": "string"
+                    },
+                    "example": "Wed, 13 Jul 2022 14:09:53 GMT"
+                  }
+                }
+              },
+              "Connection": {
+                "content": {
+                  "text/plain": {
+                    "schema": {
+                      "type": "string"
+                    },
+                    "example": "keep-alive"
+                  }
+                }
+              },
+              "Keep-Alive": {
+                "content": {
+                  "text/plain": {
+                    "schema": {
+                      "type": "string"
+                    },
+                    "example": "timeout=5"
+                  }
+                }
+              }
+            },
+            "content": {
+              "application/json; charset=utf-8": {
+                "schema": {
+                  "$ref": "#/components/schemas/404-DetailOffernotFound1"
+                },
+                "example": {
+                  "status": 404,
+                  "message": "Offer not found"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "headers": {
+              "X-Powered-By": {
+                "content": {
+                  "text/plain": {
+                    "schema": {
+                      "type": "string"
+                    },
+                    "example": "Express"
+                  }
+                }
+              },
+              "Access-Control-Allow-Origin": {
+                "content": {
+                  "text/plain": {
+                    "schema": {
+                      "type": "string"
+                    },
+                    "example": "*"
+                  }
+                }
+              },
+              "Content-Length": {
+                "content": {
+                  "text/plain": {
+                    "schema": {
+                      "type": "string"
+                    },
+                    "example": "54"
+                  }
+                }
+              },
+              "ETag": {
+                "content": {
+                  "text/plain": {
+                    "schema": {
+                      "type": "string"
+                    },
+                    "example": "W/\"36-yZx8z1qQDbWJEC90IhfrHjdpn5s\""
+                  }
+                }
+              },
+              "Date": {
+                "content": {
+                  "text/plain": {
+                    "schema": {
+                      "type": "string"
+                    },
+                    "example": "Wed, 13 Jul 2022 14:10:23 GMT"
+                  }
+                }
+              },
+              "Connection": {
+                "content": {
+                  "text/plain": {
+                    "schema": {
+                      "type": "string"
+                    },
+                    "example": "keep-alive"
+                  }
+                }
+              },
+              "Keep-Alive": {
+                "content": {
+                  "text/plain": {
+                    "schema": {
+                      "type": "string"
+                    },
+                    "example": "timeout=5"
+                  }
+                }
+              }
+            },
+            "content": {
+              "application/json; charset=utf-8": {
+                "schema": {
+                  "$ref": "#/components/schemas/400-DetailOfferFieldViolation1"
+                },
+                "example": {
+                  "status": 400,
+                  "message": "Product id must be a number"
                 }
               }
             }
@@ -7824,6 +8226,762 @@
         },
         "deprecated": false
       }
+    },
+    "/notification": {
+      "get": {
+        "tags": ["Notification"],
+        "summary": "Get Notification",
+        "operationId": "GetNotification",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "headers": {
+              "X-Powered-By": {
+                "content": {
+                  "text/plain": {
+                    "schema": {
+                      "type": "string"
+                    },
+                    "example": "Express"
+                  }
+                }
+              },
+              "Access-Control-Allow-Origin": {
+                "content": {
+                  "text/plain": {
+                    "schema": {
+                      "type": "string"
+                    },
+                    "example": "*"
+                  }
+                }
+              },
+              "Content-Length": {
+                "content": {
+                  "text/plain": {
+                    "schema": {
+                      "type": "string"
+                    },
+                    "example": "501"
+                  }
+                }
+              },
+              "ETag": {
+                "content": {
+                  "text/plain": {
+                    "schema": {
+                      "type": "string"
+                    },
+                    "example": "W/\"1f5-PiLiN4br0cBmoLSbL9eAlxgC6GI\""
+                  }
+                }
+              },
+              "Date": {
+                "content": {
+                  "text/plain": {
+                    "schema": {
+                      "type": "string"
+                    },
+                    "example": "Wed, 13 Jul 2022 14:00:07 GMT"
+                  }
+                }
+              },
+              "Connection": {
+                "content": {
+                  "text/plain": {
+                    "schema": {
+                      "type": "string"
+                    },
+                    "example": "keep-alive"
+                  }
+                }
+              },
+              "Keep-Alive": {
+                "content": {
+                  "text/plain": {
+                    "schema": {
+                      "type": "string"
+                    },
+                    "example": "timeout=5"
+                  }
+                }
+              }
+            },
+            "content": {
+              "application/json; charset=utf-8": {
+                "schema": {
+                  "$ref": "#/components/schemas/200-GetNotification"
+                },
+                "example": {
+                  "message": "Success get all notification",
+                  "findNotification": [
+                    {
+                      "id": 1,
+                      "user_id": 1,
+                      "product_id": 1,
+                      "offer_id": null,
+                      "title": "Berhasil di terbitkan",
+                      "status": "unread",
+                      "description": null,
+                      "createdAt": "2022-07-13T13:58:54.623Z",
+                      "updatedAt": "2022-07-13T13:58:54.623Z",
+                      "offer": null,
+                      "product": {
+                        "id": 1,
+                        "user_id": 1,
+                        "name": "product 1",
+                        "price": 100,
+                        "description": "description 1",
+                        "status": "available",
+                        "product_pict": ["pict 1", "pict 2"],
+                        "createdAt": "2022-07-13T13:58:46.319Z",
+                        "updatedAt": "2022-07-13T13:58:46.319Z"
+                      }
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found",
+            "headers": {
+              "X-Powered-By": {
+                "content": {
+                  "text/plain": {
+                    "schema": {
+                      "type": "string"
+                    },
+                    "example": "Express"
+                  }
+                }
+              },
+              "Access-Control-Allow-Origin": {
+                "content": {
+                  "text/plain": {
+                    "schema": {
+                      "type": "string"
+                    },
+                    "example": "*"
+                  }
+                }
+              },
+              "Content-Length": {
+                "content": {
+                  "text/plain": {
+                    "schema": {
+                      "type": "string"
+                    },
+                    "example": "53"
+                  }
+                }
+              },
+              "ETag": {
+                "content": {
+                  "text/plain": {
+                    "schema": {
+                      "type": "string"
+                    },
+                    "example": "W/\"35-p72S7PNgclBb4UgOpCpKErZhuxA\""
+                  }
+                }
+              },
+              "Date": {
+                "content": {
+                  "text/plain": {
+                    "schema": {
+                      "type": "string"
+                    },
+                    "example": "Wed, 13 Jul 2022 14:00:35 GMT"
+                  }
+                }
+              },
+              "Connection": {
+                "content": {
+                  "text/plain": {
+                    "schema": {
+                      "type": "string"
+                    },
+                    "example": "keep-alive"
+                  }
+                }
+              },
+              "Keep-Alive": {
+                "content": {
+                  "text/plain": {
+                    "schema": {
+                      "type": "string"
+                    },
+                    "example": "timeout=5"
+                  }
+                }
+              }
+            },
+            "content": {
+              "application/json; charset=utf-8": {
+                "schema": {
+                  "$ref": "#/components/schemas/404-GetNotificationisEmpty1"
+                },
+                "example": {
+                  "status": 404,
+                  "message": "Notification data is empty"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "headers": {
+              "X-Powered-By": {
+                "content": {
+                  "text/plain": {
+                    "schema": {
+                      "type": "string"
+                    },
+                    "example": "Express"
+                  }
+                }
+              },
+              "Access-Control-Allow-Origin": {
+                "content": {
+                  "text/plain": {
+                    "schema": {
+                      "type": "string"
+                    },
+                    "example": "*"
+                  }
+                }
+              },
+              "Content-Length": {
+                "content": {
+                  "text/plain": {
+                    "schema": {
+                      "type": "string"
+                    },
+                    "example": "45"
+                  }
+                }
+              },
+              "ETag": {
+                "content": {
+                  "text/plain": {
+                    "schema": {
+                      "type": "string"
+                    },
+                    "example": "W/\"2d-PYsKn1aFV5tv6Q7kkqERNppXL/Y\""
+                  }
+                }
+              },
+              "Date": {
+                "content": {
+                  "text/plain": {
+                    "schema": {
+                      "type": "string"
+                    },
+                    "example": "Wed, 13 Jul 2022 14:05:12 GMT"
+                  }
+                }
+              },
+              "Connection": {
+                "content": {
+                  "text/plain": {
+                    "schema": {
+                      "type": "string"
+                    },
+                    "example": "keep-alive"
+                  }
+                }
+              },
+              "Keep-Alive": {
+                "content": {
+                  "text/plain": {
+                    "schema": {
+                      "type": "string"
+                    },
+                    "example": "timeout=5"
+                  }
+                }
+              }
+            },
+            "content": {
+              "application/json; charset=utf-8": {
+                "schema": {
+                  "$ref": "#/components/schemas/400-GetNotificationTokenNotProvided1"
+                },
+                "example": {
+                  "status": 400,
+                  "message": "Token not provided"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "headers": {
+              "X-Powered-By": {
+                "content": {
+                  "text/plain": {
+                    "schema": {
+                      "type": "string"
+                    },
+                    "example": "Express"
+                  }
+                }
+              },
+              "Access-Control-Allow-Origin": {
+                "content": {
+                  "text/plain": {
+                    "schema": {
+                      "type": "string"
+                    },
+                    "example": "*"
+                  }
+                }
+              },
+              "Content-Length": {
+                "content": {
+                  "text/plain": {
+                    "schema": {
+                      "type": "string"
+                    },
+                    "example": "40"
+                  }
+                }
+              },
+              "ETag": {
+                "content": {
+                  "text/plain": {
+                    "schema": {
+                      "type": "string"
+                    },
+                    "example": "W/\"28-wr7D8pVVS5wYII5MzMfNrtISsDA\""
+                  }
+                }
+              },
+              "Date": {
+                "content": {
+                  "text/plain": {
+                    "schema": {
+                      "type": "string"
+                    },
+                    "example": "Wed, 13 Jul 2022 14:05:34 GMT"
+                  }
+                }
+              },
+              "Connection": {
+                "content": {
+                  "text/plain": {
+                    "schema": {
+                      "type": "string"
+                    },
+                    "example": "keep-alive"
+                  }
+                }
+              },
+              "Keep-Alive": {
+                "content": {
+                  "text/plain": {
+                    "schema": {
+                      "type": "string"
+                    },
+                    "example": "timeout=5"
+                  }
+                }
+              }
+            },
+            "content": {
+              "application/json; charset=utf-8": {
+                "schema": {
+                  "$ref": "#/components/schemas/401-GetNotificationTokenInvalid1"
+                },
+                "example": {
+                  "status": 401,
+                  "message": "Token invalid"
+                }
+              }
+            }
+          }
+        },
+        "deprecated": false,
+        "security": [
+          {
+            "bearer": []
+          }
+        ]
+      }
+    },
+    "/notification/{id}": {
+      "put": {
+        "tags": ["Notification"],
+        "summary": "Update Notification",
+        "operationId": "UpdateNotification",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "",
+            "required": true,
+            "style": "simple",
+            "schema": {
+              "type": "integer",
+              "format": "int32",
+              "example": 5
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "headers": {
+              "X-Powered-By": {
+                "content": {
+                  "text/plain": {
+                    "schema": {
+                      "type": "string"
+                    },
+                    "example": "Express"
+                  }
+                }
+              },
+              "Access-Control-Allow-Origin": {
+                "content": {
+                  "text/plain": {
+                    "schema": {
+                      "type": "string"
+                    },
+                    "example": "*"
+                  }
+                }
+              },
+              "Content-Length": {
+                "content": {
+                  "text/plain": {
+                    "schema": {
+                      "type": "string"
+                    },
+                    "example": "41"
+                  }
+                }
+              },
+              "ETag": {
+                "content": {
+                  "text/plain": {
+                    "schema": {
+                      "type": "string"
+                    },
+                    "example": "W/\"29-yRrGQpiKcZ01mrWb/01Rre1gFQ0\""
+                  }
+                }
+              },
+              "Date": {
+                "content": {
+                  "text/plain": {
+                    "schema": {
+                      "type": "string"
+                    },
+                    "example": "Wed, 13 Jul 2022 14:02:03 GMT"
+                  }
+                }
+              },
+              "Connection": {
+                "content": {
+                  "text/plain": {
+                    "schema": {
+                      "type": "string"
+                    },
+                    "example": "keep-alive"
+                  }
+                }
+              },
+              "Keep-Alive": {
+                "content": {
+                  "text/plain": {
+                    "schema": {
+                      "type": "string"
+                    },
+                    "example": "timeout=5"
+                  }
+                }
+              }
+            },
+            "content": {
+              "application/json; charset=utf-8": {
+                "schema": {
+                  "$ref": "#/components/schemas/200-UpdateNotification"
+                },
+                "example": {
+                  "message": "Success update notification"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "headers": {
+              "X-Powered-By": {
+                "content": {
+                  "text/plain": {
+                    "schema": {
+                      "type": "string"
+                    },
+                    "example": "Express"
+                  }
+                }
+              },
+              "Access-Control-Allow-Origin": {
+                "content": {
+                  "text/plain": {
+                    "schema": {
+                      "type": "string"
+                    },
+                    "example": "*"
+                  }
+                }
+              },
+              "Content-Length": {
+                "content": {
+                  "text/plain": {
+                    "schema": {
+                      "type": "string"
+                    },
+                    "example": "46"
+                  }
+                }
+              },
+              "ETag": {
+                "content": {
+                  "text/plain": {
+                    "schema": {
+                      "type": "string"
+                    },
+                    "example": "W/\"2e-XQlp+f6OSSRYiFscQOYL6XTGJPY\""
+                  }
+                }
+              },
+              "Date": {
+                "content": {
+                  "text/plain": {
+                    "schema": {
+                      "type": "string"
+                    },
+                    "example": "Wed, 13 Jul 2022 14:02:30 GMT"
+                  }
+                }
+              },
+              "Connection": {
+                "content": {
+                  "text/plain": {
+                    "schema": {
+                      "type": "string"
+                    },
+                    "example": "keep-alive"
+                  }
+                }
+              },
+              "Keep-Alive": {
+                "content": {
+                  "text/plain": {
+                    "schema": {
+                      "type": "string"
+                    },
+                    "example": "timeout=5"
+                  }
+                }
+              }
+            },
+            "content": {
+              "application/json; charset=utf-8": {
+                "schema": {
+                  "$ref": "#/components/schemas/400-UpdateNotificationFieldViolation1"
+                },
+                "example": {
+                  "status": 400,
+                  "message": "id must be a number"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found",
+            "headers": {
+              "X-Powered-By": {
+                "content": {
+                  "text/plain": {
+                    "schema": {
+                      "type": "string"
+                    },
+                    "example": "Express"
+                  }
+                }
+              },
+              "Access-Control-Allow-Origin": {
+                "content": {
+                  "text/plain": {
+                    "schema": {
+                      "type": "string"
+                    },
+                    "example": "*"
+                  }
+                }
+              },
+              "Content-Length": {
+                "content": {
+                  "text/plain": {
+                    "schema": {
+                      "type": "string"
+                    },
+                    "example": "49"
+                  }
+                }
+              },
+              "ETag": {
+                "content": {
+                  "text/plain": {
+                    "schema": {
+                      "type": "string"
+                    },
+                    "example": "W/\"31-HXzvMaIPhOxlHAdgFQO8gZH8BhE\""
+                  }
+                }
+              },
+              "Date": {
+                "content": {
+                  "text/plain": {
+                    "schema": {
+                      "type": "string"
+                    },
+                    "example": "Wed, 13 Jul 2022 14:04:09 GMT"
+                  }
+                }
+              },
+              "Connection": {
+                "content": {
+                  "text/plain": {
+                    "schema": {
+                      "type": "string"
+                    },
+                    "example": "keep-alive"
+                  }
+                }
+              },
+              "Keep-Alive": {
+                "content": {
+                  "text/plain": {
+                    "schema": {
+                      "type": "string"
+                    },
+                    "example": "timeout=5"
+                  }
+                }
+              }
+            },
+            "content": {
+              "application/json; charset=utf-8": {
+                "schema": {
+                  "$ref": "#/components/schemas/404-UpdateNotificationNotFound1"
+                },
+                "example": {
+                  "status": 404,
+                  "message": "Notification not found"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "headers": {
+              "X-Powered-By": {
+                "content": {
+                  "text/plain": {
+                    "schema": {
+                      "type": "string"
+                    },
+                    "example": "Express"
+                  }
+                }
+              },
+              "Access-Control-Allow-Origin": {
+                "content": {
+                  "text/plain": {
+                    "schema": {
+                      "type": "string"
+                    },
+                    "example": "*"
+                  }
+                }
+              },
+              "Content-Length": {
+                "content": {
+                  "text/plain": {
+                    "schema": {
+                      "type": "string"
+                    },
+                    "example": "40"
+                  }
+                }
+              },
+              "ETag": {
+                "content": {
+                  "text/plain": {
+                    "schema": {
+                      "type": "string"
+                    },
+                    "example": "W/\"28-wr7D8pVVS5wYII5MzMfNrtISsDA\""
+                  }
+                }
+              },
+              "Date": {
+                "content": {
+                  "text/plain": {
+                    "schema": {
+                      "type": "string"
+                    },
+                    "example": "Wed, 13 Jul 2022 14:06:15 GMT"
+                  }
+                }
+              },
+              "Connection": {
+                "content": {
+                  "text/plain": {
+                    "schema": {
+                      "type": "string"
+                    },
+                    "example": "keep-alive"
+                  }
+                }
+              },
+              "Keep-Alive": {
+                "content": {
+                  "text/plain": {
+                    "schema": {
+                      "type": "string"
+                    },
+                    "example": "timeout=5"
+                  }
+                }
+              }
+            },
+            "content": {
+              "application/json; charset=utf-8": {
+                "schema": {
+                  "$ref": "#/components/schemas/401-UpdateNotificationTokeninvalid1"
+                },
+                "example": {
+                  "status": 401,
+                  "message": "Token invalid"
+                }
+              }
+            }
+          }
+        },
+        "deprecated": false,
+        "security": [
+          {
+            "bearer": []
+          }
+        ]
+      }
     }
   },
   "components": {
@@ -9088,8 +10246,8 @@
           "message": "Success delete product"
         }
       },
-      "ReEditProduct": {
-        "title": "ReEditProduct",
+      "200-ReEditProduct": {
+        "title": "200-ReEditProduct",
         "required": ["preview_data"],
         "type": "object",
         "properties": {
@@ -9099,13 +10257,27 @@
         },
         "example": {
           "preview_data": {
-            "name": "Indomie Sedap",
+            "user_id": 1,
+            "name": "Demo User",
             "price": "5000",
             "description": "Ini adalah Indomie Sedap",
             "categories": ["1", "2"],
+            "email": "demouser@gmail.com",
+            "profile_pict": "https://i.pravatar.cc/300",
+            "city_id": 5,
+            "address": "Jl Indah",
+            "no_hp": "081234567890",
+            "createdAt": "2022-07-13T14:18:43.258Z",
+            "updatedAt": "2022-07-13T14:18:43.258Z",
+            "city": {
+              "id": 5,
+              "name": "Kabupaten Aceh Timur",
+              "createdAt": "2022-07-13T14:18:51.474Z",
+              "updatedAt": "2022-07-13T14:18:51.474Z"
+            },
             "product_pict": [
-              "https://res.cloudinary.com/second-hand6-bejs/image/upload/v1657637632/preview/xibzpifjia5nbiwss2ch.jpg",
-              "https://res.cloudinary.com/second-hand6-bejs/image/upload/v1657637634/preview/cqcoxcctjqkpo468fuk7.jpg"
+              "https://res.cloudinary.com/second-hand6-bejs/image/upload/v1657722300/preview/cwhu3qqqlp2pqq7c0lyv.jpg",
+              "https://res.cloudinary.com/second-hand6-bejs/image/upload/v1657722303/preview/xg3sgtd1lnhr20loqtox.jpg"
             ]
           }
         }
@@ -9113,14 +10285,27 @@
       "PreviewData": {
         "title": "PreviewData",
         "required": [
+          "user_id",
           "name",
           "price",
           "description",
           "categories",
+          "email",
+          "profile_pict",
+          "city_id",
+          "address",
+          "no_hp",
+          "createdAt",
+          "updatedAt",
+          "city",
           "product_pict"
         ],
         "type": "object",
         "properties": {
+          "user_id": {
+            "type": "integer",
+            "format": "int32"
+          },
           "name": {
             "type": "string"
           },
@@ -9137,6 +10322,31 @@
             },
             "description": ""
           },
+          "email": {
+            "type": "string"
+          },
+          "profile_pict": {
+            "type": "string"
+          },
+          "city_id": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "address": {
+            "type": "string"
+          },
+          "no_hp": {
+            "type": "string"
+          },
+          "createdAt": {
+            "type": "string"
+          },
+          "updatedAt": {
+            "type": "string"
+          },
+          "city": {
+            "$ref": "#/components/schemas/City"
+          },
           "product_pict": {
             "type": "array",
             "items": {
@@ -9146,13 +10356,27 @@
           }
         },
         "example": {
-          "name": "Indomie Sedap",
+          "user_id": 1,
+          "name": "Demo User",
           "price": "5000",
           "description": "Ini adalah Indomie Sedap",
           "categories": ["1", "2"],
+          "email": "demouser@gmail.com",
+          "profile_pict": "https://i.pravatar.cc/300",
+          "city_id": 5,
+          "address": "Jl Indah",
+          "no_hp": "081234567890",
+          "createdAt": "2022-07-13T14:18:43.258Z",
+          "updatedAt": "2022-07-13T14:18:43.258Z",
+          "city": {
+            "id": 5,
+            "name": "Kabupaten Aceh Timur",
+            "createdAt": "2022-07-13T14:18:51.474Z",
+            "updatedAt": "2022-07-13T14:18:51.474Z"
+          },
           "product_pict": [
-            "https://res.cloudinary.com/second-hand6-bejs/image/upload/v1657637632/preview/xibzpifjia5nbiwss2ch.jpg",
-            "https://res.cloudinary.com/second-hand6-bejs/image/upload/v1657637634/preview/cqcoxcctjqkpo468fuk7.jpg"
+            "https://res.cloudinary.com/second-hand6-bejs/image/upload/v1657722300/preview/cwhu3qqqlp2pqq7c0lyv.jpg",
+            "https://res.cloudinary.com/second-hand6-bejs/image/upload/v1657722303/preview/xg3sgtd1lnhr20loqtox.jpg"
           ]
         }
       },
@@ -9743,6 +10967,289 @@
         "example": {
           "status": 401,
           "message": "Unauthorized"
+        }
+      },
+      "200-DetailOffer": {
+        "title": "200-DetailOffer",
+        "required": ["message", "data"],
+        "type": "object",
+        "properties": {
+          "message": {
+            "type": "string"
+          },
+          "data": {
+            "$ref": "#/components/schemas/Data2"
+          }
+        },
+        "example": {
+          "message": "Detail Offer",
+          "data": {
+            "id": 1,
+            "buyer_id": 2,
+            "product_id": 1,
+            "price_offer": 100,
+            "status": "pending",
+            "createdAt": "2022-07-13T13:58:46.492Z",
+            "updatedAt": "2022-07-13T13:58:46.492Z",
+            "user": {
+              "id": 2,
+              "name": "Demo User 2",
+              "email": "demouser2@gmail.com",
+              "password": "$2a$10$iKScZNy8rEPkKlZRXMBhL.uMWzVfjvf3hCC34QKDPJKPCtVmwGUJu",
+              "profile_pict": null,
+              "city_id": null,
+              "address": null,
+              "no_hp": null,
+              "createdAt": "2022-07-13T13:58:46.310Z",
+              "updatedAt": "2022-07-13T13:58:46.310Z"
+            },
+            "product": {
+              "id": 1,
+              "user_id": 1,
+              "name": "product 1",
+              "price": 100,
+              "description": "description 1",
+              "status": "available",
+              "product_pict": ["pict 1", "pict 2"],
+              "createdAt": "2022-07-13T13:58:46.319Z",
+              "updatedAt": "2022-07-13T13:58:46.319Z"
+            }
+          }
+        }
+      },
+      "Data2": {
+        "title": "Data2",
+        "required": [
+          "id",
+          "buyer_id",
+          "product_id",
+          "price_offer",
+          "status",
+          "createdAt",
+          "updatedAt",
+          "user",
+          "product"
+        ],
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "buyer_id": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "product_id": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "price_offer": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "status": {
+            "type": "string"
+          },
+          "createdAt": {
+            "type": "string"
+          },
+          "updatedAt": {
+            "type": "string"
+          },
+          "user": {
+            "$ref": "#/components/schemas/User"
+          },
+          "product": {
+            "$ref": "#/components/schemas/Product"
+          }
+        },
+        "example": {
+          "id": 1,
+          "buyer_id": 2,
+          "product_id": 1,
+          "price_offer": 100,
+          "status": "pending",
+          "createdAt": "2022-07-13T13:58:46.492Z",
+          "updatedAt": "2022-07-13T13:58:46.492Z",
+          "user": {
+            "id": 2,
+            "name": "Demo User 2",
+            "email": "demouser2@gmail.com",
+            "password": "$2a$10$iKScZNy8rEPkKlZRXMBhL.uMWzVfjvf3hCC34QKDPJKPCtVmwGUJu",
+            "profile_pict": null,
+            "city_id": null,
+            "address": null,
+            "no_hp": null,
+            "createdAt": "2022-07-13T13:58:46.310Z",
+            "updatedAt": "2022-07-13T13:58:46.310Z"
+          },
+          "product": {
+            "id": 1,
+            "user_id": 1,
+            "name": "product 1",
+            "price": 100,
+            "description": "description 1",
+            "status": "available",
+            "product_pict": ["pict 1", "pict 2"],
+            "createdAt": "2022-07-13T13:58:46.319Z",
+            "updatedAt": "2022-07-13T13:58:46.319Z"
+          }
+        }
+      },
+      "User": {
+        "title": "User",
+        "required": [
+          "id",
+          "name",
+          "email",
+          "password",
+          "profile_pict",
+          "city_id",
+          "address",
+          "no_hp",
+          "createdAt",
+          "updatedAt"
+        ],
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "name": {
+            "type": "string"
+          },
+          "email": {
+            "type": "string"
+          },
+          "password": {
+            "type": "string"
+          },
+          "profile_pict": {
+            "type": "string",
+            "nullable": true
+          },
+          "city_id": {
+            "type": "string",
+            "nullable": true
+          },
+          "address": {
+            "type": "string",
+            "nullable": true
+          },
+          "no_hp": {
+            "type": "string",
+            "nullable": true
+          },
+          "createdAt": {
+            "type": "string"
+          },
+          "updatedAt": {
+            "type": "string"
+          }
+        },
+        "example": {
+          "id": 2,
+          "name": "Demo User 2",
+          "email": "demouser2@gmail.com",
+          "password": "$2a$10$iKScZNy8rEPkKlZRXMBhL.uMWzVfjvf3hCC34QKDPJKPCtVmwGUJu",
+          "profile_pict": null,
+          "city_id": null,
+          "address": null,
+          "no_hp": null,
+          "createdAt": "2022-07-13T13:58:46.310Z",
+          "updatedAt": "2022-07-13T13:58:46.310Z"
+        }
+      },
+      "401-DetailOfferUnauthorized1": {
+        "title": "401-DetailOfferUnauthorized1",
+        "required": ["status", "message"],
+        "type": "object",
+        "properties": {
+          "status": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "message": {
+            "type": "string"
+          }
+        },
+        "example": {
+          "status": 401,
+          "message": "Unauthorized"
+        }
+      },
+      "404-DetailOffernotFound1": {
+        "title": "404-DetailOffernotFound1",
+        "required": ["status", "message"],
+        "type": "object",
+        "properties": {
+          "status": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "message": {
+            "type": "string"
+          }
+        },
+        "example": {
+          "status": 404,
+          "message": "Offer not found"
+        }
+      },
+      "400-DetailOfferFieldViolation1": {
+        "title": "400-DetailOfferFieldViolation1",
+        "required": ["status", "message"],
+        "type": "object",
+        "properties": {
+          "status": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "message": {
+            "type": "string"
+          }
+        },
+        "example": {
+          "status": 400,
+          "message": "Product id must be a number"
+        }
+      },
+      "400-DetailOfferTokennotProvided1": {
+        "title": "400-DetailOfferTokennotProvided1",
+        "required": ["status", "message"],
+        "type": "object",
+        "properties": {
+          "status": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "message": {
+            "type": "string"
+          }
+        },
+        "example": {
+          "status": 400,
+          "message": "Token not provided"
+        }
+      },
+      "401-DetailOfferTokenInvalid1": {
+        "title": "401-DetailOfferTokenInvalid1",
+        "required": ["status", "message"],
+        "type": "object",
+        "properties": {
+          "status": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "message": {
+            "type": "string"
+          }
+        },
+        "example": {
+          "status": 401,
+          "message": "Token invalid"
         }
       },
       "200-Getcitydatasuccess": {
@@ -11935,6 +13442,271 @@
         "example": {
           "status": 404,
           "message": "Category data is empty"
+        }
+      },
+      "200-GetNotification": {
+        "title": "200-GetNotification",
+        "required": ["message", "findNotification"],
+        "type": "object",
+        "properties": {
+          "message": {
+            "type": "string"
+          },
+          "findNotification": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/FindNotification"
+            },
+            "description": ""
+          }
+        },
+        "example": {
+          "message": "Success get all notification",
+          "findNotification": [
+            {
+              "id": 1,
+              "user_id": 1,
+              "product_id": 1,
+              "offer_id": null,
+              "title": "Berhasil di terbitkan",
+              "status": "unread",
+              "description": null,
+              "createdAt": "2022-07-13T13:58:54.623Z",
+              "updatedAt": "2022-07-13T13:58:54.623Z",
+              "offer": null,
+              "product": {
+                "id": 1,
+                "user_id": 1,
+                "name": "product 1",
+                "price": 100,
+                "description": "description 1",
+                "status": "available",
+                "product_pict": ["pict 1", "pict 2"],
+                "createdAt": "2022-07-13T13:58:46.319Z",
+                "updatedAt": "2022-07-13T13:58:46.319Z"
+              }
+            }
+          ]
+        }
+      },
+      "FindNotification": {
+        "title": "FindNotification",
+        "required": [
+          "id",
+          "user_id",
+          "product_id",
+          "offer_id",
+          "title",
+          "status",
+          "description",
+          "createdAt",
+          "updatedAt",
+          "offer",
+          "product"
+        ],
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "user_id": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "product_id": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "offer_id": {
+            "type": "string",
+            "nullable": true
+          },
+          "title": {
+            "type": "string"
+          },
+          "status": {
+            "type": "string"
+          },
+          "description": {
+            "type": "string",
+            "nullable": true
+          },
+          "createdAt": {
+            "type": "string"
+          },
+          "updatedAt": {
+            "type": "string"
+          },
+          "offer": {
+            "type": "string",
+            "nullable": true
+          },
+          "product": {
+            "$ref": "#/components/schemas/Product"
+          }
+        },
+        "example": {
+          "id": 1,
+          "user_id": 1,
+          "product_id": 1,
+          "offer_id": null,
+          "title": "Berhasil di terbitkan",
+          "status": "unread",
+          "description": null,
+          "createdAt": "2022-07-13T13:58:54.623Z",
+          "updatedAt": "2022-07-13T13:58:54.623Z",
+          "offer": null,
+          "product": {
+            "id": 1,
+            "user_id": 1,
+            "name": "product 1",
+            "price": 100,
+            "description": "description 1",
+            "status": "available",
+            "product_pict": ["pict 1", "pict 2"],
+            "createdAt": "2022-07-13T13:58:46.319Z",
+            "updatedAt": "2022-07-13T13:58:46.319Z"
+          }
+        }
+      },
+      "404-GetNotificationisEmpty1": {
+        "title": "404-GetNotificationisEmpty1",
+        "required": ["status", "message"],
+        "type": "object",
+        "properties": {
+          "status": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "message": {
+            "type": "string"
+          }
+        },
+        "example": {
+          "status": 404,
+          "message": "Notification data is empty"
+        }
+      },
+      "400-GetNotificationTokenNotProvided1": {
+        "title": "400-GetNotificationTokenNotProvided1",
+        "required": ["status", "message"],
+        "type": "object",
+        "properties": {
+          "status": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "message": {
+            "type": "string"
+          }
+        },
+        "example": {
+          "status": 400,
+          "message": "Token not provided"
+        }
+      },
+      "401-GetNotificationTokenInvalid1": {
+        "title": "401-GetNotificationTokenInvalid1",
+        "required": ["status", "message"],
+        "type": "object",
+        "properties": {
+          "status": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "message": {
+            "type": "string"
+          }
+        },
+        "example": {
+          "status": 401,
+          "message": "Token invalid"
+        }
+      },
+      "200-UpdateNotification": {
+        "title": "200-UpdateNotification",
+        "required": ["message"],
+        "type": "object",
+        "properties": {
+          "message": {
+            "type": "string"
+          }
+        },
+        "example": {
+          "message": "Success update notification"
+        }
+      },
+      "400-UpdateNotificationFieldViolation1": {
+        "title": "400-UpdateNotificationFieldViolation1",
+        "required": ["status", "message"],
+        "type": "object",
+        "properties": {
+          "status": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "message": {
+            "type": "string"
+          }
+        },
+        "example": {
+          "status": 400,
+          "message": "id must be a number"
+        }
+      },
+      "404-UpdateNotificationNotFound1": {
+        "title": "404-UpdateNotificationNotFound1",
+        "required": ["status", "message"],
+        "type": "object",
+        "properties": {
+          "status": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "message": {
+            "type": "string"
+          }
+        },
+        "example": {
+          "status": 404,
+          "message": "Notification not found"
+        }
+      },
+      "400-UpdateNotificationTokennotProvided1": {
+        "title": "400-UpdateNotificationTokennotProvided1",
+        "required": ["status", "message"],
+        "type": "object",
+        "properties": {
+          "status": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "message": {
+            "type": "string"
+          }
+        },
+        "example": {
+          "status": 400,
+          "message": "Token not provided"
+        }
+      },
+      "401-UpdateNotificationTokeninvalid1": {
+        "title": "401-UpdateNotificationTokeninvalid1",
+        "required": ["status", "message"],
+        "type": "object",
+        "properties": {
+          "status": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "message": {
+            "type": "string"
+          }
+        },
+        "example": {
+          "status": 401,
+          "message": "Token invalid"
         }
       }
     },
