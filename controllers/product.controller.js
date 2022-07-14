@@ -126,7 +126,25 @@ class ProductController {
     }
   }
 
-  static async previewProduct(req, res, next) {
+  static async getPreviewProduct(req, res, next) {
+    try {
+      //   const { name, price, category, description } = req.body;
+
+      const dataTemp = ProductSingleton.getInstance();
+      if (!dataTemp.getData(req.user.id)) {
+        throw {
+          status: 404,
+          message: "Product not found",
+        };
+      }
+      res.status(200).json({
+        preview_data: dataTemp.getData(req.user.id),
+      });
+    } catch (error) {
+      next(error);
+    }
+  }
+  static async postPreviewProduct(req, res, next) {
     try {
       //   const { name, price, category, description } = req.body;
       const errors = validationResult(req);
@@ -144,12 +162,6 @@ class ProductController {
           model: city,
         },
       });
-      if (!findUser) {
-        throw {
-          status: 404,
-          message: "User not found",
-        };
-      }
       const dataTemp = ProductSingleton.getInstance();
       dataTemp.setData = {
         user_id: req.user.id,
@@ -158,7 +170,7 @@ class ProductController {
         product_pict: filePaths,
       };
       res.status(200).json({
-        preview_data: dataTemp.getData(req.user.id),
+        message: "Success add preview product",
       });
     } catch (error) {
       next(error);

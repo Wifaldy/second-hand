@@ -31,6 +31,8 @@ productRouter.get("/offered", isAuth, ProductController.getOfferedProducts);
 
 productRouter.get("/re-edit", isAuth, ProductController.reEditProduct);
 
+productRouter.get("/preview", isAuth, ProductController.getPreviewProduct);
+
 productRouter.post(
   "/",
   upload.array("product_pict"),
@@ -117,7 +119,7 @@ productRouter.post(
       return true;
     }),
   ],
-  ProductController.previewProduct
+  ProductController.postPreviewProduct
 );
 
 module.exports = productRouter;

@@ -3634,7 +3634,7 @@
                     "schema": {
                       "type": "string"
                     },
-                    "example": "347"
+                    "example": "41"
                   }
                 }
               },
@@ -3644,7 +3644,7 @@
                     "schema": {
                       "type": "string"
                     },
-                    "example": "W/\"15b-2ZjPAf0AA/PhDA1xekq55cRBGaE\""
+                    "example": "W/\"29-4V7vS7tfe1hCr2Dc5Iaf5YFJ9NQ\""
                   }
                 }
               },
@@ -3654,7 +3654,7 @@
                     "schema": {
                       "type": "string"
                     },
-                    "example": "Tue, 12 Jul 2022 14:53:53 GMT"
+                    "example": "Thu, 14 Jul 2022 03:04:27 GMT"
                   }
                 }
               },
@@ -3685,16 +3685,7 @@
                   "$ref": "#/components/schemas/200-PreviewProduct"
                 },
                 "example": {
-                  "preview_data": {
-                    "name": "Indomie Sedap",
-                    "price": "5000",
-                    "description": "Ini adalah Indomie Sedap",
-                    "categories": ["1", "2"],
-                    "product_pict": [
-                      "https://res.cloudinary.com/second-hand6-bejs/image/upload/v1657637632/preview/xibzpifjia5nbiwss2ch.jpg",
-                      "https://res.cloudinary.com/second-hand6-bejs/image/upload/v1657637634/preview/cqcoxcctjqkpo468fuk7.jpg"
-                    ]
-                  }
+                  "message": "Success add preview product"
                 }
               }
             }
@@ -3867,6 +3858,386 @@
                 "example": {
                   "status": 401,
                   "message": "Token invalid"
+                }
+              }
+            }
+          }
+        },
+        "deprecated": false,
+        "security": [
+          {
+            "bearer": []
+          }
+        ]
+      },
+      "get": {
+        "tags": ["Product"],
+        "summary": "Preview Product",
+        "operationId": "GetPreviewProduct",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "headers": {
+              "X-Powered-By": {
+                "content": {
+                  "text/plain": {
+                    "schema": {
+                      "type": "string"
+                    },
+                    "example": "Express"
+                  }
+                }
+              },
+              "Access-Control-Allow-Origin": {
+                "content": {
+                  "text/plain": {
+                    "schema": {
+                      "type": "string"
+                    },
+                    "example": "*"
+                  }
+                }
+              },
+              "Content-Length": {
+                "content": {
+                  "text/plain": {
+                    "schema": {
+                      "type": "string"
+                    },
+                    "example": "685"
+                  }
+                }
+              },
+              "ETag": {
+                "content": {
+                  "text/plain": {
+                    "schema": {
+                      "type": "string"
+                    },
+                    "example": "W/\"2ad-qFWg2xUdHqiH0x44aznzHgqdKc8\""
+                  }
+                }
+              },
+              "Date": {
+                "content": {
+                  "text/plain": {
+                    "schema": {
+                      "type": "string"
+                    },
+                    "example": "Wed, 13 Jul 2022 14:25:03 GMT"
+                  }
+                }
+              },
+              "Connection": {
+                "content": {
+                  "text/plain": {
+                    "schema": {
+                      "type": "string"
+                    },
+                    "example": "keep-alive"
+                  }
+                }
+              },
+              "Keep-Alive": {
+                "content": {
+                  "text/plain": {
+                    "schema": {
+                      "type": "string"
+                    },
+                    "example": "timeout=5"
+                  }
+                }
+              }
+            },
+            "content": {
+              "application/json; charset=utf-8": {
+                "schema": {
+                  "$ref": "#/components/schemas/200-PreviewProduct"
+                },
+                "example": {
+                  "preview_data": {
+                    "user_id": 1,
+                    "name": "Demo User",
+                    "price": "5000",
+                    "description": "Ini adalah Indomie Sedap",
+                    "categories": ["1", "2"],
+                    "email": "demouser@gmail.com",
+                    "profile_pict": "https://i.pravatar.cc/300",
+                    "city_id": 5,
+                    "address": "Jl Indah",
+                    "no_hp": "081234567890",
+                    "createdAt": "2022-07-13T14:18:43.258Z",
+                    "updatedAt": "2022-07-13T14:18:43.258Z",
+                    "city": {
+                      "id": 5,
+                      "name": "Kabupaten Aceh Timur",
+                      "createdAt": "2022-07-13T14:18:51.474Z",
+                      "updatedAt": "2022-07-13T14:18:51.474Z"
+                    },
+                    "product_pict": [
+                      "https://res.cloudinary.com/second-hand6-bejs/image/upload/v1657722300/preview/cwhu3qqqlp2pqq7c0lyv.jpg",
+                      "https://res.cloudinary.com/second-hand6-bejs/image/upload/v1657722303/preview/xg3sgtd1lnhr20loqtox.jpg"
+                    ]
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "headers": {
+              "X-Powered-By": {
+                "content": {
+                  "text/plain": {
+                    "schema": {
+                      "type": "string"
+                    },
+                    "example": "Express"
+                  }
+                }
+              },
+              "Access-Control-Allow-Origin": {
+                "content": {
+                  "text/plain": {
+                    "schema": {
+                      "type": "string"
+                    },
+                    "example": "*"
+                  }
+                }
+              },
+              "Content-Length": {
+                "content": {
+                  "text/plain": {
+                    "schema": {
+                      "type": "string"
+                    },
+                    "example": "45"
+                  }
+                }
+              },
+              "ETag": {
+                "content": {
+                  "text/plain": {
+                    "schema": {
+                      "type": "string"
+                    },
+                    "example": "W/\"2d-PYsKn1aFV5tv6Q7kkqERNppXL/Y\""
+                  }
+                }
+              },
+              "Date": {
+                "content": {
+                  "text/plain": {
+                    "schema": {
+                      "type": "string"
+                    },
+                    "example": "Thu, 14 Jul 2022 03:01:59 GMT"
+                  }
+                }
+              },
+              "Connection": {
+                "content": {
+                  "text/plain": {
+                    "schema": {
+                      "type": "string"
+                    },
+                    "example": "keep-alive"
+                  }
+                }
+              },
+              "Keep-Alive": {
+                "content": {
+                  "text/plain": {
+                    "schema": {
+                      "type": "string"
+                    },
+                    "example": "timeout=5"
+                  }
+                }
+              }
+            },
+            "content": {
+              "application/json; charset=utf-8": {
+                "schema": {
+                  "$ref": "#/components/schemas/400-PreviewProductTokennotprovided1"
+                },
+                "example": {
+                  "status": 400,
+                  "message": "Token not provided"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "headers": {
+              "X-Powered-By": {
+                "content": {
+                  "text/plain": {
+                    "schema": {
+                      "type": "string"
+                    },
+                    "example": "Express"
+                  }
+                }
+              },
+              "Access-Control-Allow-Origin": {
+                "content": {
+                  "text/plain": {
+                    "schema": {
+                      "type": "string"
+                    },
+                    "example": "*"
+                  }
+                }
+              },
+              "Content-Length": {
+                "content": {
+                  "text/plain": {
+                    "schema": {
+                      "type": "string"
+                    },
+                    "example": "40"
+                  }
+                }
+              },
+              "ETag": {
+                "content": {
+                  "text/plain": {
+                    "schema": {
+                      "type": "string"
+                    },
+                    "example": "W/\"28-wr7D8pVVS5wYII5MzMfNrtISsDA\""
+                  }
+                }
+              },
+              "Date": {
+                "content": {
+                  "text/plain": {
+                    "schema": {
+                      "type": "string"
+                    },
+                    "example": "Thu, 14 Jul 2022 03:02:20 GMT"
+                  }
+                }
+              },
+              "Connection": {
+                "content": {
+                  "text/plain": {
+                    "schema": {
+                      "type": "string"
+                    },
+                    "example": "keep-alive"
+                  }
+                }
+              },
+              "Keep-Alive": {
+                "content": {
+                  "text/plain": {
+                    "schema": {
+                      "type": "string"
+                    },
+                    "example": "timeout=5"
+                  }
+                }
+              }
+            },
+            "content": {
+              "application/json; charset=utf-8": {
+                "schema": {
+                  "$ref": "#/components/schemas/400-PreviewProductTokeninvalid1"
+                },
+                "example": {
+                  "status": 401,
+                  "message": "Token invalid"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found",
+            "headers": {
+              "X-Powered-By": {
+                "content": {
+                  "text/plain": {
+                    "schema": {
+                      "type": "string"
+                    },
+                    "example": "Express"
+                  }
+                }
+              },
+              "Access-Control-Allow-Origin": {
+                "content": {
+                  "text/plain": {
+                    "schema": {
+                      "type": "string"
+                    },
+                    "example": "*"
+                  }
+                }
+              },
+              "Content-Length": {
+                "content": {
+                  "text/plain": {
+                    "schema": {
+                      "type": "string"
+                    },
+                    "example": "44"
+                  }
+                }
+              },
+              "ETag": {
+                "content": {
+                  "text/plain": {
+                    "schema": {
+                      "type": "string"
+                    },
+                    "example": "W/\"2c-IUjV9/YTqCP091muRJ86aLTWwwM\""
+                  }
+                }
+              },
+              "Date": {
+                "content": {
+                  "text/plain": {
+                    "schema": {
+                      "type": "string"
+                    },
+                    "example": "Thu, 14 Jul 2022 03:26:35 GMT"
+                  }
+                }
+              },
+              "Connection": {
+                "content": {
+                  "text/plain": {
+                    "schema": {
+                      "type": "string"
+                    },
+                    "example": "keep-alive"
+                  }
+                }
+              },
+              "Keep-Alive": {
+                "content": {
+                  "text/plain": {
+                    "schema": {
+                      "type": "string"
+                    },
+                    "example": "timeout=5"
+                  }
+                }
+              }
+            },
+            "content": {
+              "application/json; charset=utf-8": {
+                "schema": {
+                  "$ref": "#/components/schemas/404-PreviewProductNotFound1"
+                },
+                "example": {
+                  "status": 404,
+                  "message": "Product not found"
                 }
               }
             }
@@ -10436,24 +10807,15 @@
       },
       "200-PreviewProduct": {
         "title": "200-PreviewProduct",
-        "required": ["preview_data"],
+        "required": ["message"],
         "type": "object",
         "properties": {
-          "preview_data": {
-            "$ref": "#/components/schemas/PreviewData"
+          "message": {
+            "type": "string"
           }
         },
         "example": {
-          "preview_data": {
-            "name": "Indomie Sedap",
-            "price": "5000",
-            "description": "Ini adalah Indomie Sedap",
-            "categories": ["1", "2"],
-            "product_pict": [
-              "https://res.cloudinary.com/second-hand6-bejs/image/upload/v1657637632/preview/xibzpifjia5nbiwss2ch.jpg",
-              "https://res.cloudinary.com/second-hand6-bejs/image/upload/v1657637634/preview/cqcoxcctjqkpo468fuk7.jpg"
-            ]
-          }
+          "message": "Success add preview product"
         }
       },
       "400-PreviewProductFieldViolation1": {
@@ -10474,6 +10836,7 @@
           "message": "Product name is required"
         }
       },
+
       "400-PreviewProductTokennotprovided1": {
         "title": "400-PreviewProductTokennotprovided1",
         "required": ["status", "message"],
