@@ -29,6 +29,10 @@ productRouter.get("/user", isAuth, ProductController.productByUser);
 
 productRouter.get("/offered", isAuth, ProductController.getOfferedProducts);
 
+productRouter.get("/re-edit", isAuth, ProductController.reEditProduct);
+
+productRouter.get("/preview", isAuth, ProductController.getPreviewProduct);
+
 productRouter.post(
   "/",
   upload.array("product_pict"),
@@ -107,13 +111,29 @@ productRouter.delete(
   ProductController.deleteProduct
 );
 
-// productRouter.post(
-//   "/product-preview",
-//   upload.array("product_pict"),
-//   isAuth,
-//   ProductController.previewProduct
-// );
-
-// productRouter.get("/re-edit", isAuth, ProductController.reEditProduct);
+productRouter.post(
+  "/preview",
+  upload.array("product_pict"),
+  isAuth,
+  [
+    body("name").notEmpty().withMessage("Product name is required"),
+    body("price")
+      .notEmpty()
+      .withMessage("Price is required")
+      .isNumeric()
+      .withMessage("Price must be a number"),
+    body("description").notEmpty().withMessage("Description is required"),
+    body("categories").notEmpty().withMessage("Please fill a valid categories"),
+    body("product_pict").custom((value, { req }) => {
+      if (req.files.length > 4) {
+        throw new Error("Exceeded maximum pictures allowed");
+      } else if (req.files.length < 1) {
+        throw new Error("Please upload a picture");
+      }
+      return true;
+    }),
+  ],
+  ProductController.postPreviewProduct
+);
 
 module.exports = productRouter;

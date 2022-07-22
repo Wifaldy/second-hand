@@ -96,7 +96,7 @@ describe("PUT /user/update", () => {
         expect(res.body.message).toBe("Successfully update Users");
         done();
       });
-  }, 10000);
+  }, 60000);
   it("Not found", (done) => {
     request(app)
       .put("/user/update")

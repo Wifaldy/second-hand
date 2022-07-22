@@ -241,7 +241,7 @@ describe("POST /product", () => {
         expect(res.body.message).toBe("Success add new product");
         done();
       });
-  }, 10000);
+  }, 60000);
   it("Field violation", (done) => {
     request(app)
       .post("/product")
@@ -275,7 +275,7 @@ describe("PUT /product/:id", () => {
         expect(res.body.message).toBe("Success update product");
         done();
       });
-  }, 10000);
+  }, 60000);
   it("Field violation", (done) => {
     request(app)
       .put("/product/1")
@@ -306,7 +306,7 @@ describe("PUT /product/:id", () => {
         expect(res.body.message).toBe("The product is not yours");
         done();
       });
-  }, 10000);
+  }, 60000);
 });
 
 describe("DELETE /product/:id", () => {

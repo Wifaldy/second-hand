@@ -1,7 +1,10 @@
 const { user } = require("../models");
 const { validationResult } = require("express-validator");
 require("dotenv").config();
-const uploadToCloudinary = require("../services/cloudinary.service");
+const {
+  uploadToCloudinary,
+  deletePict,
+} = require("../services/cloudinary.service");
 
 class UserController {
   static async detailUser(req, res, next) {
@@ -27,6 +30,14 @@ class UserController {
 
   static async updateUser(req, res, next) {
     try {
+      const errors = validationResult(req);
+      if (!errors.isEmpty()) {
+        throw {
+          status: 400,
+          message: errors.array()[0].msg,
+        };
+      }
+      const { name, city_id, address, no_hp } = req.body;
       const dataUser = await user.findOne({
         where: {
           id: req.user.id,
@@ -38,13 +49,9 @@ class UserController {
           message: "User not found",
         };
       }
-      const { name, city_id, address, no_hp } = req.body;
-      const errors = validationResult(req);
-      if (!errors.isEmpty()) {
-        throw {
-          status: 400,
-          message: errors.array()[0].msg,
-        };
+
+      if (dataUser.profile_pict) {
+        await deletePict(dataUser.profile_pict, "user");
       }
       const filePath = await uploadToCloudinary(req.file, "user");
       await user.update(

@@ -1,5 +1,4 @@
 const { Op } = require("sequelize");
-const fs = require("fs");
 const {
   product,
   offer,
@@ -7,12 +6,16 @@ const {
   category,
   user,
   notification,
+  city,
 } = require("../models");
-// const ProductSingleton = require("../services/temp_product_data.service");
+const ProductSingleton = require("../services/temp_product_data.service");
 const { validationResult } = require("express-validator");
 const sequelize = require("sequelize");
 
-const uploadToCloudinary = require("../services/cloudinary.service");
+const {
+  deletePict,
+  uploadToCloudinary,
+} = require("../services/cloudinary.service");
 
 require("dotenv").config();
 
@@ -123,44 +126,74 @@ class ProductController {
     }
   }
 
-  // static async previewProduct(req, res, next) {
-  //     try {
-  //         //   const { name, price, category, description } = req.body;
-  //         const filePaths = req.files.map((file) => file.path);
-  //         console.log(filePaths);
+  static async getPreviewProduct(req, res, next) {
+    try {
+      //   const { name, price, category, description } = req.body;
 
-  //         const dataTemp = ProductSingleton.getInstance();
-  //         dataTemp.setData = {
-  //             ...req.body,
-  //             product_pict: filePaths,
-  //         };
+      const dataTemp = ProductSingleton.getInstance();
+      if (!dataTemp.getData(req.user.id)) {
+        throw {
+          status: 404,
+          message: "Product not found",
+        };
+      }
+      res.status(200).json({
+        preview_data: dataTemp.getData(req.user.id),
+      });
+    } catch (error) {
+      next(error);
+    }
+  }
+  static async postPreviewProduct(req, res, next) {
+    try {
+      //   const { name, price, category, description } = req.body;
+      const errors = validationResult(req);
+      if (!errors.isEmpty()) {
+        throw {
+          status: 400,
+          message: errors.array()[0].msg,
+        };
+      }
 
-  //         res.status(200).json({
-  //             preview_data: dataTemp.getData,
-  //         });
-  //     } catch (error) {
-  //         next(error);
-  //     }
-  // }
+      const filePaths = await uploadToCloudinary(req.files, "preview");
+      const findUser = await user.findByPk(req.user.id, {
+        attributes: { exclude: ["password", "id"] },
+        include: {
+          model: city,
+        },
+      });
+      const dataTemp = ProductSingleton.getInstance();
+      dataTemp.setData = {
+        user_id: req.user.id,
+        ...req.body,
+        ...findUser.dataValues,
+        product_pict: filePaths,
+      };
+      res.status(200).json({
+        message: "Success add preview product",
+      });
+    } catch (error) {
+      next(error);
+    }
+  }
 
-  // static async reEditProduct(req, res, next) {
-  //     try {
-  //         const dataTemp = ProductSingleton.getInstance();
-  //         if (!dataTemp.getData) {
-  //             throw {
-  //                 status: 404,
-  //                 message: "Isi update dulu bos",
-  //             };
-  //         }
-  //         res.status(200).json({
-  //             preview_data: dataTemp.getData,
-  //         });
-  //         dataTemp.resetData();
-  //     } catch (error) {
-  //         console.log(error);
-  //         next(error);
-  //     }
-  // }
+  static async reEditProduct(req, res, next) {
+    try {
+      const dataTemp = ProductSingleton.getInstance();
+      if (!dataTemp.getData(req.user.id)) {
+        throw {
+          status: 404,
+          message: "Product not found",
+        };
+      }
+      res.status(200).json({
+        preview_data: dataTemp.getData(req.user.id),
+      });
+      dataTemp.resetData(req.user.id);
+    } catch (error) {
+      next(error);
+    }
+  }
 
   static async createProduct(req, res, next) {
     try {
@@ -187,11 +220,16 @@ class ProductController {
         createdAt: new Date(),
         updatedAt: new Date(),
       });
-
-      categories.forEach(async (categoryId) => {
+      let tempCategories;
+      if (!Array.isArray(categories)) {
+        tempCategories = categories.split(",");
+      } else {
+        tempCategories = categories;
+      }
+      tempCategories.forEach(async (categoryId) => {
         await product_tag.create({
           product_id: productCreate.id,
-          category_id: +categoryId,
+          category_id: categoryId,
           createdAt: new Date(),
           updatedAt: new Date(),
         });
@@ -223,7 +261,6 @@ class ProductController {
       }
       const { name, price, description, categories } = req.body;
       const { id } = req.params;
-      const filePaths = await uploadToCloudinary(req.files, "product");
 
       const getProduct = await product.findOne({
         where: {
@@ -237,7 +274,10 @@ class ProductController {
           message: "The product is not yours",
         };
       }
-
+      getProduct.product_pict.forEach(async (product_pict) => {
+        await deletePict(product_pict, "product");
+      });
+      const filePaths = await uploadToCloudinary(req.files, "product");
       await product.update(
         {
           name,
@@ -306,6 +346,9 @@ class ProductController {
           message: "Unauthorized",
         };
       }
+      findProduct.product_pict.forEach(async (product_pict) => {
+        await deletePict(product_pict, "product");
+      });
       await product.destroy({
         where: {
           id,

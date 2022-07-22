@@ -1,6 +1,6 @@
 const cloudinaryProvider = require("../config/cloudinary.config");
 const fs = require("fs");
-const directoryList = ["user", "product"];
+const directoryList = ["user", "product", "preview"];
 
 /**
  * Returns path dari cloudinary.
@@ -10,7 +10,6 @@ const directoryList = ["user", "product"];
  * @return {string | array} Path dari cloudinary.
  */
 async function uploadToCloudinary(fileData, directoryType) {
-
   if (!directoryList.includes(directoryType) || !directoryType)
     throw new Error(
       "Please enter correct directory type. Available type: user, product"
@@ -34,16 +33,20 @@ async function uploadToCloudinary(fileData, directoryType) {
   return result.secure_url; // cloud file
 }
 
-const deletePict = async (imgUrl) => {
+const deletePict = async (imgUrl, directoryType) => {
   try {
-    const splitURL = imgUrl.split('/')
-    const imageId = splitURL[splitURL.length - 1].slice(0, splitURL[splitURL.length - 1].length - 4)
-    await cloudinaryProvider.uploader.destroy(imageId, (err, res) => {
-      console.log(err);
-    }) 
+    const splitURL = imgUrl.split("/");
+    const imageId = splitURL[splitURL.length - 1].slice(
+      0,
+      splitURL[splitURL.length - 1].length - 4
+    );
+    await cloudinaryProvider.uploader.destroy(`${directoryType}/${imageId}`, {
+      invalidate: true,
+      resource_type: "image",
+    });
   } catch (error) {
     throw new Error(error);
   }
-}
+};
 
-module.exports = {uploadToCloudinary, deletePict};
+module.exports = { uploadToCloudinary, deletePict };
