@@ -146,7 +146,7 @@ class ProductController {
   }
   static async postPreviewProduct(req, res, next) {
     try {
-      //   const { name, price, category, description } = req.body;
+      const { name, price, categories, description } = req.body;
       const errors = validationResult(req);
       if (!errors.isEmpty()) {
         throw {
@@ -165,7 +165,10 @@ class ProductController {
       const dataTemp = ProductSingleton.getInstance();
       dataTemp.setData = {
         user_id: req.user.id,
-        ...req.body,
+        product_name: name,
+        price,
+        categories,
+        description,
         ...findUser.dataValues,
         product_pict: filePaths,
       };

@@ -10924,6 +10924,7 @@
         "example": {
           "preview_data": {
             "user_id": 1,
+            "product_name": "Indomie Sedap",
             "name": "Demo User",
             "price": "5000",
             "description": "Ini adalah Indomie Sedap",
@@ -10952,6 +10953,7 @@
         "title": "PreviewData",
         "required": [
           "user_id",
+          "product_name",
           "name",
           "price",
           "description",
