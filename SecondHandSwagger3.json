@@ -2481,7 +2481,7 @@
     },
     "/offer/is-offering/{id}": {
       "get": {
-        "tags": ["Product"],
+        "tags": ["Offer"],
         "summary": "Get Id Offering Product",
         "operationId": "GetIdOfferingProduct",
         "parameters": [
