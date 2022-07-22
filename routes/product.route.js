@@ -123,7 +123,14 @@ productRouter.post(
       .isNumeric()
       .withMessage("Price must be a number"),
     body("description").notEmpty().withMessage("Description is required"),
-    body("categories").notEmpty().withMessage("Please fill a valid categories"),
+    body("categories").custom((value, { req }) => {
+      if (value.length > 5) {
+        throw new Error("Exceeded maximum categories allowed");
+      } else if (value.length < 1) {
+        throw new Error("Please upload a picture");
+      }
+      return true;
+    }),
     body("product_pict").custom((value, { req }) => {
       if (req.files.length > 4) {
         throw new Error("Exceeded maximum pictures allowed");
