@@ -4546,6 +4546,316 @@
         ]
       }
     },
+    "/product/user": {
+      "get": {
+        "tags": ["Product"],
+        "summary": "Product by User",
+        "operationId": "ProductbyUser",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "headers": {
+              "X-Powered-By": {
+                "content": {
+                  "text/plain": {
+                    "schema": {
+                      "type": "string"
+                    },
+                    "example": "Express"
+                  }
+                }
+              },
+              "Access-Control-Allow-Origin": {
+                "content": {
+                  "text/plain": {
+                    "schema": {
+                      "type": "string"
+                    },
+                    "example": "*"
+                  }
+                }
+              },
+              "Content-Length": {
+                "content": {
+                  "text/plain": {
+                    "schema": {
+                      "type": "string"
+                    },
+                    "example": "811"
+                  }
+                }
+              },
+              "ETag": {
+                "content": {
+                  "text/plain": {
+                    "schema": {
+                      "type": "string"
+                    },
+                    "example": "W/\"32b-r+XYKeLYXM6MlnkvMSrmtezWmbg\""
+                  }
+                }
+              },
+              "Date": {
+                "content": {
+                  "text/plain": {
+                    "schema": {
+                      "type": "string"
+                    },
+                    "example": "Sun, 24 Jul 2022 03:46:03 GMT"
+                  }
+                }
+              },
+              "Connection": {
+                "content": {
+                  "text/plain": {
+                    "schema": {
+                      "type": "string"
+                    },
+                    "example": "keep-alive"
+                  }
+                }
+              },
+              "Keep-Alive": {
+                "content": {
+                  "text/plain": {
+                    "schema": {
+                      "type": "string"
+                    },
+                    "example": "timeout=5"
+                  }
+                }
+              }
+            },
+            "content": {
+              "application/json; charset=utf-8": {
+                "schema": {
+                  "$ref": "#/components/schemas/200-ProductbyUser"
+                },
+                "example": {
+                  "message": "Product by user",
+                  "data": [
+                    {
+                      "id": 1,
+                      "user_id": 1,
+                      "name": "product 1",
+                      "price": 100,
+                      "description": "description 1",
+                      "status": "available",
+                      "product_pict": ["pict 1", "pict 2"],
+                      "createdAt": "2022-07-13T14:18:43.267Z",
+                      "updatedAt": "2022-07-13T14:18:43.267Z"
+                    },
+                    {
+                      "id": 3,
+                      "user_id": 1,
+                      "name": "product 3",
+                      "price": 300,
+                      "description": "description 3",
+                      "status": "sold",
+                      "product_pict": ["pict 2", "pict 3"],
+                      "createdAt": "2022-07-13T14:18:43.267Z",
+                      "updatedAt": "2022-07-13T14:18:43.267Z"
+                    },
+                    {
+                      "id": 4,
+                      "user_id": 1,
+                      "name": "Indomie Mie Sedap Mix",
+                      "price": 900000,
+                      "description": "lorem ipsum dolor sit amet ipsum ipsuummm",
+                      "status": "available",
+                      "product_pict": [
+                        "https://res.cloudinary.com/second-hand6-bejs/image/upload/v1658152693/product/ind1vgrenvs0fcglvzbi.jpg"
+                      ],
+                      "createdAt": "2022-07-18T13:58:14.749Z",
+                      "updatedAt": "2022-07-18T13:58:14.751Z"
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "headers": {
+              "X-Powered-By": {
+                "content": {
+                  "text/plain": {
+                    "schema": {
+                      "type": "string"
+                    },
+                    "example": "Express"
+                  }
+                }
+              },
+              "Access-Control-Allow-Origin": {
+                "content": {
+                  "text/plain": {
+                    "schema": {
+                      "type": "string"
+                    },
+                    "example": "*"
+                  }
+                }
+              },
+              "Content-Length": {
+                "content": {
+                  "text/plain": {
+                    "schema": {
+                      "type": "string"
+                    },
+                    "example": "45"
+                  }
+                }
+              },
+              "ETag": {
+                "content": {
+                  "text/plain": {
+                    "schema": {
+                      "type": "string"
+                    },
+                    "example": "W/\"2d-PYsKn1aFV5tv6Q7kkqERNppXL/Y\""
+                  }
+                }
+              },
+              "Date": {
+                "content": {
+                  "text/plain": {
+                    "schema": {
+                      "type": "string"
+                    },
+                    "example": "Sun, 24 Jul 2022 03:46:34 GMT"
+                  }
+                }
+              },
+              "Connection": {
+                "content": {
+                  "text/plain": {
+                    "schema": {
+                      "type": "string"
+                    },
+                    "example": "keep-alive"
+                  }
+                }
+              },
+              "Keep-Alive": {
+                "content": {
+                  "text/plain": {
+                    "schema": {
+                      "type": "string"
+                    },
+                    "example": "timeout=5"
+                  }
+                }
+              }
+            },
+            "content": {
+              "application/json; charset=utf-8": {
+                "schema": {
+                  "$ref": "#/components/schemas/400-ProductbyUserTokennotProvided1"
+                },
+                "example": {
+                  "status": 400,
+                  "message": "Token not provided"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "headers": {
+              "X-Powered-By": {
+                "content": {
+                  "text/plain": {
+                    "schema": {
+                      "type": "string"
+                    },
+                    "example": "Express"
+                  }
+                }
+              },
+              "Access-Control-Allow-Origin": {
+                "content": {
+                  "text/plain": {
+                    "schema": {
+                      "type": "string"
+                    },
+                    "example": "*"
+                  }
+                }
+              },
+              "Content-Length": {
+                "content": {
+                  "text/plain": {
+                    "schema": {
+                      "type": "string"
+                    },
+                    "example": "40"
+                  }
+                }
+              },
+              "ETag": {
+                "content": {
+                  "text/plain": {
+                    "schema": {
+                      "type": "string"
+                    },
+                    "example": "W/\"28-wr7D8pVVS5wYII5MzMfNrtISsDA\""
+                  }
+                }
+              },
+              "Date": {
+                "content": {
+                  "text/plain": {
+                    "schema": {
+                      "type": "string"
+                    },
+                    "example": "Sun, 24 Jul 2022 03:47:02 GMT"
+                  }
+                }
+              },
+              "Connection": {
+                "content": {
+                  "text/plain": {
+                    "schema": {
+                      "type": "string"
+                    },
+                    "example": "keep-alive"
+                  }
+                }
+              },
+              "Keep-Alive": {
+                "content": {
+                  "text/plain": {
+                    "schema": {
+                      "type": "string"
+                    },
+                    "example": "timeout=5"
+                  }
+                }
+              }
+            },
+            "content": {
+              "application/json; charset=utf-8": {
+                "schema": {
+                  "$ref": "#/components/schemas/401-ProductbyUserTokeninvalid1"
+                },
+                "example": {
+                  "status": 401,
+                  "message": "Token invalid"
+                }
+              }
+            }
+          }
+        },
+        "deprecated": false,
+        "security": [
+          {
+            "bearer": []
+          }
+        ]
+      }
+    },
     "/wishlist": {
       "get": {
         "tags": ["Wishlist"],
@@ -11232,6 +11542,99 @@
       },
       "401-ProductOfferedTokeninvalid1": {
         "title": "401-ProductOfferedTokeninvalid1",
+        "required": ["status", "message"],
+        "type": "object",
+        "properties": {
+          "status": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "message": {
+            "type": "string"
+          }
+        },
+        "example": {
+          "status": 401,
+          "message": "Token invalid"
+        }
+      },
+      "200-ProductbyUser": {
+        "title": "200-ProductbyUser",
+        "required": ["message", "data"],
+        "type": "object",
+        "properties": {
+          "message": {
+            "type": "string"
+          },
+          "data": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Data2"
+            },
+            "description": ""
+          }
+        },
+        "example": {
+          "message": "Product by user",
+          "data": [
+            {
+              "id": 1,
+              "user_id": 1,
+              "name": "product 1",
+              "price": 100,
+              "description": "description 1",
+              "status": "available",
+              "product_pict": ["pict 1", "pict 2"],
+              "createdAt": "2022-07-13T14:18:43.267Z",
+              "updatedAt": "2022-07-13T14:18:43.267Z"
+            },
+            {
+              "id": 3,
+              "user_id": 1,
+              "name": "product 3",
+              "price": 300,
+              "description": "description 3",
+              "status": "sold",
+              "product_pict": ["pict 2", "pict 3"],
+              "createdAt": "2022-07-13T14:18:43.267Z",
+              "updatedAt": "2022-07-13T14:18:43.267Z"
+            },
+            {
+              "id": 4,
+              "user_id": 1,
+              "name": "Indomie Mie Sedap Mix",
+              "price": 900000,
+              "description": "lorem ipsum dolor sit amet ipsum ipsuummm",
+              "status": "available",
+              "product_pict": [
+                "https://res.cloudinary.com/second-hand6-bejs/image/upload/v1658152693/product/ind1vgrenvs0fcglvzbi.jpg"
+              ],
+              "createdAt": "2022-07-18T13:58:14.749Z",
+              "updatedAt": "2022-07-18T13:58:14.751Z"
+            }
+          ]
+        }
+      },
+      "400-ProductbyUserTokennotProvided1": {
+        "title": "400-ProductbyUserTokennotProvided1",
+        "required": ["status", "message"],
+        "type": "object",
+        "properties": {
+          "status": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "message": {
+            "type": "string"
+          }
+        },
+        "example": {
+          "status": 400,
+          "message": "Token not provided"
+        }
+      },
+      "401-ProductbyUserTokeninvalid1": {
+        "title": "401-ProductbyUserTokeninvalid1",
         "required": ["status", "message"],
         "type": "object",
         "properties": {
