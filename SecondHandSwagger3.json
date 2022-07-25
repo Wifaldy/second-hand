@@ -931,7 +931,6 @@
             "name": "category",
             "in": "query",
             "description": "",
-            "required": true,
             "style": "form",
             "explode": true,
             "schema": {
@@ -943,7 +942,6 @@
             "name": "page",
             "in": "query",
             "description": "",
-            "required": true,
             "style": "form",
             "explode": true,
             "schema": {
@@ -956,7 +954,6 @@
             "name": "search",
             "in": "query",
             "description": "",
-            "required": true,
             "style": "form",
             "explode": true,
             "schema": {

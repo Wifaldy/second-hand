@@ -1,4 +1,4 @@
-const { wishlist, user, product } = require("../models");
+const { wishlist, category, product, product_tag } = require("../models");
 const { validationResult } = require("express-validator");
 
 class WishlistController {
@@ -50,6 +50,12 @@ class WishlistController {
       const wishlistByUser = await wishlist.findAll({
         include: {
           model: product,
+          include: {
+            model: product_tag,
+            include: {
+              model: category,
+            },
+          },
         },
         where: {
           user_id: req.user.id,
